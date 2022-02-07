@@ -1,0 +1,1 @@
+{"name":"Local: Casimir","url":"e:\\Programming Language\\Codeforces\\Casimir.cpp","tests":[{"id":1632840301694,"input":"6\nABACAB\nABBA\nAC\nABC\nCABCBB\nBCBCBCBCBCBCBCBC","output":"NO\nYES\nNO\nNO\nYES\nYES"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\Programming Language\\Codeforces\\Casimir.cpp","group":"local","local":true}
