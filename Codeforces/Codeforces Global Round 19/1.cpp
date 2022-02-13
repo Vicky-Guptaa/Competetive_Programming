@@ -19,6 +19,23 @@ int main()
         {
             cin >> arr[i];
         }
+        bool isSorted = true;
+        for (int i = 1; i < n; i++)
+        {
+            if (arr[i - 1] > arr[i])
+            {
+                isSorted = false;
+                break;
+            }
+        }
+        if (isSorted)
+        {
+            cout << "NO\n";
+        }
+        else
+        {
+            cout << "YES\n";
+        }
     }
     return 0;
 }
