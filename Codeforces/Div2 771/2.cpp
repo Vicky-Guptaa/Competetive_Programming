@@ -19,27 +19,27 @@ int main()
         {
             cin >> arr[i];
         }
+        int prevo = -1, preve = 0;
+        bool isSort = 1;
         for (int j = 0; j < n; j++)
         {
-            bool isSwap = 0;
-            for (int i = 1; i < n; i++)
+            if (arr[j] & 1)
             {
-                if (arr[i - 1] > arr[i] && (arr[i] + arr[i - 1]) & 1)
+                if (prevo > arr[j])
                 {
-                    isSwap = true;
-                    swap(arr[i], arr[i - 1]);
+                    isSort = 0;
+                    break;
                 }
+                prevo = arr[j];
             }
-            if (!isSwap)
-                break;
-        }
-        bool isSort = 1;
-        for (int i = 1; i < n; i++)
-        {
-            if (arr[i] < arr[i - 1])
+            else
             {
-                isSort = false;
-                break;
+                if (preve > arr[j])
+                {
+                    isSort = 0;
+                    break;
+                }
+                preve = arr[j];
             }
         }
         if (isSort)
