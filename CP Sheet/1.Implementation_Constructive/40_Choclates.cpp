@@ -29,6 +29,7 @@ int main()
             }
             else
             {
+                sum += arr[iter - 1];
             }
         }
     }
