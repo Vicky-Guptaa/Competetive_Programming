@@ -16,17 +16,26 @@ int main()
     }
     else
     {
-        int x = (n & 1 == 1) ? n - 3 : n - 2;
-        for (x; x >= 0; x -= 2)
+        int move = (n & 1) ? 1 : 0;
+        move += n / 2;
+        bool isTrue = 0;
+        while (move != n)
         {
-            if ((n - x) % m == 0)
+            if (move % m == 0)
             {
+                isTrue;
                 break;
             }
+            move++;
         }
-        cout << x << "\n";
-        int steps = (x / 2) + n - x;
-        cout << steps << "\n";
+        if (move % m == 0 || isTrue)
+        {
+            cout << move << "\n";
+        }
+        else
+        {
+            cout << "-1\n";
+        }
     }
     return 0;
 }

@@ -16,22 +16,24 @@ int main()
         cin >> arr[i];
     }
     reverse(arr, arr + n);
-    int max_sum = 0;
-    int iter = 1;
-    while (iter < n)
+    ll max_sum = 0;
+    int prev = 0;
+    for (int i = 0; i <= 0; i++)
     {
-        int sum = 0;
-        while (iter < n)
+        ll sum = arr[i];
+        prev = arr[i];
+        for (int j = i + 1; j < n; j++)
         {
-            if (arr[iter - 1] > arr[iter])
-            {
-                sum += arr[iter];
-            }
-            else
-            {
-                sum += arr[iter - 1];
-            }
+            if (min(prev - 1, arr[j]) == 0)
+                break;
+            sum += min(prev - 1, arr[j]);
+            prev = min(prev - 1, arr[j]);
+        }
+        if (max_sum < sum)
+        {
+            max_sum = sum;
         }
     }
+    cout << max_sum << "\n";
     return 0;
 }
