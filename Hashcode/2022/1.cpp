@@ -47,48 +47,60 @@ void Solve()
         sort(band.second.begin(), band.second.end(), mycomp1);
     }
     vector<vector<string>> answer;
-    for (auto project : projects)
+    unordered_set<string> projectAssigned;
+    while (true)
     {
-        vector<int> pmeta = project.first;
-        vector<pp> skillreqs = project.second;
-        vector<string> projectBanda;
-        unordered_map<int, pair<int, int>> projectBandaindex;
-        for (auto skillreq : skillreqs)
+        bool isProjectAssigned = 0;
+        for (auto project : projects)
         {
-            int counter = 0;
-            for (auto band : Bande)
+            vector<int> pmeta = project.first;
+            vector<pp> skillreqs = project.second;
+            vector<string> projectBanda;
+            unordered_map<int, pair<int, int>> projectBandaindex;
+            for (auto skillreq : skillreqs)
             {
-                bool isAssign = 0;
-                for (int i = 0; i < band.second.size(); i++)
-                    if (projectBandaindex.find(counter) == projectBandaindex.end())
-                        if (band.second[i].first == skillreq.first && band.second[i].second >= skillreq.second)
-                        {
-                            projectBanda.push_back(BandeName[band.first]);
-                            projectBandaindex[counter] = {i, skillreq.second};
-                            isAssign = 1;
-                            break;
-                        }
-                counter++;
-                if (isAssign)
-                    break;
-            }
-        }
-        unordered_set<string> projectBandas;
-        for (auto x : projectBanda)
-        {
-            projectBandas.insert(x);
-        }
-        if (skillreqs.size() == projectBandas.size())
-        {
-            projectBanda.push_back(projectsName[pmeta[4]]);
-            answer.push_back(projectBanda);
-            for (auto x : projectBandaindex)
-            {
-                if (Bande[x.first].second[x.second.first].second == x.second.second)
+                int counter = 0;
+                for (auto band : Bande)
                 {
-                    Bande[x.first].second[x.second.first].second++;
+                    bool isAssign = 0;
+                    for (int i = 0; i < band.second.size(); i++)
+                        if (projectBandaindex.find(counter) == projectBandaindex.end())
+                            if (band.second[i].first == skillreq.first && band.second[i].second >= skillreq.second)
+                            {
+                                projectBanda.push_back(BandeName[band.first]);
+                                projectBandaindex[counter] = {i, skillreq.second};
+                                isAssign = 1;
+                                break;
+                            }
+                    counter++;
+                    if (isAssign)
+                        break;
                 }
             }
+            unordered_set<string> projectBandas;
+            for (auto x : projectBanda)
+            {
+                projectBandas.insert(x);
+            }
+            if (projectAssigned.find(projectsName[pmeta[4]]) == projectAssigned.end())
+                if (skillreqs.size() == projectBandas.size())
+                {
+                    isProjectAssigned = 1;
+                    projectAssigned.insert(projectsName[pmeta[4]]);
+                    projectBanda.push_back(projectsName[pmeta[4]]);
+                    answer.push_back(projectBanda);
+                    for (auto x : projectBandaindex)
+                    {
+                        if (Bande[x.first].second[x.second.first].second == x.second.second)
+                        {
+                            Bande[x.first].second[x.second.first].second++;
+                        }
+                    }
+                }
+        }
+        if (!isProjectAssigned)
+        {
+            break;
         }
     }
     cout << answer.size() << "\n";
