@@ -216,17 +216,22 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-vector<ll> power;
+
+int setBitCount(ll num)
+{
+    int count = 0;
+    while (num > 0)
+    {
+        num = ((num - 1) & num);
+        count++;
+    }
+    return count;
+}
+
 vector<ll> fact;
 void precompute()
 {
-    ll ele = 1;
-    for (int i = 0; ele <= 1e12; i++)
-    {
-        ele = pow(2, i);
-        power.push_back(ele);
-    }
-    ele = 2;
+    ll ele = 2;
     for (int i = 3; ele <= 1e12; i++)
     {
         ele *= i;
@@ -234,66 +239,48 @@ void precompute()
     }
 }
 
-int Dp(vector<ll> &set, int s, ll n, unordered_map<string, int> &memo)
+int Dp(vector<ll> &set, int s, ll n, ll sum)
 {
-    if (s >= set.size() || n == 0)
+    if (s >= set.size())
     {
-        if (n == 0)
-            return 0;
-        else
-            return 1e9;
-    }
-    string mem = to_string(s) + " " + to_string(n);
-    if (memo.find(mem) != memo.end())
-    {
-        return memo[mem];
+        // cout << sum << "\n";
+        return setBitCount(n - sum);
     }
 
-    if (set[s] <= n)
+    if (n - sum >= set[s])
     {
-        memo[mem] = min(Dp(set, s + 1, n - set[s], memo) + 1, Dp(set, s + 1, n, memo));
+        return min(1 + Dp(set, s + 1, n, sum + set[s]), Dp(set, s + 1, n, sum));
     }
     else
     {
-        memo[mem] = Dp(set, s + 1, n, memo);
+        return Dp(set, s + 1, n, sum);
     }
-    return memo[mem];
 }
 
 void solve()
 {
     ll n;
     cin >> n;
-    int setBits = __builtin_popcount(n);
-    string binaryStr = decToBinary(n);
-    // vector<ll> set;
-    // for (int i = 0; power[i] <= n; i++)
-    // {
-    //     set.push_back(power[i]);
-    // }
-    // if (power[set.size() - 1] == n)
-    // {
-    //     cout << 1 << "\n";
-    //     return;
-    // }
+    int setBits = setBitCount(n);
+    if (setBits == 1)
+    {
+        cout << 1 << "\n";
+        return;
+    }
+    vector<ll> set;
+    for (int i = 0; fact[i] <= n; i++)
+    {
+        set.push_back(fact[i]);
+    }
 
-    // for (int i = 0; fact[i] <= n; i++)
-    // {
-    //     set.push_back(fact[i]);
-    // }
-
-    // if (power[set.size() - 1] == n)
-    // {
-    //     cout << 1 << "\n";
-    //     return;
-    // }
-    // sort(vr(set));
-    // cout << set.size() << "\n";
-    // unordered_map<string, int> memo;
-    // // cout << set << "\n";
-    // int ans = 0;
-    // // ans = Dp(set, 0, n, memo);
-    // cout << ans << "\n";
+    if (set.size() > 0 && set[set.size() - 1] == n)
+    {
+        cout << 1 << "\n";
+        return;
+    }
+    int ans = 0;
+    ans = Dp(set, 0, n, 0);
+    cout << ans << "\n";
 }
 // Main
 int main()
@@ -320,3 +307,6 @@ int main()
     // }
     return 0;
 }
+/*
+91009901168
+*/
