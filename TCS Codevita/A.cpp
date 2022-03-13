@@ -216,34 +216,71 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-ll Min(vll &arr, ll ele)
-{
-    ll diff = INT_MAX;
-    fl(i, arr.size())
-    {
-        diff = min(diff, abs(ele - arr[i]));
-    }
-    return diff;
-}
-
 void solve()
 {
     ll n;
     cin >> n;
-    vll top(n), bot(n);
-    cin >> top >> bot;
-    ll res = abs(top[0] - bot[0]) + abs(top[n - 1] - bot[n - 1]);
-    res = min(res, abs(top[0] - bot[n - 1]) + abs(top[n - 1] - bot[0]));
-
-    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
-    res = min(res, abs(top[0] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[0]));
-
-    res = min(res, Min(top, bot[0]) + Min(bot, top[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    cout << res << "\n";    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
+    vll arr(n);
+    cin >> arr;
+    int left = 0, right = n - 1;
+    ll capt = 0, iron = 0;
+    bool isCaptTurn = 1;
+    while (left <= right)
+    {
+        if (isCaptTurn)
+        {
+            int l = left, r = right;
+            ll lsum = arr[l++], rsum = arr[r--];
+            if (lsum >= 0)
+                while (r >= l && arr[l] >= 0)
+                {
+                    lsum += arr[l++];
+                }
+            if (rsum >= 0)
+                while (r >= l && arr[r] >= 0)
+                {
+                    rsum += arr[r--];
+                }
+            if (lsum > rsum)
+            {
+                capt += lsum;
+                left = l;
+            }
+            else
+            {
+                capt += rsum;
+                right = r;
+            }
+        }
+        else
+        {
+            int l = left, r = right;
+            ll lsum = arr[l++], rsum = arr[r--];
+            if (lsum >= 0)
+                while (r >= l && arr[l] >= 0)
+                {
+                    lsum += arr[l++];
+                }
+            if (rsum >= 0)
+                while (r >= l && arr[r] >= 0)
+                {
+                    rsum += arr[r--];
+                }
+            if (lsum > rsum)
+            {
+                iron += lsum;
+                left = l;
+            }
+            else
+            {
+                iron += rsum;
+                right = r;
+            }
+        }
+        isCaptTurn = !isCaptTurn;
+    }
+    ll ans = capt - iron;
+    cout << ans << "\n";
 }
 // Main
 int main()
@@ -253,13 +290,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

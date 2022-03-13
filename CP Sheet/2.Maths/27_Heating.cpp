@@ -216,34 +216,23 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-ll Min(vll &arr, ll ele)
-{
-    ll diff = INT_MAX;
-    fl(i, arr.size())
-    {
-        diff = min(diff, abs(ele - arr[i]));
-    }
-    return diff;
-}
-
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll top(n), bot(n);
-    cin >> top >> bot;
-    ll res = abs(top[0] - bot[0]) + abs(top[n - 1] - bot[n - 1]);
-    res = min(res, abs(top[0] - bot[n - 1]) + abs(top[n - 1] - bot[0]));
-
-    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
-    res = min(res, abs(top[0] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[0]));
-
-    res = min(res, Min(top, bot[0]) + Min(bot, top[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    cout << res << "\n";    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
+    ll n, k;
+    cin >> n >> k;
+    ll rem = k % n;
+    ll initial = k / n;
+    vll arr(n, initial);
+    fl(i, rem)
+    {
+        arr[i] += 1;
+    }
+    ll ans = 0;
+    fl(i, n)
+    {
+        ans += arr[i] * arr[i];
+    }
+    cout << ans << "\n";
 }
 // Main
 int main()

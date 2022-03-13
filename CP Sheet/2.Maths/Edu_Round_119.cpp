@@ -216,34 +216,48 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-ll Min(vll &arr, ll ele)
-{
-    ll diff = INT_MAX;
-    fl(i, arr.size())
-    {
-        diff = min(diff, abs(ele - arr[i]));
-    }
-    return diff;
-}
-
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll top(n), bot(n);
-    cin >> top >> bot;
-    ll res = abs(top[0] - bot[0]) + abs(top[n - 1] - bot[n - 1]);
-    res = min(res, abs(top[0] - bot[n - 1]) + abs(top[n - 1] - bot[0]));
-
-    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
-    res = min(res, abs(top[0] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[0]));
-
-    res = min(res, Min(top, bot[0]) + Min(bot, top[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    cout << res << "\n";    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
+    string s;
+    cin >> s;
+    if (s.size() == 2)
+    {
+        if (s[0] == s[1])
+        {
+            py
+        }
+        else
+        {
+            pn
+        }
+        return;
+    }
+    ll Efreq = 0, Nfreq = 0;
+    for (auto x : s)
+    {
+        if (x == 'E')
+        {
+            Efreq++;
+        }
+    }
+    Nfreq = s.size() - Efreq;
+    if (Nfreq == 1 && s[s.size() - 1] == 'N')
+    {
+        pn return;
+    }
+    if (Efreq == 1 && s[s.size() - 1] == 'E')
+    {
+        pn return;
+    }
+    if (Nfreq == 1 && s[0] == 'N')
+    {
+        pn return;
+    }
+    if (Efreq == 1 && s[0] == 'E')
+    {
+        pn return;
+    }
+    py
 }
 // Main
 int main()

@@ -216,34 +216,27 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-ll Min(vll &arr, ll ele)
-{
-    ll diff = INT_MAX;
-    fl(i, arr.size())
-    {
-        diff = min(diff, abs(ele - arr[i]));
-    }
-    return diff;
-}
-
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll top(n), bot(n);
-    cin >> top >> bot;
-    ll res = abs(top[0] - bot[0]) + abs(top[n - 1] - bot[n - 1]);
-    res = min(res, abs(top[0] - bot[n - 1]) + abs(top[n - 1] - bot[0]));
+    string s;
+    cin >> s;
+    ll sum = 0;
+    bool isEven = 0, isZero = 0;
+    for (auto x : s)
+    {
+        int num = x - '0';
+        if ((num != 0 && (num % 2) == 0) || (isZero && num == 0))
+            isEven = 1;
 
-    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
-    res = min(res, abs(top[0] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[0]));
+        if (x == '0')
+            isZero = 1;
 
-    res = min(res, Min(top, bot[0]) + Min(bot, top[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    cout << res << "\n";    res = min(res, abs(top[0] - bot[0]) + Min(top, bot[n - 1]) + Min(bot, top[n - 1]));
-    res = min(res, abs(top[n - 1] - bot[n - 1]) + Min(top, bot[0]) + Min(bot, top[0]));
+        sum += num;
+    }
+    if (isEven && isZero && (sum % 3 == 0))
+        cout << "red\n";
+    else
+        cout << "cyan\n";
 }
 // Main
 int main()
