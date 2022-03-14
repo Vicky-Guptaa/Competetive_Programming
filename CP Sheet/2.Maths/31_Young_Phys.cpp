@@ -218,16 +218,23 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    string s;
-    cin >> s;
-    int nc = 0;
-    for (auto x : s)
+    int n;
+    cin >> n;
+    ll x = 0, y = 0, z = 0;
+    fl(i, n)
     {
-        if (x == 'N')
-            nc++;
+        int n, p, q;
+        cin >> n >> p >> q;
+        x += n;
+        y += p;
+        z += q;
     }
-    if (nc == 1)
-        pn else py
+    if (x == 0 && y == 0 && z == 0)
+    {
+        py
+    }
+    else
+        pn
 }
 // Main
 int main()
@@ -237,19 +244,18 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
     //     solve();
     //     cout<<'\n';
     // }
-
     return 0;
 }

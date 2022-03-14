@@ -218,16 +218,10 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    string s;
-    cin >> s;
-    int nc = 0;
-    for (auto x : s)
-    {
-        if (x == 'N')
-            nc++;
-    }
-    if (nc == 1)
-        pn else py
+    lld h, l;
+    cin >> h >> l;
+    lld ans = (l * l - h * h) / (2.0 * h);
+    printf("%.8Lf", ans);
 }
 // Main
 int main()
@@ -237,19 +231,18 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
     //     solve();
     //     cout<<'\n';
     // }
-
     return 0;
 }

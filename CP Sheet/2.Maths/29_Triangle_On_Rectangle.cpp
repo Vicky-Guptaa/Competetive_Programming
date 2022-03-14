@@ -218,16 +218,51 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    string s;
-    cin >> s;
-    int nc = 0;
-    for (auto x : s)
-    {
-        if (x == 'N')
-            nc++;
-    }
-    if (nc == 1)
-        pn else py
+    ll X, Y;
+    cin >> X >> Y;
+    ll lh1, lh2, lv1, lv2;
+
+    cin >> lh1;
+    vll h1(lh1);
+    cin >> h1;
+
+    cin >> lh2;
+    vll h2(lh2);
+    cin >> h2;
+
+    cin >> lv1;
+    vll v1(lv1);
+    cin >> v1;
+
+    cin >> lv2;
+    vll v2(lv2);
+    cin >> v2;
+
+    sort(vr(h1));
+    sort(vr(h2));
+    sort(vr(v1));
+    sort(vr(v2));
+
+    ll ans = 0;
+    ans = max(ans, abs(h2[0] - h2[lh2 - 1]) * Y);
+    ans = max(ans, abs(h1[0] - h1[lh1 - 1]) * Y);
+
+    ans = max(ans, abs(v2[0] - v2[lv2 - 1]) * X);
+    ans = max(ans, abs(v1[0] - v1[lv1 - 1]) * X);
+
+    ans = max(ans, abs(v1[0] - v1[lv1 - 1]) * h1[lh1 - 1]);
+    ans = max(ans, abs(v1[0] - v1[lv1 - 1]) * h2[lh2 - 1]);
+
+    ans = max(ans, abs(v2[0] - v2[lv2 - 1]) * abs(h1[0] - X));
+    ans = max(ans, abs(v2[0] - v2[lv2 - 1]) * abs(h2[0] - X));
+
+    ans = max(ans, abs(h1[0] - h1[lh1 - 1]) * abs(v1[0] - Y));
+    ans = max(ans, abs(h1[0] - h1[lh1 - 1]) * abs(v2[0] - Y));
+
+    ans = max(ans, abs(h2[0] - h2[lh2 - 1]) * v1[lv1 - 1]);
+    ans = max(ans, abs(h2[0] - h2[lh2 - 1]) * v2[lv2 - 1]);
+
+    cout << ans << "\n";
 }
 // Main
 int main()
@@ -250,6 +285,5 @@ int main()
     //     solve();
     //     cout<<'\n';
     // }
-
     return 0;
 }
