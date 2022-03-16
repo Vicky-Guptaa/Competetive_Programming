@@ -216,67 +216,17 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-string Discrete(string s)
-{
-    int n = s.size();
-    string discrete = s;
-    string dis;
-    for (int i = 1; i <= n / 2; i++)
-    {
-        int len = i;
-        dis += s[i - 1];
-        bool isTrue = 1;
-        for (int j = len; j <= n - len; j += len)
-        {
-            string temp;
-            for (int k = j; k < j + len; k++)
-            {
-                temp += s[k];
-            }
-            if (temp != dis)
-            {
-                isTrue = 0;
-                break;
-            }
-        }
-        if (isTrue && len)
-        {
-            discrete = dis;
-            break;
-        }
-    }
-    return discrete;
-}
-
 void solve()
 {
-    string s, r;
-    cin >> s >> r;
-    string t1 = s, t2 = r;
-    while (true)
-    {
-        if (s.size() == r.size())
-        {
-            if (s == r)
-            {
-                cout << r << "\n";
-            }
-            else
-            {
-                pm;
-            }
-            return;
-        }
-        else if (s.size() > r.size())
-        {
-            r += t2;
-        }
-        else
-        {
-            s += t1;
-        }
-    }
+    ll n, m, a, b;
+    cin >> n >> m >> a >> b;
+    ll diff = abs(n - m) * a;
+
+    ll Mx = max(n, m);
+    Mx = Mx - abs(n - m);
+
+    ll ans = diff + min(a * Mx * 2, b * Mx);
+    cout << ans << "\n";
 }
 // Main
 int main()

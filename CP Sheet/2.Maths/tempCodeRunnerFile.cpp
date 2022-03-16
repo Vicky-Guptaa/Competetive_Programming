@@ -1,2 +1,1 @@
-    //     ll t;
-    // cin >> t;
+(r.size() % dis2.size())
