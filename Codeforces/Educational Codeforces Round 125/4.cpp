@@ -231,7 +231,6 @@ void solve()
     cin >> m;
     vpll monster(m);
     cin >> monster;
-    cout << monster;
 }
 // Main
 int main()
