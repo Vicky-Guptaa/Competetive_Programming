@@ -216,44 +216,45 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-int isValid(ll mid, vll &a1, vll &a2, ll m)
-{
-    ll ans = 0;
-    for (int i = 0; i < a1.size(); i++)
-    {
-        ll rem = a2[i] % a1[i];
-        ll temp = (a2[i] / a1[i]);
-        rem = a1[i] - rem;
-        if (m >= rem)
-            temp++;
-        ans = max(ans, temp);
-    }
-    return ans >= mid;
-}
-
 void solve()
 {
     ll n, m;
     cin >> n >> m;
-    vll a1(n), a2(n);
-    cin >> a1 >> a2;
-    ll low = 0, high = *max_element(vr(a2));
-    ll answer = 0;
-    while (low <= high)
+    vll arr(n);
+    cin >> arr;
+    map<ll, ll> freq;
+
+    fl(i, n) freq[arr[i]]++;
+
+    priority_queue<ll, vll, greater<ll>> pque(vr(arr));
+    int cntr = 0;
+    while (!pque.empty())
     {
-        ll mid = low + (high - low) / 2;
-        if (isValid(mid, a1, a2, m))
+        ll num = pque.top();
+        pque.pop();
+        if (freq[num] == 0)
+            continue;
+
+        freq[num]--;
+        if (freq[num] == 0)
         {
-            answer = mid;
-            low = mid + 1;
+            freq.erase(num);
+        }
+
+        if (freq.find(num * m) != freq.end())
+        {
+            freq[num * m]--;
+            if (freq[num * m] == 0)
+            {
+                freq.erase(num * m);
+            }
         }
         else
         {
-            high = mid - 1;
+            cntr++;
         }
     }
-    cout << answer << " \n";
+    cout << cntr << "\n";
 }
 // Main
 int main()
@@ -263,13 +264,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
@@ -278,3 +279,8 @@ int main()
     // }
     return 0;
 }
+
+/*
+20 2
+11 11 1 20 20 5 15 18 15 14 5 16
+*/

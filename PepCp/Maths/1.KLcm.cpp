@@ -216,44 +216,16 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-int isValid(ll mid, vll &a1, vll &a2, ll m)
-{
-    ll ans = 0;
-    for (int i = 0; i < a1.size(); i++)
-    {
-        ll rem = a2[i] % a1[i];
-        ll temp = (a2[i] / a1[i]);
-        rem = a1[i] - rem;
-        if (m >= rem)
-            temp++;
-        ans = max(ans, temp);
-    }
-    return ans >= mid;
-}
-
 void solve()
 {
     ll n, m;
     cin >> n >> m;
-    vll a1(n), a2(n);
-    cin >> a1 >> a2;
-    ll low = 0, high = *max_element(vr(a2));
-    ll answer = 0;
-    while (low <= high)
+    ll x = n / 3, y = n / 3, z = n / 3;
+    ll rem = n % m;
+    if (rem == 0)
     {
-        ll mid = low + (high - low) / 2;
-        if (isValid(mid, a1, a2, m))
-        {
-            answer = mid;
-            low = mid + 1;
-        }
-        else
-        {
-            high = mid - 1;
-        }
+        cout << x << " " << y << " " << z << "\n";
     }
-    cout << answer << " \n";
 }
 // Main
 int main()
@@ -263,13 +235,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
