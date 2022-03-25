@@ -215,65 +215,86 @@ bool isPerfectSquare(ll x)
 // max_element(first, last);
 // min_element(first, last);
 
-// Code
-void solve()
+ll BS(ll n, ll k)
 {
-    ll n, c;
-    cin >> n >> c;
-    c++;
-    vll dp(c, 0);
-    fl(i, n)
+    ll low = 1, high = k;
+    ll res = k;
+    while (low <= high)
     {
-        ll temp = c, ci, hi, di;
-        cin >> ci >> di >> hi;
-        dp[ci] = max(dp[ci], di * hi);
-    }
-    for (int i = 1; i < c; i++)
-    {
-        ll cci = i;
-        dp[i] = max(dp[i - 1], dp[i]);
-        while (cci < c)
+        ll mid = low + (high - low) / 2;
+        ll sum = mid * (mid + 1) / 2;
+        if (sum == n)
         {
-            ll val = dp[i] * (cci / (i));
-
-            dp[cci] = max(dp[cci], val);
-
-            cci += i;
+            return mid;
         }
-    }
-
-    ll m;
-    cin >> m;
-    while (m--)
-    {
-        ll Hi, Di;
-        cin >> Hi >> Di;
-        ll val = Hi * Di;
-        ll low = 0, high = c - 1;
-        ll answer = -1;
-        while (low <= high)
+        else if (sum < n)
         {
-            ll mid = low + (high - low) / 2;
-            if (dp[mid] > val)
-            {
-                answer = mid;
-                high = mid - 1;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-        if (answer == -1)
-        {
-            cout << "-1 ";
+            res = mid;
+            low = mid + 1;
         }
         else
         {
-            cout << answer << " ";
+            high = mid - 1;
         }
     }
-    cout << "\n";
+    res++;
+    return res;
+}
+
+ll BS2(ll n, ll k)
+{
+    k--;
+    ll low = 1, high = k;
+    ll res = 0;
+    while (low <= high)
+    {
+        ll mid = low + (high - low) / 2;
+        ll sum = mid * (2 * k + 1 - mid) / 2;
+        if (sum == n)
+        {
+            return mid;
+        }
+        else if (sum < n)
+        {
+            res = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    res++;
+    return res;
+}
+
+// Code
+void solve()
+{
+    ll k, n;
+    cin >> k >> n;
+    ll lines = 2 * k - 1;
+    ll sumup = (k * (k + 1)) / 2;
+    ll sumdown = (k * (k - 1)) / 2;
+    ll res = 0;
+    if (sumup >= n)
+    {
+        res = BS(n, k);
+        cout << res << "\n";
+    }
+    else
+    {
+        n -= sumup;
+        if (n >= sumdown)
+        {
+            cout << lines << "\n";
+        }
+        else
+        {
+            res = k + BS2(n, k);
+            cout << res << "\n";
+        }
+    }
 }
 // Main
 int main()
@@ -283,13 +304,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

@@ -215,65 +215,80 @@ bool isPerfectSquare(ll x)
 // max_element(first, last);
 // min_element(first, last);
 
-// Code
-void solve()
+ll BS(ll n, bool &isExact, ll k = 1e9)
 {
-    ll n, c;
-    cin >> n >> c;
-    c++;
-    vll dp(c, 0);
-    fl(i, n)
+    ll low = 1, high = k;
+    ll res = 0;
+    while (low <= high)
     {
-        ll temp = c, ci, hi, di;
-        cin >> ci >> di >> hi;
-        dp[ci] = max(dp[ci], di * hi);
-    }
-    for (int i = 1; i < c; i++)
-    {
-        ll cci = i;
-        dp[i] = max(dp[i - 1], dp[i]);
-        while (cci < c)
+        ll mid = low + (high - low) / 2;
+        ll sum = mid * (mid + 1) / 2;
+        if (sum == n)
         {
-            ll val = dp[i] * (cci / (i));
-
-            dp[cci] = max(dp[cci], val);
-
-            cci += i;
+            isExact = true;
+            return mid;
         }
-    }
-
-    ll m;
-    cin >> m;
-    while (m--)
-    {
-        ll Hi, Di;
-        cin >> Hi >> Di;
-        ll val = Hi * Di;
-        ll low = 0, high = c - 1;
-        ll answer = -1;
-        while (low <= high)
+        else if (sum < n)
         {
-            ll mid = low + (high - low) / 2;
-            if (dp[mid] > val)
-            {
-                answer = mid;
-                high = mid - 1;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-        if (answer == -1)
-        {
-            cout << "-1 ";
+            res = mid;
+            low = mid + 1;
         }
         else
         {
-            cout << answer << " ";
+            high = mid - 1;
         }
     }
-    cout << "\n";
+    res++;
+    return res;
+}
+
+// Code
+void solve()
+{
+    ll n;
+    cin >> n;
+    if ((n & (n - 1)) == 0)
+    {
+        cout << -1 << "\n";
+    }
+    else
+    {
+        ll even_fact = 1;
+        ll temp = n;
+        while (temp % 2 == 0)
+        {
+            even_fact *= 2;
+            temp /= 2;
+        }
+        ll odd_fact = n;
+
+        // if k even
+        // 2n=k(2p+k+1)  2p=((2n/k)-k-1);
+        for (ll i = 2; i <= even_fact; i *= 2)
+        {
+            ll twop = (2 * n / i) - i - 1;
+            if (twop >= 0)
+            {
+                ll ans = log2(i);
+                cout << ans << "\n";
+                return;
+            }
+        }
+
+        // if k odd
+
+        for (ll i = odd_fact; i <= even_fact; i *= 2)
+        {
+            ll twop = (2 * n / i) - i - 1;
+            if (twop >= 0)
+            {
+                ll ans = log2(i);
+                cout << ans << "\n";
+                return;
+            }
+        }
+        cout << "-1\n";
+    }
 }
 // Main
 int main()
@@ -283,13 +298,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

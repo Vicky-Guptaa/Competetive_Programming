@@ -220,23 +220,11 @@ void solve()
 {
     ll n;
     cin >> n;
-    vi arr(n);
+    vll arr(n);
     cin >> arr;
-    if (n == 2 || n == 1)
-    {
-        py return;
-    }
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        if (arr[i] != arr[n - 1 - i])break;
-    }
-    if (n % 2)
-    {
-    }
-    else
-    {
-    }
+    int f = max_element(vr(arr)) - arr.begin() + 1;
+    int m = min_element(vr(arr)) - arr.begin() + 1;
+    cout << m << " " << f << '\n';
 }
 // Main
 int main()

@@ -218,62 +218,75 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n, c;
-    cin >> n >> c;
-    c++;
-    vll dp(c, 0);
-    fl(i, n)
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    sort(vr(arr));
+    map<ll, ll> freq;
+    vll left;
+    ll result = 0;
+    for (int i = 0; i < n; i++)
     {
-        ll temp = c, ci, hi, di;
-        cin >> ci >> di >> hi;
-        dp[ci] = max(dp[ci], di * hi);
-    }
-    for (int i = 1; i < c; i++)
-    {
-        ll cci = i;
-        dp[i] = max(dp[i - 1], dp[i]);
-        while (cci < c)
+        if (freq.find(arr[i]) != freq.end())
         {
-            ll val = dp[i] * (cci / (i));
-
-            dp[cci] = max(dp[cci], val);
-
-            cci += i;
-        }
-    }
-
-    ll m;
-    cin >> m;
-    while (m--)
-    {
-        ll Hi, Di;
-        cin >> Hi >> Di;
-        ll val = Hi * Di;
-        ll low = 0, high = c - 1;
-        ll answer = -1;
-        while (low <= high)
-        {
-            ll mid = low + (high - low) / 2;
-            if (dp[mid] > val)
-            {
-                answer = mid;
-                high = mid - 1;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-        if (answer == -1)
-        {
-            cout << "-1 ";
+            left.push_back(arr[i]);
         }
         else
         {
-            cout << answer << " ";
+            if (n >= arr[i])
+            {
+                freq[arr[i]]++;
+            }
+            else
+            {
+                left.push_back(arr[i]);
+            }
         }
     }
-    cout << "\n";
+
+    ll counter = 1, iter = 0;
+    for (auto x : freq)
+    {
+        if (counter == x.first)
+        {
+            counter++;
+            continue;
+        }
+        else
+        {
+            while (counter != x.first)
+            {
+                if (2 * counter < left[iter])
+                {
+                    iter++;
+                    counter++;
+                    result++;
+                }
+                else
+                {
+                    cout << "-1\n";
+                    return;
+                }
+            }
+            counter++;
+        }
+    }
+    while (counter <= n)
+    {
+        if (2 * counter < left[iter])
+        {
+            iter++;
+            counter++;
+            result++;
+        }
+        else
+        {
+            cout << "-1\n";
+            return;
+        }
+    }
+    cout << result << "\n";
 }
 // Main
 int main()
@@ -283,13 +296,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

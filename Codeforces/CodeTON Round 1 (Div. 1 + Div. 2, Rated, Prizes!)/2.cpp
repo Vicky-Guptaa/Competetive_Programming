@@ -218,62 +218,28 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n, c;
-    cin >> n >> c;
-    c++;
-    vll dp(c, 0);
-    fl(i, n)
+    ll n, k;
+    cin >> n >> k;
+    vll arr(n);
+    cin >> arr;
+    sort(vr(arr));
+    int low = 0, high = 1;
+    while (high < n)
     {
-        ll temp = c, ci, hi, di;
-        cin >> ci >> di >> hi;
-        dp[ci] = max(dp[ci], di * hi);
-    }
-    for (int i = 1; i < c; i++)
-    {
-        ll cci = i;
-        dp[i] = max(dp[i - 1], dp[i]);
-        while (cci < c)
+        if (-arr[low] + arr[high] == k)
         {
-            ll val = dp[i] * (cci / (i));
-
-            dp[cci] = max(dp[cci], val);
-
-            cci += i;
+            py return;
         }
-    }
-
-    ll m;
-    cin >> m;
-    while (m--)
-    {
-        ll Hi, Di;
-        cin >> Hi >> Di;
-        ll val = Hi * Di;
-        ll low = 0, high = c - 1;
-        ll answer = -1;
-        while (low <= high)
+        else if (-arr[low] + arr[high] > k)
         {
-            ll mid = low + (high - low) / 2;
-            if (dp[mid] > val)
-            {
-                answer = mid;
-                high = mid - 1;
-            }
-            else
-            {
-                low = mid + 1;
-            }
-        }
-        if (answer == -1)
-        {
-            cout << "-1 ";
+            low++;
         }
         else
         {
-            cout << answer << " ";
+            high++;
         }
     }
-    cout << "\n";
+    pn
 }
 // Main
 int main()
@@ -283,13 +249,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
