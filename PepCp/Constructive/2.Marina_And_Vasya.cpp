@@ -218,65 +218,67 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    int n, l, h;
-    cin >> n >> h >> l;
-    int cl = (n - 1) / 2;
-    int fl = (n - 2) / 2;
-
-    if ((cl < l || fl < h) || (cl < h || fl < l))
+    ll n, m;
+    cin >> n >> m;
+    string s1, s2;
+    cin >> s1 >> s2;
+    string t(n, '0');
+    int eq = n - m;
+    int iter = 0;
+    while (eq != 0 && iter < n)
+    {
+        if (s1[iter] == s2[iter])
+        {
+            t[iter] = s1[iter];
+            eq--;
+        }
+        iter++;
+    }
+    int temp = eq;
+    iter = 0;
+    while (temp && iter < n)
+    {
+        if (t[iter] != '0')
+        {
+            iter++;
+            continue;
+        }
+        t[iter] = s1[iter];
+        iter++;
+        temp--;
+    }
+    temp = eq;
+    while (temp && iter < n)
+    {
+        if (t[iter] != '0')
+        {
+            iter++;
+            continue;
+        }
+        t[iter] = s2[iter];
+        iter++;
+        temp--;
+    }
+    if (iter == n && temp != 0)
     {
         pm return;
     }
-    else
+
+    fl(i, n)
     {
-        if (l >= h)
+        if (t[i] != '0')
+            continue;
+        for (int j = 0; j < 26; j++)
         {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
+            char c = j + 'a';
+            if (s1[i] != c && s2[i] != c)
             {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-        }
-        else
-        {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
+                t[i] = c;
+                break;
             }
         }
     }
-    cout << "\n";
+    cout << t << "\n";
 }
 // Main
 int main()
@@ -285,13 +287,14 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    You Can Do_It int t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    You Can Do_It
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
@@ -300,3 +303,8 @@ int main()
     // }
     return 0;
 }
+/*
+2 1
+cc
+ba
+*/

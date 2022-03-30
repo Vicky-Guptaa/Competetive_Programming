@@ -218,65 +218,12 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    int n, l, h;
-    cin >> n >> h >> l;
-    int cl = (n - 1) / 2;
-    int fl = (n - 2) / 2;
-
-    if ((cl < l || fl < h) || (cl < h || fl < l))
-    {
-        pm return;
-    }
-    else
-    {
-        if (l >= h)
-        {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-        }
-        else
-        {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-        }
-    }
-    cout << "\n";
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    set<int> res(vr(arr));
+    cout << res.size() << "\n";
 }
 // Main
 int main()
@@ -285,13 +232,14 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    You Can Do_It int t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    You Can Do_It
+    // ll t;
+    // cin>>t;
+    // fl(i,t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

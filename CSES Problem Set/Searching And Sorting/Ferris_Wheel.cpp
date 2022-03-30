@@ -218,65 +218,27 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    int n, l, h;
-    cin >> n >> h >> l;
-    int cl = (n - 1) / 2;
-    int fl = (n - 2) / 2;
-
-    if ((cl < l || fl < h) || (cl < h || fl < l))
+    ll n, w;
+    cin >> n >> w;
+    vll arr(n);
+    cin >> arr;
+    sort(vr(arr));
+    int low = 0, high = n - 1;
+    int req = 0;
+    while (low <= high)
     {
-        pm return;
-    }
-    else
-    {
-        if (l >= h)
+        if (arr[low] + arr[high] <= w)
         {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
+            low++;
+            high--;
         }
         else
         {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
+            high--;
         }
+        req++;
     }
-    cout << "\n";
+    cout << req << "\n";
 }
 // Main
 int main()
@@ -285,13 +247,14 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    You Can Do_It int t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    You Can Do_It
+    // ll t;
+    // cin>>t;
+    // fl(i,t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

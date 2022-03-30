@@ -216,67 +216,38 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
+
 void solve()
 {
-    int n, l, h;
-    cin >> n >> h >> l;
-    int cl = (n - 1) / 2;
-    int fl = (n - 2) / 2;
+    ll n;
+    cin >> n;
+    string s;
+    cin >> s;
+    int res = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '1')
+            continue;
+        int oc = 0;
+        int iter = i + 1;
+        while (iter < n && s[iter] == '1')
+        {
+            iter++;
+            oc++;
+        }
+        if (oc <= 2)
+            res += 2 - oc;
+    }
+    int oc = 0, iter = n - 1;
+    while (iter > 0 && s[iter--] == '1')
+        oc++;
+    if (oc <= 2)
+        res -= 2 - oc;
 
-    if ((cl < l || fl < h) || (cl < h || fl < l))
-    {
-        pm return;
-    }
+    if (res <= 0)
+        cout << "0\n";
     else
-    {
-        if (l >= h)
-        {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-        }
-        else
-        {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-        }
-    }
-    cout << "\n";
+        cout << res << "\n";
 }
 // Main
 int main()
@@ -285,7 +256,8 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    You Can Do_It int t;
+    You Can Do_It
+        ll t;
     cin >> t;
     fl(i, t)
     {

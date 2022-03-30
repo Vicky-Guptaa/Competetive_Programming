@@ -208,6 +208,17 @@ bool isPerfectSquare(ll x)
     return false;
 }
 
+int bitlen(ll num)
+{
+    ll oc = 0;
+    while (num > 0)
+    {
+        num /= 2;
+        oc++;
+    }
+    return oc;
+}
+
 // Code by Vicky Gupta
 // Language C++
 
@@ -218,65 +229,42 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    int n, l, h;
-    cin >> n >> h >> l;
-    int cl = (n - 1) / 2;
-    int fl = (n - 2) / 2;
-
-    if ((cl < l || fl < h) || (cl < h || fl < l))
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    int oindx = -1, oc = 0;
+    fl(i, n)
     {
-        pm return;
-    }
-    else
-    {
-        if (l >= h)
+        if (arr[i] == 1)
         {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-        }
-        else
-        {
-            int i;
-            for (i = 2; i <= l * 2; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            i--;
-            for (i; i <= n - 2 * h; i++)
-            {
-                cout << i << " ";
-            }
-            i++;
-            for (i; i <= n; i += 2)
-            {
-                cout << i << " " << i - 1 << " ";
-            }
+            oindx = i;
+            oc++;
         }
     }
-    cout << "\n";
+    if (oc > 1 || oindx == -1)
+    {
+        pn return;
+    }
+    for (int i = oindx + 1; i < n; i++)
+    {
+        if (arr[i] - arr[i - 1] > 1)
+        {
+            pn return;
+        }
+    }
+    if (arr[0] - arr[n - 1] > 1)
+    {
+        pn return;
+    }
+    for (int i = 1; i < oindx; i++)
+    {
+        if (arr[i] - arr[i - 1] > 1)
+        {
+            pn return;
+        }
+    }
+    py
 }
 // Main
 int main()
@@ -285,7 +273,8 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    You Can Do_It int t;
+    You Can Do_It
+        ll t;
     cin >> t;
     fl(i, t)
     {
