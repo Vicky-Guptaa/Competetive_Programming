@@ -218,11 +218,7 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    
+    cout << "Animal\n";
 }
 // Main
 int main()

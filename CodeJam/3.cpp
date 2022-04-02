@@ -222,7 +222,17 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    
+    sort(vr(arr));
+    ll iter = 0, i = 0;
+    for (i; i < n; i++)
+    {
+        if (iter >= arr[i])
+        {
+            continue;
+        }
+        iter++;
+    }
+    cout << iter;
 }
 // Main
 int main()
@@ -234,16 +244,16 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
-    // fl(i,t) //Kickstart
+    // fl(i, t)
     // {
-    //     cout<<"Case #"<<i+1<<": ";
     //     solve();
-    //     cout<<'\n';
     // }
+    // solve();
+    fl(i, t) // Kickstart
+    {
+        cout << "Case #" << i + 1 << ": ";
+        solve();
+        cout << '\n';
+    }
     return 0;
 }

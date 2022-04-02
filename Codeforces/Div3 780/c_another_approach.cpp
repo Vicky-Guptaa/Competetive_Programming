@@ -218,11 +218,27 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    
+    string s;
+    cin >> s;
+    map<char, int> freq;
+    vector<int> dp(s.size() + 1, 0);
+    freq[s[0]] = 0;
+    for (int i = 1; i < s.size(); i++)
+    {
+        if (freq.find(s[i]) == freq.end())
+        {
+            freq[s[i]] = i;
+            dp[i] = dp[i - 1];
+        }
+        else
+        {
+            int ans = (freq[s[i]] != 0) ? dp[freq[s[i]] - 1] : 0;
+            dp[i] = max(dp[i - 1], ans + 2);
+            freq[s[i]] = i;
+        }
+    }
+    int res = s.size() - dp[s.size() - 1];
+    cout << res << "\n";
 }
 // Main
 int main()

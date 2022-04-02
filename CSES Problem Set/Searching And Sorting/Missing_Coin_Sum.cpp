@@ -219,10 +219,18 @@ bool isPerfectSquare(ll x)
 void solve()
 {
     ll n;
-    cin >> n;
+    cin >> n;   
     vll arr(n);
     cin >> arr;
-    
+    sort(vr(arr));
+    ll sum = 1;
+    fl(i, n)
+    {
+        if (sum < arr[i])
+            break;
+        sum += arr[i];
+    }
+    cout << sum << "\n";
 }
 // Main
 int main()
@@ -232,13 +240,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    // ll t;
+    // cin>>t;
+    // fl(i,t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

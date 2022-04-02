@@ -218,11 +218,42 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    
+    vector<vector<ll>> mat;
+    fl(i, 3)
+    {
+        vector<ll> row(4);
+        cin >> row;
+        mat.push_back(row);
+    }
+    vll tempAns(4, 1e9);
+    fl(i, 3)
+    {
+        fl(j, 4)
+        {
+            tempAns[j] = min(tempAns[j], mat[i][j]);
+        }
+    }
+    ll sum = accumulate(vr(tempAns), 0ll);
+    if (sum >= 1e6)
+    {
+        sum = 1e6;
+        vll ans(4, 0);
+        fl(i, 4)
+        {
+            if (tempAns[i] >= sum)
+            {
+                ans[i] = sum;
+                break;
+            }
+            ans[i] = tempAns[i];
+            sum -= tempAns[i];
+        }
+        cout << ans;
+    }
+    else
+    {
+        cout << "IMPOSSIBLE";
+    }
 }
 // Main
 int main()
@@ -234,16 +265,16 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
-    // fl(i,t) //Kickstart
+    // fl(i,t)
     // {
-    //     cout<<"Case #"<<i+1<<": ";
     //     solve();
-    //     cout<<'\n';
     // }
+    // solve();
+    fl(i, t) // Kickstart
+    {
+        cout << "Case #" << i + 1 << ": ";
+        solve();
+        cout << '\n';
+    }
     return 0;
 }

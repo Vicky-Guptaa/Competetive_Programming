@@ -220,8 +220,6 @@ void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n);
-    cin >> arr;
     
 }
 // Main

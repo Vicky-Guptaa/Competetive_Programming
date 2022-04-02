@@ -218,11 +218,90 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
+    ll n, m;
+    cin >> n >> m;
     vll arr(n);
     cin >> arr;
-    
+    vpi parr;
+    fl(i, n)
+    {
+        parr.push_back({arr[i], i});
+    }
+    sort(vr(parr));
+    int res = 1;
+    map<int, int> omap;
+    fl(i, n)
+    {
+        omap[parr[i].first] = parr[i].second;
+    }
+    for (int i = 1; i < n; i++)
+    {
+        if (parr[i].second < parr[i - 1].second)
+        {
+            res++;
+        }
+    }
+    while (m--)
+    {
+        int p, q, pc = 0, cc = 0;
+        cin >> p >> q;
+        p--;
+        q--;
+        swap(arr[p], arr[q]);
+        p = omap[arr[p]];
+        q = omap[arr[q]];
+        if (p > 0)
+        {
+            if (parr[p - 1].second > parr[p].second)
+            {
+                pc++;
+            }
+            if (parr[p - 1].second > parr[q].second)
+            {
+                cc++;
+            }
+        }
+        if (p < n - 1)
+        {
+            if (parr[p].second > parr[p + 1].second)
+            {
+                pc++;
+            }
+            if (parr[q].second > parr[p + 1].second)
+            {
+                cc++;
+            }
+        }
+        if (q > 0)
+        {
+            if (parr[q - 1].second > parr[q].second)
+            {
+                pc++;
+            }
+            if (parr[q - 1].second > parr[p].second)
+            {
+                cc++;
+            }
+        }
+        if (q < n - 1)
+        {
+            if (parr[q].second > parr[q + 1].second)
+            {
+                pc++;
+            }
+            if (parr[p].second > parr[q + 1].second)
+            {
+                cc++;
+            }
+        }
+        parr[p].second = q;
+        parr[q].second = p;
+        omap[parr[p].first] = q;
+        omap[parr[q].first] = p;
+
+        res += cc - pc;
+        cout << res << "\n";
+    }
 }
 // Main
 int main()
@@ -232,13 +311,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

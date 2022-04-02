@@ -222,7 +222,21 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    
+    vpi parr;
+    fl(i, n)
+    {
+        parr.push_back({arr[i], i});
+    }
+    sort(vr(parr));
+    int res = 1;
+    for (int i = 1; i < n; i++)
+    {
+        if (parr[i].second < parr[i-1].second)
+        {
+            res++;
+        }
+    }
+    cout << res << "\n";
 }
 // Main
 int main()
@@ -232,13 +246,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

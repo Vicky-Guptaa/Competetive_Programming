@@ -218,11 +218,52 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    
+    ll n, m;
+    cin >> n >> m;
+    int r = 2 * n + 1, c = 2 * m + 1;
+    fl(i, r)
+    {
+        fl(j, c)
+        {
+            if (i % 2 == 0)
+            {
+                if (i == 0 && j < 2)
+                {
+                    cout << ".";
+                }
+                else
+                {
+                    if (j % 2 == 0)
+                    {
+                        cout << "+";
+                    }
+                    else
+                    {
+                        cout << "-";
+                    }
+                }
+            }
+            else
+            {
+                if (i == 1 && j < 2)
+                {
+                    cout << ".";
+                }
+                else
+                {
+                    if (j % 2 == 0)
+                    {
+                        cout << "|";
+                    }
+                    else
+                    {
+                        cout << ".";
+                    }
+                }
+            }
+        }
+        cout << "\n";
+    }
 }
 // Main
 int main()
@@ -234,16 +275,15 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, t)
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    // solve();
+    fl(i, t) // Kickstart
     {
+        cout << "Case #" << i + 1 << ":\n";
         solve();
     }
-    // solve();
-    // fl(i,t) //Kickstart
-    // {
-    //     cout<<"Case #"<<i+1<<": ";
-    //     solve();
-    //     cout<<'\n';
-    // }
     return 0;
 }
