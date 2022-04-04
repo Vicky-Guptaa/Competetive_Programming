@@ -217,79 +217,41 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-void dfs(int src, vll &cost, vll listNode[], ll &Max, vector<bool> &isVisited)
+lld func(lld n)
 {
-    if (src == 0)
-        return;
-    isVisited[src] = true;
-    Max = max(cost[src - 1], Max);
-    for (auto curr : listNode[src])
-    {
-        if (isVisited[curr] == false)
-            dfs(curr, cost, listNode, Max, isVisited);
-    }
+    return 12 * n * n + 5 * n + 9;
 }
 
-void topoSort(vll listNode[], int n, vll cost)
+lld ternarySearch(lld l, lld r)
 {
-    vector<bool> isVisited(n + 1, 0);
-    vector<int> inCount(n + 1, 0);
-    fl(i, n + 1)
+
+    lld prec = 0.00001;
+    while (abs(r - l) > prec)
     {
-        // cout << i << " :";
-        for (auto x : listNode[i])
+        lld m1 = l + (r - l) / 3.0, m2 = r - (r - l) / 3.0;
+        if (func(m1) == func(m2))
         {
-            // cout << x.first << " ";
-            inCount[x]++;
+            l = m1;
+            r = m2;
         }
-        // cout << "\n";
-    }
-    priority_queue<pll, vpll, greater<pll>> pque;
-    for (int i = 0; i <= n; i++)
-    {
-        if (inCount[i] == 0)
+        else if (func(m1) > func(m2))
         {
-            pque.push({cost[i - 1], i});
-            isVisited[i] = true;
-        }
-    }
-    ll result = 0;
-    while (!pque.empty())
-    {
-        pll node = pque.top();
-        pque.pop();
-        if (isVisited[listNode[node.second][0]] == true)
-        {
-            result += node.first;
-        }
-        else if (listNode[node.second][0] != 0)
-        {
-            ll cst = max(node.first, cost[listNode[node.second][0] - 1]);
-            pque.push({cst, listNode[node.second][0]});
-            isVisited[listNode[node.second][0]] = true;
+            l = m1;
         }
         else
         {
-            result += node.first;
+            r = m2;
         }
     }
-    cout << result;
+    lld ans = (l + r) / 2.0;
+    return ans;
 }
 
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll list_node[n + 1];
-    vll cost(n);
-    cin >> cost;
-    fl(i, n)
-    {
-        int node;
-        cin >> node;
-        list_node[i + 1].push_back(node);
-    }
-    topoSort(list_node, n, cost);
+    lld l, r;
+    cin >> l >> r;
+    cout << ternarySearch(l, r) << "\n";
 }
 /*
 When you are coding,remember to:
@@ -306,18 +268,18 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
+    //     ll t;
+    // cin >> t;
     // fl(i, t)
     // {
     //     solve();
     // }
-    // solve();
-    fl(i, t) // Kickstart
-    {
-        cout << "Case #" << i + 1 << ": ";
-        solve();
-        cout << '\n';
-    }
+    solve();
+    // fl(i,t) //Kickstart
+    // {
+    //     cout<<"Case #"<<i+1<<": ";
+    //     solve();
+    //     cout<<'\n';
+    // }
     return 0;
 }

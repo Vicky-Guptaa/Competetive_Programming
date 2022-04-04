@@ -216,80 +216,34 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-void dfs(int src, vll &cost, vll listNode[], ll &Max, vector<bool> &isVisited)
+bool good(long long mid, int l, int b, int n)
 {
-    if (src == 0)
-        return;
-    isVisited[src] = true;
-    Max = max(cost[src - 1], Max);
-    for (auto curr : listNode[src])
-    {
-        if (isVisited[curr] == false)
-            dfs(curr, cost, listNode, Max, isVisited);
-    }
-}
-
-void topoSort(vll listNode[], int n, vll cost)
-{
-    vector<bool> isVisited(n + 1, 0);
-    vector<int> inCount(n + 1, 0);
-    fl(i, n + 1)
-    {
-        // cout << i << " :";
-        for (auto x : listNode[i])
-        {
-            // cout << x.first << " ";
-            inCount[x]++;
-        }
-        // cout << "\n";
-    }
-    priority_queue<pll, vpll, greater<pll>> pque;
-    for (int i = 0; i <= n; i++)
-    {
-        if (inCount[i] == 0)
-        {
-            pque.push({cost[i - 1], i});
-            isVisited[i] = true;
-        }
-    }
-    ll result = 0;
-    while (!pque.empty())
-    {
-        pll node = pque.top();
-        pque.pop();
-        if (isVisited[listNode[node.second][0]] == true)
-        {
-            result += node.first;
-        }
-        else if (listNode[node.second][0] != 0)
-        {
-            ll cst = max(node.first, cost[listNode[node.second][0] - 1]);
-            pque.push({cst, listNode[node.second][0]});
-            isVisited[listNode[node.second][0]] = true;
-        }
-        else
-        {
-            result += node.first;
-        }
-    }
-    cout << result;
+    return (mid / l) * (mid / b) >= n;
 }
 
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll list_node[n + 1];
-    vll cost(n);
-    cin >> cost;
-    fl(i, n)
+    ll l, b, n;
+    cin >> l >> b >> n;
+
+    ll low = 1, high = 1, answer = 0;
+    while (!good(high, l, b, n))
+        high *= 2;
+
+    while (low <= high)
     {
-        int node;
-        cin >> node;
-        list_node[i + 1].push_back(node);
+        ll mid = low + (high - low) / 2;
+        if (good(mid, l, b, n))
+        {
+            answer = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
     }
-    topoSort(list_node, n, cost);
+    cout << answer << "\n";
 }
 /*
 When you are coding,remember to:
@@ -306,18 +260,18 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
+    //     ll t;
+    // cin >> t;
     // fl(i, t)
     // {
     //     solve();
     // }
-    // solve();
-    fl(i, t) // Kickstart
-    {
-        cout << "Case #" << i + 1 << ": ";
-        solve();
-        cout << '\n';
-    }
+    solve();
+    // fl(i,t) //Kickstart
+    // {
+    //     cout<<"Case #"<<i+1<<": ";
+    //     solve();
+    //     cout<<'\n';
+    // }
     return 0;
 }
