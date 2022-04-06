@@ -214,34 +214,26 @@ bool isPerfectSquare(ll x)
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
-
+vector<int> Xor_table(3e5 + 1, 0);
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    map<ll, int> omap;
-    for (int i = 0; i < n; i++)
+    ll n, m;
+    cin >> n >> m;
+    ll Xor = Xor_table[n - 1];
+
+    if (Xor == m)
     {
-        auto iter = omap.upper_bound(arr[i]);
-        if (iter == omap.end())
-        {
-            omap[arr[i]]++;
-        }
-        else
-        {
-            omap[arr[i]]++;
-            omap[iter->first]--;
-            if (omap[iter->first] == 0)
-                omap.erase(iter->first);
-        }
+        cout << n << "\n";
     }
-    ll ans = 0;
-    for (auto x : omap)
-        ans += x.second;
-    cout << ans << "\n";
+    else if (Xor != m && (Xor ^ m) != n)
+    {
+        cout << n + 1 << '\n';
+    }
+    else
+    {
+        cout << n + 2 << '\n';
+    }
 }
 /*
 When you are coding,remember to:
@@ -257,14 +249,18 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
+    fl(i, 3e5)
+    {
+        Xor_table[i + 1] = (Xor_table[i] ^ (i + 1));
+    }
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

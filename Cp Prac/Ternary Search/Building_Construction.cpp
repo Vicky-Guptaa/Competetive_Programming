@@ -216,31 +216,51 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
+
+ll func(vll &crr, vll &hrr, ll x)
+{
+    ll cost = 0;
+    for (int i = 0; i < hrr.size(); i++)
+    {
+        cost += abs(hrr[i] - x) * crr[i];
+    }
+    return cost;
+}
+
+ll ternarySearch(ll l, ll r, vll &crr, vll &hrr)
+{
+    while (l < r)
+    {
+        ll mid1 = l + (r - l) / 3, mid2 = r - (r - l) / 3;
+        ll fm1 = func(crr, hrr, mid1);
+        ll fm2 = func(crr, hrr, mid2);
+        if (fm1 == fm2)
+        {
+            l = mid1;
+            r = mid2;
+        }
+        else if (fm1 > fm2)
+        {
+            l = mid1+1;
+        }
+        else
+        {
+            r = mid2-1;
+        }
+    }
+    return l;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n);
-    cin >> arr;
-    map<ll, int> omap;
-    for (int i = 0; i < n; i++)
-    {
-        auto iter = omap.upper_bound(arr[i]);
-        if (iter == omap.end())
-        {
-            omap[arr[i]]++;
-        }
-        else
-        {
-            omap[arr[i]]++;
-            omap[iter->first]--;
-            if (omap[iter->first] == 0)
-                omap.erase(iter->first);
-        }
-    }
-    ll ans = 0;
-    for (auto x : omap)
-        ans += x.second;
+    vll hrr(n), crr(n);
+    cin >> hrr;
+    cin >> crr;
+    ll l = *min_element(vr(hrr));
+    ll r = *max_element(vr(hrr));
+    ll ans = func(crr, hrr, ternarySearch(l, r, crr, hrr));
     cout << ans << "\n";
 }
 /*
@@ -258,13 +278,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

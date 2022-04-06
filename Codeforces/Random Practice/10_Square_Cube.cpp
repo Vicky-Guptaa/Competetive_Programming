@@ -220,28 +220,42 @@ void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n);
-    cin >> arr;
-    map<ll, int> omap;
-    for (int i = 0; i < n; i++)
+    ll res = 0;
+    for (ll i = 1; i <= n; i++)
     {
-        auto iter = omap.upper_bound(arr[i]);
-        if (iter == omap.end())
+        if (i * i * i <= n)
         {
-            omap[arr[i]]++;
+            res++;
         }
         else
         {
-            omap[arr[i]]++;
-            omap[iter->first]--;
-            if (omap[iter->first] == 0)
-                omap.erase(iter->first);
+            break;
         }
     }
-    ll ans = 0;
-    for (auto x : omap)
-        ans += x.second;
-    cout << ans << "\n";
+    for (ll i = 1; i <= n; i++)
+    {
+        if (i * i <= n)
+        {
+            res++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    for (ll i = 1; i <= n; i++)
+    {
+        if (i * i * i <= n)
+        {
+            if (isPerfectSquare(i * i * i))
+                res--;
+        }
+        else
+        {
+            break;
+        }
+    }
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:
@@ -258,13 +272,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

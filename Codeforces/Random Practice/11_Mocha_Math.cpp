@@ -222,25 +222,11 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    map<ll, int> omap;
-    for (int i = 0; i < n; i++)
+    ll ans = INT_MAX;
+    fl(i, n)
     {
-        auto iter = omap.upper_bound(arr[i]);
-        if (iter == omap.end())
-        {
-            omap[arr[i]]++;
-        }
-        else
-        {
-            omap[arr[i]]++;
-            omap[iter->first]--;
-            if (omap[iter->first] == 0)
-                omap.erase(iter->first);
-        }
+        ans = (ans & arr[i]);
     }
-    ll ans = 0;
-    for (auto x : omap)
-        ans += x.second;
     cout << ans << "\n";
 }
 /*
@@ -258,13 +244,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

@@ -215,22 +215,27 @@ bool isPerfectSquare(ll x)
 // max_element(first, last);
 // min_element(first, last);
 
+struct cmpByDiffOfInterval
+{
+    bool operator()(pll &a1, pll &a2) const
+    {
+        int diff1 = a1.second - a1.first;
+        int diff2 = a2.second - a2.first;
+        return diff1 > diff2;
+    }
+};
+
 // Code
 void solve()
 {
     ll n, m;
     cin >> n >> m;
-    ll temp = ceil(log2((lld)m));
-    ll rem = (lld)n - pow(2, temp);
-    if (rem < 0)
+    vll arr(m);
+    cin >> arr;
+    
+    int iter = 0;
+    while (iter < m)
     {
-        cout << temp << "\n";
-    }
-    else
-    {
-        rem = ceil(rem / (lld)m);
-        temp += rem;
-        cout << temp << '\n';
     }
 }
 /*

@@ -216,32 +216,51 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-void solve()
+double func(vll srr, vll drr, double x, ll n)
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    map<ll, int> omap;
+    double Min = 1e10, Max = 0;
     for (int i = 0; i < n; i++)
     {
-        auto iter = omap.upper_bound(arr[i]);
-        if (iter == omap.end())
+        double val = x * srr[i] + drr[i];
+        Min = min(Min, val);
+        Max = max(Max, val);
+    }
+    return (Max - Min);
+}
+
+double ternarySearch(ll k, vll srr, vll drr, ll n)
+{
+    double l = 0, r = k, prec = 1e-10;
+    while ((r - l) > prec)
+    {
+        double m1 = l + (r - l) / 3.0, m2 = r - (r - l) / 3.0;
+        double fm1 = func(srr, drr, m1, n), fm2 = func(srr, drr, m2, n);
+
+        if (fm1 > fm2)
         {
-            omap[arr[i]]++;
+            l = m1;
         }
         else
         {
-            omap[arr[i]]++;
-            omap[iter->first]--;
-            if (omap[iter->first] == 0)
-                omap.erase(iter->first);
+            r = m2;
         }
+        cout << l << " " << r << "\n";
     }
-    ll ans = 0;
-    for (auto x : omap)
-        ans += x.second;
-    cout << ans << "\n";
+    return l;
+}
+
+void solve()
+{
+    ll n, k;
+    cin >> n >> k;
+    vll srr(n), drr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> srr[i] >> drr[i];
+    }
+
+    double ans = ternarySearch(k, srr, drr, n);
+    printf("%.6f\n", ans);
 }
 /*
 When you are coding,remember to:
@@ -258,9 +277,9 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
+    // ll t;
+    // cin>>t;
+    // fl(i,t)
     // {
     //     solve();
     // }
