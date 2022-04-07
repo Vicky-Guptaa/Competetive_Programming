@@ -2,11 +2,13 @@
 #include <iostream>
 #include <bits/stdc++.h>
 // #include <sys/resource.h>
-// #include <ext/pb_ds/assoc_container.hpp>
-// #include <ext/pb_ds/tree_policy.hpp>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
 // using namespace chrono;
-// using namespace __gnu_pbds;
+using namespace __gnu_pbds;
+template <typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
 
 // def
 // #define Vicky_Gupta 1
@@ -215,41 +217,24 @@ bool isPerfectSquare(ll x)
 // max_element(first, last);
 // min_element(first, last);
 
-struct cmpByDiffOfInterval
-{
-    bool operator()(pll &a1, pll &a2) const
-    {
-        int diff1 = a1.second - a1.first;
-        int diff2 = a2.second - a2.first;
-        return diff1 > diff2;
-    }
-};
-
 // Code
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
-    vll arr(m);
-    cin >> arr;
-    set<int> range;
-    range.insert(0);
-    range.insert(n);
-    multiset<int> length;
-    length.insert(n);
-    for (int j = 0; j < m; j++)
+    ll n, k;
+    cin >> n >> k;
+    ordered_set<int> oset;
+    fl(i, n)
     {
-        int trafpos = arr[j];
-        range.insert(trafpos);
-        auto itr = range.find(trafpos);
-        int prevRangeValue = *prev(itr);
-        int nextRangeValue = *next(itr);
-        auto len = length.find(nextRangeValue - prevRangeValue);
-        length.erase(len);
-        length.insert(trafpos - prevRangeValue);
-        length.insert(nextRangeValue - trafpos);
-        int ans = *length.rbegin();
-        cout << ans << " ";
+        oset.insert(i + 1);
+    }
+    int start = 0;
+    while (!oset.empty())
+    {
+        start %= oset.size();
+        start = (start + k) % oset.size();
+        auto itr = oset.find_by_order(start);
+        cout << *itr << " ";
+        oset.erase(itr);
     }
 }
 /*

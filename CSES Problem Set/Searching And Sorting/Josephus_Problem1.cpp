@@ -215,41 +215,32 @@ bool isPerfectSquare(ll x)
 // max_element(first, last);
 // min_element(first, last);
 
-struct cmpByDiffOfInterval
-{
-    bool operator()(pll &a1, pll &a2) const
-    {
-        int diff1 = a1.second - a1.first;
-        int diff2 = a2.second - a2.first;
-        return diff1 > diff2;
-    }
-};
-
 // Code
+
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
-    vll arr(m);
-    cin >> arr;
-    set<int> range;
-    range.insert(0);
-    range.insert(n);
-    multiset<int> length;
-    length.insert(n);
-    for (int j = 0; j < m; j++)
+    ll n;
+    cin >> n;
+    queue<int> que;
+    fl(i, n)
     {
-        int trafpos = arr[j];
-        range.insert(trafpos);
-        auto itr = range.find(trafpos);
-        int prevRangeValue = *prev(itr);
-        int nextRangeValue = *next(itr);
-        auto len = length.find(nextRangeValue - prevRangeValue);
-        length.erase(len);
-        length.insert(trafpos - prevRangeValue);
-        length.insert(nextRangeValue - trafpos);
-        int ans = *length.rbegin();
-        cout << ans << " ";
+        que.push(i + 1);
+    }
+    ll iter = 0;
+    while (que.size() != 0)
+    {
+        if (iter % 2 == 1)
+        {
+            cout << que.front() << ' ';
+            que.pop();
+        }
+        else
+        {
+            int val = que.front();
+            que.pop();
+            que.push(val);
+        }
+        iter++;
     }
 }
 /*
