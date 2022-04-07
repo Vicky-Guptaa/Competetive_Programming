@@ -218,9 +218,43 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    vll arr = {3};
-    cout << arr << "\n";
-    cout << upper_bound(arr.begin(), arr.end(), 1) - arr.begin() << "\n";
+    ll n;
+    cin >> n;
+    ll sum = 0;
+    ll len = 1;
+    vpll lastElem;
+    lastElem.push_back({0, 0});
+    while (n--)
+    {
+        int opt;
+        cin >> opt;
+        if (opt == 1)
+        {
+            int a, b;
+            cin >> a >> b;
+            sum += (ll)a * b;
+            lastElem[len - 1].second += b*a;
+        }
+        else if (opt == 2)
+        {
+            int a;
+            cin >> a;
+            sum += a;
+            len++;
+            lastElem.push_back({a, a});
+        }
+        else
+        {
+            ll lstElm = lastElem[lastElem.size() - 1].first;
+            ll lstSum = lastElem[lastElem.size() - 1].second;
+            lastElem.pop_back();
+            sum -= lstSum;
+            len--;
+            lastElem[len - 1].second += lstSum - lstElm;
+        }
+        double avg = sum / (double)len;
+        printf("%0.6lf\n", avg);
+    }
 }
 /*
 When you are coding,remember to:

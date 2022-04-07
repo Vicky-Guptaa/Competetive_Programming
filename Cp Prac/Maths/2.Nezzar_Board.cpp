@@ -218,9 +218,12 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    vll arr = {3};
-    cout << arr << "\n";
-    cout << upper_bound(arr.begin(), arr.end(), 1) - arr.begin() << "\n";
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    sort(vr(arr));
+    
 }
 /*
 When you are coding,remember to:
@@ -237,13 +240,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    // ll t;
-    // cin>>t;
-    // fl(i,t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

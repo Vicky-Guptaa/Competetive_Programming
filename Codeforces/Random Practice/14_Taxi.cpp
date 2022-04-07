@@ -218,9 +218,37 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    vll arr = {3};
-    cout << arr << "\n";
-    cout << upper_bound(arr.begin(), arr.end(), 1) - arr.begin() << "\n";
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    sort(vr(arr));
+    ll answer = 0;
+    int low = 0, high = arr.size() - 1;
+    while (low <= high)
+    {
+        if (arr[high] + arr[low] > 4)
+        {
+            high--;
+        }
+        else if (arr[high] + arr[low] == 4)
+        {
+            high--;
+            low++;
+        }
+        else
+        {
+            int sum = 0;
+            while (high >= low)
+            {
+                sum += arr[high--];
+                if (sum == 4)
+                    break;
+            }
+        }
+        answer++;
+    }
+    cout << answer << "\n";
 }
 /*
 When you are coding,remember to:
