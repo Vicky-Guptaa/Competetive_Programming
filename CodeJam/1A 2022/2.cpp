@@ -216,73 +216,89 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-vi arr(1e5 + 1, 0);
-void solve()
+
+int Subset_Sum_Tabulation(vll &arr, int n, int sum)
 {
-    int n, l, h;
-    cin >> n >> h >> l;
+    vector<vector<ll>> dp(n + 1, vector<ll>(n + 1, 0));
+    for (int i = 0; i <= n; i++)
+        dp[i][0] = 1;
 
-    int cl = (n - 1) / 2;
-    int fl = (n - 2) / 2;
+    for (int i = 1; i <= sum; i++)
+        dp[0][i] = 0;
 
-    if ((cl < l || fl < h) || (cl < h || fl < l))
+    for (int i = 1; i <= n; i++)
     {
-        pm return;
+        for (int j = 1; j <= sum; j++)
+        {
+            if (j >= arr[i - 1])
+            {
+                dp[i][j] = dp[i - 1][j] + dp[i - 1][j - arr[i - 1]];
+            }
+            else
+            {
+                dp[i][j] = dp[i - 1][j];
+            }
+        }
+    }
+    fl(i, n + 1)
+    {
+        fl(j, n + 1)
+                cout
+            << dp[i][j] << " ";
+        cout << "\n";
+    }
+    return dp[n][sum];
+}
+
+ll subsetSum(vll &arr, int s, ll sum)
+{
+    if (sum == 0 || arr.size() == s)
+    {
+        if (sum == 0)
+            return 1;
+        else
+            return 0;
+    }
+    if (arr[s] <= sum)
+    {
+        return subsetSum(arr, s + 1, sum - arr[s]) + subsetSum(arr, s + 1, sum);
     }
     else
     {
-        fl(i, n)
-        {
-            arr[i] = i + 1;
-        }
-        if (l >= h)
-        {
-            int temp = l;
-            int iter = 0;
-            while (temp--)
-            {
-                swap(arr[iter], arr[iter + 1]);
-                iter += 2;
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            temp = h;
-            iter = n - 1;
-            while (temp--)
-            {
-                swap(arr[iter], arr[iter - 1]);
-                iter -= 2;
-            }
-        }
-        else
-        {
-            int temp = h;
-            int iter = n - 1;
-            while (temp--)
-            {
-                swap(arr[iter - 1], arr[iter]);
-                iter -= 2;
-            }
-            l -= h / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            temp = l;
-            iter = 0;
-            while (temp--)
-            {
-                swap(arr[iter], arr[iter - 1]);
-                iter -= 2;
-            }
-        }
-        fl(i, n) cout << arr[i] << " ";
-        cout << "\n";
+        return subsetSum(arr, s + 1, sum);
     }
 }
+
+bool solve()
+{
+    ll n;
+    cin >> n;
+    if (n == -1)
+    {
+        return false;
+    }
+    vll arr;
+    fl(i, n) arr.push_back(i + 1);
+    cout << arr << "\n";
+    cout << flush;
+    fl(i, n)
+    {
+        int num;
+        cin >> num;
+        arr.push_back(num);
+    }
+    ll Sum = accumulate(vr(arr), 0ll);
+    Sum /= 2;
+    if (Subset_Sum_Tabulation(arr, 2 * n, Sum))
+        py else pm return true;
+}
+/*
+When you are coding,remember to:
+      - clear the arrays if a problem has many tasks.
+      - pay attention to some special cases(n=0,1).
+      - Don't code before think completely.
+      - ...
+*/
 // Main
 int main()
 {
@@ -290,11 +306,13 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    You Can Do_It int t;
+    You Can Do_It
+        ll t;
     cin >> t;
     fl(i, t)
     {
-        solve();
+        if (!solve())
+            break;
     }
     // solve();
     // fl(i,t) //Kickstart

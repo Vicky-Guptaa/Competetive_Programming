@@ -216,73 +216,40 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-vi arr(1e5 + 1, 0);
+
+string helper(string &str, int s, vector<string> &dp)
+{
+    if (str.size() == s)
+    {
+        return "";
+    }
+    if (dp[s] != "#")
+        return dp[s];
+    string temp;
+    temp += str[s];
+    string nrep = temp + helper(str, s + 1, dp);
+    temp += str[s];
+    string yrep = temp + helper(str, s + 1, dp);
+
+    return dp[s] = min(nrep, yrep);
+}
+
 void solve()
 {
-    int n, l, h;
-    cin >> n >> h >> l;
-
-    int cl = (n - 1) / 2;
-    int fl = (n - 2) / 2;
-
-    if ((cl < l || fl < h) || (cl < h || fl < l))
-    {
-        pm return;
-    }
-    else
-    {
-        fl(i, n)
-        {
-            arr[i] = i + 1;
-        }
-        if (l >= h)
-        {
-            int temp = l;
-            int iter = 0;
-            while (temp--)
-            {
-                swap(arr[iter], arr[iter + 1]);
-                iter += 2;
-            }
-            h -= l / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            temp = h;
-            iter = n - 1;
-            while (temp--)
-            {
-                swap(arr[iter], arr[iter - 1]);
-                iter -= 2;
-            }
-        }
-        else
-        {
-            int temp = h;
-            int iter = n - 1;
-            while (temp--)
-            {
-                swap(arr[iter - 1], arr[iter]);
-                iter -= 2;
-            }
-            l -= h / 2;
-            if (h < 0)
-            {
-                pm return;
-            }
-            temp = l;
-            iter = 0;
-            while (temp--)
-            {
-                swap(arr[iter], arr[iter - 1]);
-                iter -= 2;
-            }
-        }
-        fl(i, n) cout << arr[i] << " ";
-        cout << "\n";
-    }
+    string s;
+    cin >> s;
+    string str, ans = s;
+    vector<string> dp(s.size() + 1, "#");
+    ans = helper(s, 0, dp);
+    cout << ans << " ";
 }
+/*
+When you are coding,remember to:
+      - clear the arrays if a problem has many tasks.
+      - pay attention to some special cases(n=0,1).
+      - Don't code before think completely.
+      - ...
+*/
 // Main
 int main()
 {
@@ -290,18 +257,19 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    You Can Do_It int t;
+    You Can Do_It
+        ll t;
     cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
-    // fl(i,t) //Kickstart
+    // fl(i,t)
     // {
-    //     cout<<"Case #"<<i+1<<": ";
     //     solve();
-    //     cout<<'\n';
     // }
+    // solve();
+    fl(i, t) // Kickstart
+    {
+        cout << "Case #" << i + 1 << ": ";
+        solve();
+        cout << '\n';
+    }
     return 0;
 }
