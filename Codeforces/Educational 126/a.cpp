@@ -216,55 +216,33 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-int height_Tree(vi list[], int src)
-{
-    int mxHight = 1;
-    for (auto curr : list[src])
-    {
-        mxHight = max(mxHight, 1 + height_Tree(list, curr));
-    }
-    return mxHight;
-}
-
 void solve()
 {
     ll n;
     cin >> n;
-    vi arr[n + 1];
+    vll arr1(n), arr2(n), arr;
+    cin >> arr1 >> arr2;
+    fl(i, n) arr.push_back(arr1[i]);
+    fl(i, n) arr.push_back(arr2[i]);
+    for (int i = 0; i < n - 1; i++)
+    {
+        int usum = abs(arr1[i] - arr1[i + 1]) + abs(arr2[i] - arr2[i + 1]);
+        int csum = abs(arr1[i] - arr2[i + 1]) + abs(arr2[i] - arr1[i + 1]);
+        if (csum < usum)
+        {
+            swap(arr1[i + 1], arr2[i + 1]);
+        }
+    }
+    ll diff = 0;
     fl(i, n - 1)
     {
-        int num;
-        cin >> num;
-        arr[num].push_back(i + 2);
+        diff += abs(arr1[i + 1] - arr1[i]);
     }
-    int maxChld = 0;
-    vi list;
-    fl(i, n + 1)
+    fl(i, n - 1)
     {
-        if (!arr[i].empty())
-            list.push_back(arr[i].size());
+        diff += abs(arr2[i + 1] - arr2[i]);
     }
-    list.push_back(1);
-    priority_queue<ll, vll, greater<ll>> pque;
-
-    sort(vr(list));
-
-    ll timer = list.size();
-    fl(i, list.size())
-    {
-        if ((i + 1) < list[i])
-        {
-            pque.push(list[i] - (i + 1));
-        }
-    }
-    int ans = 0;
-    while (!pque.empty())
-    {
-        while (!pque.empty())
-        {
-        }
-    }
+    cout << diff << "\n";
 }
 /*
 When you are coding,remember to:

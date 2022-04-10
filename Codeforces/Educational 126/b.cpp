@@ -216,54 +216,37 @@ bool isPerfectSquare(ll x)
 // min_element(first, last);
 
 // Code
-
-int height_Tree(vi list[], int src)
-{
-    int mxHight = 1;
-    for (auto curr : list[src])
-    {
-        mxHight = max(mxHight, 1 + height_Tree(list, curr));
-    }
-    return mxHight;
-}
-
 void solve()
 {
     ll n;
     cin >> n;
-    vi arr[n + 1];
-    fl(i, n - 1)
+    while (n--)
     {
-        int num;
+        ll num;
         cin >> num;
-        arr[num].push_back(i + 2);
-    }
-    int maxChld = 0;
-    vi list;
-    fl(i, n + 1)
-    {
-        if (!arr[i].empty())
-            list.push_back(arr[i].size());
-    }
-    list.push_back(1);
-    priority_queue<ll, vll, greater<ll>> pque;
-
-    sort(vr(list));
-
-    ll timer = list.size();
-    fl(i, list.size())
-    {
-        if ((i + 1) < list[i])
+        if (num == 0)
         {
-            pque.push(list[i] - (i + 1));
+            cout << 0 << " ";
+            continue;
         }
-    }
-    int ans = 0;
-    while (!pque.empty())
-    {
-        while (!pque.empty())
+        ll lgnum = ceil(log2(num));
+        ll res = pow(2ll, lgnum);
+        ll diff = abs(num - res);
+        ll ans = min(diff + 15 - lgnum, 15ll);
+        ll temp = num;
+
+        for (int i = 0; i <= 15; i++)
         {
+            temp = num + i;
+            res = 0;
+            while (temp > 0 && temp % 2 == 0)
+            {
+                res++;
+                temp /= 2;
+            }
+            ans = min(ans, 15 - res + i);
         }
+        cout << ans << " ";
     }
 }
 /*
@@ -281,13 +264,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
