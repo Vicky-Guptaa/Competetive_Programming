@@ -222,22 +222,43 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    // Later By Heap Or Multiset
-    ll n, k;
-    cin >> n >> k;
+    ll n;
+    cin >> n;
     vll arr(n);
     cin >> arr;
-    vll tmp(k);
-    fl(i, n - k + 1)
+    sort(vr(arr));
+    vll temp1(n);
+    if (arr.size() <= 2)
     {
-        for (int j = i; j < k + i; j++)
-        {
-            tmp[j - i] = arr[j];
-        }
-        sort(vr(tmp));
-        cout << tmp[(k - 1) / 2] << " ";
+        cout << arr << "\n";
+        return;
     }
+    ll minDiff = 1e9 + 5;
+    fl(i, n - 1)
+    {
+        minDiff = min(abs(arr[i + 1] - arr[i]), minDiff);
+    }
+    int strt = 0;
+    fl(i, n - 1)
+    {
+        if (arr[i] + minDiff == arr[i + 1])
+        {
+            strt = i;
+            temp1[0] = arr[i];
+            temp1[n - 1] = arr[i + 1];
+            arr.erase(arr.begin() + i, arr.begin() + i + 2);
+            break;
+        }
+    }
+    strt %= arr.size();
+    for (int i = 1; i < n - 1; i++)
+    {
+        temp1[i] = arr[strt];
+        strt = (strt + 1) % arr.size();
+    }
+    cout << temp1 << "\n";
 }
+
 /*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
@@ -253,13 +274,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

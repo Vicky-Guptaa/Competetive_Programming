@@ -222,21 +222,30 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    // Later By Heap Or Multiset
-    ll n, k;
-    cin >> n >> k;
-    vll arr(n);
-    cin >> arr;
-    vll tmp(k);
-    fl(i, n - k + 1)
+    ll n;
+    cin >> n;
+    vpll pprs;
+    fl(i, n)
     {
-        for (int j = i; j < k + i; j++)
-        {
-            tmp[j - i] = arr[j];
-        }
-        sort(vr(tmp));
-        cout << tmp[(k - 1) / 2] << " ";
+        int num;
+        cin >> num;
+        pprs.push_back({num, i + 1});
     }
+    sort(vr(pprs));
+    int cnt = 0;
+    fl(j, n)
+    {
+        for (int i = j + 1; i < n; i++)
+        {
+            ll prod = pprs[i].first * pprs[j].first;
+            ll sum = pprs[i].second + pprs[j].second;
+            if (sum == prod)
+                cnt++;
+            if (prod > 2 * n)
+                break;
+        }
+    }
+    cout << cnt << "\n";
 }
 /*
 When you are coding,remember to:
@@ -253,13 +262,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
