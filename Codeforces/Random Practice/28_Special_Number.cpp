@@ -222,29 +222,28 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    vector<vll> res;
-    vll prime = {2, 3};
-    for (int i = 0; i < n - 2; i++)
+    ll n, k;
+    cin >> n >> k;
+    long long res = 0;
+    int cntr = 0;
+    while (k)
     {
-        if (gcd(arr[i], arr[i + 1]) != 1)
+        int rem = k % 2;
+        k /= 2;
+        long long prod = 1;
+        if (rem)
         {
-            res.push_back({i+1, i + 2, prime[0], prime[1]});
-            arr[i] = min(arr[i], prime[0]);
-            arr[i + 1] = min(arr[i + 1], prime[1]);
-            swap(prime[0], prime[1]);
+            fl(i, cntr)
+            {
+                prod *= n;
+                prod %= mod;
+            }
+            res += prod;
+            res %= mod;
         }
+        cntr++;
     }
-    if (gcd(arr[n - 1], arr[n - 2]) != 1)
-    {
-        res.push_back({n - 1, n, prime[0], prime[1]});
-        swap(prime[0], prime[1]);
-    }
-    cout << res.size() << "\n";
-    fl(i, res.size()) cout << res[i] << "\n";
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:

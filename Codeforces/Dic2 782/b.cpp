@@ -222,29 +222,39 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
+    ll n, k, cpyk;
+    cin >> n >> k;
+    cpyk = k;
+    vll narr(n, 0);
+    string arr;
     cin >> arr;
-    vector<vll> res;
-    vll prime = {2, 3};
-    for (int i = 0; i < n - 2; i++)
+    if (k == 0)
     {
-        if (gcd(arr[i], arr[i + 1]) != 1)
+        cout << arr << "\n";
+        cout << narr << "\n";
+        return;
+    }
+    for (int i = 0; i < n && cpyk > 0; i++)
+    {
+        if (arr[i] == '1' && (k & 1))
         {
-            res.push_back({i+1, i + 2, prime[0], prime[1]});
-            arr[i] = min(arr[i], prime[0]);
-            arr[i + 1] = min(arr[i + 1], prime[1]);
-            swap(prime[0], prime[1]);
+            cpyk--;
+            narr[i] = 1;
+        }
+        if (arr[i] == '0' && !(k & 1))
+        {
+            cpyk--;
+            narr[i] = 1;
         }
     }
-    if (gcd(arr[n - 1], arr[n - 2]) != 1)
+    narr[n - 1] += cpyk;
+    for (int i = 0; i < n; i++)
     {
-        res.push_back({n - 1, n, prime[0], prime[1]});
-        swap(prime[0], prime[1]);
+        if ((k - narr[i]) & 1)
+            arr[i] ^= '1' ^ '0';
     }
-    cout << res.size() << "\n";
-    fl(i, res.size()) cout << res[i] << "\n";
+    cout << arr << "\n";
+    cout << narr << "\n";
 }
 /*
 When you are coding,remember to:
