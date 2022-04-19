@@ -231,7 +231,7 @@ void solve()
 {
     ll n;
     cin >> n;
-    vi arr[n + 1];
+    vll arr[n + 1];
     fl(i, n - 1)
     {
         int num;
@@ -239,18 +239,17 @@ void solve()
         arr[num].push_back(i + 2);
     }
     int maxChld = 0;
-    vi list;
+    vll list;
     fl(i, n + 1)
     {
         if (!arr[i].empty())
             list.push_back(arr[i].size());
     }
     list.push_back(1);
-    priority_queue<ll, vll, greater<ll>> pque;
 
+    priority_queue<ll> pque;
     sort(vr(list));
 
-    ll timer = list.size();
     fl(i, list.size())
     {
         if ((i + 1) < list[i])
@@ -258,13 +257,34 @@ void solve()
             pque.push(list[i] - (i + 1));
         }
     }
-    int ans = 0;
+
+    ll ans = list.size();
+    queue<ll> que;
     while (!pque.empty())
     {
+        ans++;
+        if (pque.top() - 2 > 0)
+        {
+            que.push(pque.top() - 2);
+        }
+        pque.pop();
+
         while (!pque.empty())
         {
+            ll num = pque.top();
+            pque.pop();
+            if (num - 1 > 0)
+            {
+                que.push(num - 1);
+            }
+        }
+        while (!que.empty())
+        {
+            pque.push(que.front());
+            que.pop();
         }
     }
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
