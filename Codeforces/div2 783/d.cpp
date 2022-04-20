@@ -220,7 +220,7 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
+vi dp(5e5 + 2, -1);
 int maxSubarray(vi arr, int s, vi &dp)
 {
     if (s == arr.size())
@@ -244,19 +244,13 @@ int maxSubarray(vi arr, int s, vi &dp)
     }
     return dp[s] = res;
 }
-
-int iterativeMaxSubarray(vi arr)
-{
-    
-}
-
 void solve()
 {
     int n;
     cin >> n;
     vi arr(n);
     cin >> arr;
-    vi dp(n + 1, -1);
+    fl(i, n + 1) dp[i] = -1;
     cout << maxSubarray(arr, 0, dp) << '\n';
 }
 /*

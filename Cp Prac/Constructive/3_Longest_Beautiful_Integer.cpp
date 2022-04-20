@@ -214,26 +214,102 @@ bool isPerfectSquare(ll x)
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
+//__builtin_popcount(n); for int
+//__builtin_popcountll(x); for long long
+//__builtin_clz(x); for int
+//__builtin_clzll(x); for long long
 
 // Code
 void solve()
 {
-    // ll n;
-    // cin >> n;
-    // vll arr(n);
-    // cin >> arr;
-    // sort(vr(arr));
-    vi arr;
-    int i = -1;
-    arr.push_back(1);
-    cout << (arr.size() - 1) << '\n';
-    if (i >= (arr.size() - 1))
+    ll n, k;
+    cin >> n >> k;
+    string str;
+    cin >> str;
+    bool isTrue = true;
+    fl(i, n - k)
     {
-        cout << false << "\n";
+        if (str[i] != str[i + k])
+        {
+            isTrue = false;
+            break;
+        }
+    }
+    if (isTrue)
+    {
+        cout << str.size() << "\n";
+        cout << str << '\n';
+        return;
+    }
+    string substr = str.substr(0, k);
+    ll rem = n % k;
+    if (2 * k > n)
+    {
+        substr = str.substr(0, rem);
+        string nextsubstr = str.substr(k, rem);
+        if (substr.compare(nextsubstr) < 0)
+        {
+            int p = k - 1;
+            while (p >= 0 && str[p] == '9')
+            {
+                p--;
+            }
+            str[p++] += 1;
+            while (p < k)
+                str[p++] = '0';
+        }
+        string ans = str.substr(0, k);
+        ans += str.substr(0, rem);
+        cout << ans.size() << "\n";
+        cout << ans << "\n";
     }
     else
     {
-        cout << true << '\n';
+        isTrue = true;
+        string num;
+        fl(i, n)
+        {
+            num += str[i];
+            if (num.size() == k && num.compare(substr) > 0)
+            {
+                num = "";
+                isTrue = false;
+                break;
+            }
+            else if (num.size() == k && num.compare(substr) < 0)
+            {
+                num = "";
+                break;
+            }
+            else if (num.size() == k)
+            {
+                num = "";
+            }
+        }
+        if (num.size())
+        {
+            substr = substr.substr(0, num.size());
+            if (num.compare(substr) > 0)
+            {
+                isTrue = false;
+            }
+        }
+        if (!isTrue)
+        {
+            int p = k - 1;
+            while (p >= 0 && str[p] == '9')
+            {
+                p--;
+            }
+            str[p++] += 1;
+            while (p < k)
+                str[p++] = '0';
+        }
+        string ans;
+        fl(i, n / k) ans += str.substr(0, k);
+        ans += str.substr(0, rem);
+        cout << ans.size() << '\n';
+        cout << ans << "\n";
     }
 }
 /*
@@ -266,3 +342,7 @@ int main()
     // }
     return 0;
 }
+/*
+5 3
+49912
+*/

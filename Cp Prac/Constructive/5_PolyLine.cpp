@@ -214,27 +214,65 @@ bool isPerfectSquare(ll x)
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
+//__builtin_popcount(n); for int
+//__builtin_popcountll(x); for long long
+//__builtin_clz(x); for int
+//__builtin_clzll(x); for long long
 
 // Code
 void solve()
 {
-    // ll n;
-    // cin >> n;
-    // vll arr(n);
-    // cin >> arr;
-    // sort(vr(arr));
-    vi arr;
-    int i = -1;
-    arr.push_back(1);
-    cout << (arr.size() - 1) << '\n';
-    if (i >= (arr.size() - 1))
+    vpll prr(3);
+    cin >> prr;
+    if ((prr[0].first == prr[1].first && prr[0].first == prr[2].first) || (prr[0].second == prr[1].second && prr[0].second == prr[2].second))
     {
-        cout << false << "\n";
+        cout << "1\n";
+        return;
     }
-    else
+    sort(vr(prr));
+    if (prr[0].first == prr[1].first)
     {
-        cout << true << '\n';
+        ll Max = max(prr[0].second, prr[1].second);
+        ll Min = min(prr[0].second, prr[1].second);
+        if (Max <= prr[2].second || Min >= prr[2].second)
+        {
+            cout << "2\n";
+            return;
+        }
     }
+    else if (prr[1].first == prr[2].first)
+    {
+        ll Max = max(prr[1].second, prr[2].second);
+        ll Min = min(prr[1].second, prr[2].second);
+        if (Max <= prr[0].second || Min >= prr[0].second)
+        {
+            cout << "2\n";
+            return;
+        }
+    }
+    else if (prr[0].second == prr[1].second)
+    {
+        ll Max = max(prr[0].first, prr[1].first);
+        ll Min = min(prr[0].first, prr[1].first);
+        if (Max <= prr[2].first || Min >= prr[2].first)
+        {
+            cout << "2\n";
+            return;
+        }
+    }
+    else if (prr[1].second == prr[2].second)
+    {
+        ll Max = max(prr[1].first, prr[2].first);
+        ll Min = min(prr[1].first, prr[2].first);
+        if (Max <= prr[0].first || Min >= prr[0].first)
+        {
+            cout << "2\n";
+            return;
+        }
+    }
+
+    cout << "3\n";
+    return;
 }
 /*
 When you are coding,remember to:
@@ -251,9 +289,9 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, t)
+    // ll t;
+    // cin>>t;
+    // fl(i,t)
     // {
     //     solve();
     // }
