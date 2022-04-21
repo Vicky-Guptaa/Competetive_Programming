@@ -221,38 +221,43 @@ void solve()
     ll n;
     cin >> n;
     ll sum = 0;
-    ll len = 1;
-    vpll lastElem;
-    lastElem.push_back({0, 0});
+    vll arr(2e5 + 2, 0), off(2e5 + 2);
+    ll iter = 1;
     while (n--)
     {
         int opt;
         cin >> opt;
         if (opt == 1)
         {
-            int a, b;
+            ll a, b;
             cin >> a >> b;
-            sum += (ll)a * b;
-            lastElem[len - 1].second += b*a;
+            sum += a * b;
+            off[a] += b;
         }
         else if (opt == 2)
         {
-            int a;
+            iter++;
+            ll a;
             cin >> a;
             sum += a;
-            len++;
-            lastElem.push_back({a, a});
+            arr[iter] = a;
         }
         else
         {
-            ll lstElm = lastElem[lastElem.size() - 1].first;
-            ll lstSum = lastElem[lastElem.size() - 1].second;
-            lastElem.pop_back();
-            sum -= lstSum;
-            len--;
-            lastElem[len - 1].second += lstSum - lstElm;
+            if (off[iter] == 0)
+            {
+                sum -= arr[iter];
+            }
+            else
+            {
+                sum -= arr[iter] + off[iter];
+                off[iter - 1] += off[iter];
+                off[iter] = 0;
+            }
+            arr[iter] = 0;
+            iter--;
         }
-        double avg = sum / (double)len;
+        double avg = sum / (double)iter;
         printf("%0.6lf\n", avg);
     }
 }
