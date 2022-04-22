@@ -219,58 +219,57 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-bool mycomp1(string s1, string s2)
+ll bsearch(ll k, vll &arr, ll sum, ll d)
 {
-    if (s1[0] != s2[0])
-        return s1[0] < s2[0];
-    else
-        return s1[1] < s2[1];
-}
-
-bool mycomp2(string s1, string s2)
-{
-    if (s1[1] != s2[1])
-        return s1[1] < s2[1];
-    else
-        return s1[0] < s2[0];
+    ll ans = 0, low = 0, high = 2e9;
+    while (low <= high)
+    {
+        ll mid = low + (high - low) / 2;
+        ll calc = sum + (mid - 1) * d;
+        if (calc == k)
+        {
+            return mid;
+        }
+        else if (calc < k)
+        {
+            ans = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    return ans;
 }
 
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vector<string> arr(n);
+    ll n, k;
+    cin >> n >> k;
+    vll arr(n);
     cin >> arr;
-    map<string, ll> freq;
-    ll ans = 0;
+    sort(vr(arr));
+    ll sum = 0;
     fl(i, n)
     {
-        freq[arr[i]]++;
-        string temp = arr[i];
-        for (int i = 0; i < 11; i++)
-        {
-            if (temp[1] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += temp[0];
-            nstr += 'a' + i;
-            ans += freq[nstr];
-        }
-        for (int i = 0; i < 11; i++)
-        {
-            if (temp[0] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += 'a' + i;
-            nstr += temp[1];
-            ans += freq[nstr];
-        }
+        sum += arr[i];
+        arr[i] = sum;
     }
+    ll iter = n - 1;
+    ll ans = 0, cinc = 0;
+    while (iter >= 0)
+    {
+        ll no = bsearch(k, arr, arr[iter] + cinc * (iter + 1), iter + 1);
+        cinc += no;
+
+        // cout << no << "\n";
+        ans += (iter + 1) * no;
+        if (no == 0)
+            iter--;
+    }
+
     cout << ans << "\n";
 }
 /*

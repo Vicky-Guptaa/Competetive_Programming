@@ -219,59 +219,51 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-bool mycomp1(string s1, string s2)
-{
-    if (s1[0] != s2[0])
-        return s1[0] < s2[0];
-    else
-        return s1[1] < s2[1];
-}
-
-bool mycomp2(string s1, string s2)
-{
-    if (s1[1] != s2[1])
-        return s1[1] < s2[1];
-    else
-        return s1[0] < s2[0];
-}
-
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vector<string> arr(n);
-    cin >> arr;
-    map<string, ll> freq;
-    ll ans = 0;
-    fl(i, n)
+    string str;
+    cin >> str;
+    vector<string> arr;
+    string word;
+    for (int i = 1; i < str.size(); i++)
     {
-        freq[arr[i]]++;
-        string temp = arr[i];
-        for (int i = 0; i < 11; i++)
+
+        word += str[i - 1];
+        if (str[i] != str[i - 1])
         {
-            if (temp[1] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += temp[0];
-            nstr += 'a' + i;
-            ans += freq[nstr];
-        }
-        for (int i = 0; i < 11; i++)
-        {
-            if (temp[0] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += 'a' + i;
-            nstr += temp[1];
-            ans += freq[nstr];
+            arr.push_back(word);
+            word = "";
         }
     }
-    cout << ans << "\n";
+    if (str[str.size() - 1] == str[str.size() - 2])
+    {
+        word += str[str.size() - 1];
+        arr.push_back(word);
+    }
+    else
+    {
+        word += str[str.size() - 1];
+        arr.push_back(word);
+    }
+    fl(i, arr.size())
+    {
+        int len = arr[i].size();
+        int thc = len / 3;
+        len -= thc * 3;
+        while (thc > 0 && len % 2 != 0)
+        {
+            len += 3;
+            thc--;
+        }
+        int twc = len / 2;
+        len -= 2 * twc;
+        if (len != 0)
+        {
+            pn return;
+        }
+    }
+    py
 }
 /*
 When you are coding,remember to:

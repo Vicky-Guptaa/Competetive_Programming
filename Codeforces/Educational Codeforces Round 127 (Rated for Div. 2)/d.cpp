@@ -219,59 +219,12 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-bool mycomp1(string s1, string s2)
-{
-    if (s1[0] != s2[0])
-        return s1[0] < s2[0];
-    else
-        return s1[1] < s2[1];
-}
-
-bool mycomp2(string s1, string s2)
-{
-    if (s1[1] != s2[1])
-        return s1[1] < s2[1];
-    else
-        return s1[0] < s2[0];
-}
-
 // Code
 void solve()
 {
     ll n;
     cin >> n;
-    vector<string> arr(n);
-    cin >> arr;
-    map<string, ll> freq;
-    ll ans = 0;
-    fl(i, n)
-    {
-        freq[arr[i]]++;
-        string temp = arr[i];
-        for (int i = 0; i < 11; i++)
-        {
-            if (temp[1] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += temp[0];
-            nstr += 'a' + i;
-            ans += freq[nstr];
-        }
-        for (int i = 0; i < 11; i++)
-        {
-            if (temp[0] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += 'a' + i;
-            nstr += temp[1];
-            ans += freq[nstr];
-        }
-    }
-    cout << ans << "\n";
+    cout << sqrt(n);
 }
 /*
 When you are coding,remember to:

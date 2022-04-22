@@ -219,59 +219,44 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-bool mycomp1(string s1, string s2)
-{
-    if (s1[0] != s2[0])
-        return s1[0] < s2[0];
-    else
-        return s1[1] < s2[1];
-}
-
-bool mycomp2(string s1, string s2)
-{
-    if (s1[1] != s2[1])
-        return s1[1] < s2[1];
-    else
-        return s1[0] < s2[0];
-}
-
 // Code
+bool hsolve(int strt, vll arr)
+{
+    for (int i = 1; i < arr.size(); i++)
+    {
+        if (arr[i] == strt)
+        {
+            strt++;
+        }
+        else
+        {
+            int diff = abs(arr[i] - strt);
+            if (diff > 2)
+            {
+                return false;
+            }
+            if (arr[i] < strt && diff == 2)
+            {
+                strt += 2;
+            }
+            else if (strt < arr[i])
+                strt++;
+        }
+    }
+    return true;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    vector<string> arr(n);
+    vll arr(n);
     cin >> arr;
-    map<string, ll> freq;
-    ll ans = 0;
-    fl(i, n)
+    if (hsolve(arr[0], arr) || hsolve(arr[0] - 1, arr) || hsolve(arr[0] + 1, arr))
     {
-        freq[arr[i]]++;
-        string temp = arr[i];
-        for (int i = 0; i < 11; i++)
-        {
-            if (temp[1] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += temp[0];
-            nstr += 'a' + i;
-            ans += freq[nstr];
-        }
-        for (int i = 0; i < 11; i++)
-        {
-            if (temp[0] == 'a' + i)
-            {
-                continue;
-            }
-            string nstr;
-            nstr += 'a' + i;
-            nstr += temp[1];
-            ans += freq[nstr];
-        }
+        py return;
     }
-    cout << ans << "\n";
+    pn
 }
 /*
 When you are coding,remember to:
