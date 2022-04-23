@@ -1,0 +1,1 @@
+{"name":"Local: b","url":"e:\\Programming Language\\Competetive\\Codeforces\\Global Round 20\\b.cpp","tests":[{"id":1650723349120,"input":"4\nAABAB\nABB\nAAAAAAAAB\nA\n","output":"YES\nNO\nYES\nNO\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\Programming Language\\Competetive\\Codeforces\\Global Round 20\\b.cpp","group":"local","local":true}
