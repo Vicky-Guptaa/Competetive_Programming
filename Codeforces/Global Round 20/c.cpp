@@ -241,50 +241,29 @@ void solve()
     cin >> arr;
     vll dp(n + 1, -1);
     stack<ll> st;
-    ll strt = 0, curr = 0;
-    bool isFirst = false, isThree = false;
+    ll strt = 0, end = -1;
+    bool isStart = 0;
     for (int i = 1; i < n; i++)
     {
-        if (arr[i] == arr[i - 1])
+        if (isStart == false && arr[i - 1] == arr[i])
         {
-            strt = i;
-            break;
+            isStart = true;
+            strt = i - 1;
+        }
+        else if (isStart && arr[i - 1] == arr[i])
+        {
+            end = i;
         }
     }
-    if (strt == 0)
+    if (!isStart || end == -1)
     {
         cout << "0\n";
-        return;
-    }
-    for (int i = 1; i < n; i++)
-    {
-        if (strt != i && arr[i] == arr[i - 1])
-        {
-            while (strt < i)
-            {
-                arr[strt++] = -1;
-            }
-        }
-    }
-    ll res = 0;
-    fl(i, n)
-    {
-        if (arr[i] == -1)
-            res++;
-    }
-    if (res == 0)
-    {
-        cout << 0 << "\n";
-    }
-    if (res == 2 || res == 3)
-    {
-        cout << 1 << "\n";
-        return;
     }
     else
     {
-        res -= 1;
-        cout << res << "\n";
+        ll total = end - strt - 2;
+        total = max(1ll, total);
+        cout << total << "\n";
     }
 }
 /*

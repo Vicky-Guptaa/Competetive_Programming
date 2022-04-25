@@ -224,7 +224,46 @@ void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n), brr(n);
+    cin >> brr >> arr;
+    if (brr[n - 1] != arr[n - 1])
+    {
+        pn return;
+    }
+    multiset<ll> st;
+    int it1 = n - 1, it2 = n - 1;
+    while (it1 >= 0 && it2 >= 0)
+    {
+        if (arr[it1] == brr[it2])
+        {
+            it1--, it2--;
+        }
+        else if (arr[it1 + 1] == arr[it1])
+        {
+            st.insert(arr[it1]);
+            it1--;
+        }
+        else if (!st.empty() && st.find(brr[it2]) != st.end())
+        {
+            st.erase(st.find(brr[it2]));
+            it2--;
+        }
+        else
+        {
+                pn return;
+        }
+    }
+    while (it2 >= 0 && st.find(brr[it2]) != st.end())
+    {
+        st.erase(st.find(brr[it2]));
+        it2--;
+    }
+    if (st.empty())
+    {
+        py
+    }
+    else
+        pn
 }
 /*
 When you are coding,remember to:
