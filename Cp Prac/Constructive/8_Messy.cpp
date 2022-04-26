@@ -214,51 +214,100 @@ bool isPerfectSquare(ll x)
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
+//__builtin_popcount(n); for int
+//__builtin_popcountll(x); for long long
+//__builtin_clz(x); for int
+//__builtin_clzll(x); for long long
 
 // Code
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    ll sum = 0;
-    vll arr(2e5 + 2, 0), off(2e5 + 2);
-    ll iter = 1;
-    while (n--)
+    ll n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    stack<int> stck;
+    for (int i = 0; i < n; i++)
     {
-        int opt;
-        cin >> opt;
-        if (opt == 1)
+        if (!stck.empty() && s[i] == ')' && s[stck.top()] == '(')
         {
-            ll a, b;
-            cin >> a >> b;
-            sum += a * b;
-            off[a] += b;
-        }
-        else if (opt == 2)
-        {
-            iter++;
-            ll a;
-            cin >> a;
-            sum += a;
-            arr[iter] = a;
+            stck.pop();
         }
         else
         {
-            if (off[iter] == 0)
-            {
-                sum -= arr[iter];   
-            }
-            else
-            {
-                sum -= arr[iter] + off[iter];
-                off[iter - 1] += off[iter];
-                off[iter] = 0;
-            }
-            arr[iter] = 0;
-            iter--;
+            stck.push(i);
         }
-        double avg = sum / (double)iter;
-        printf("%0.6lf\n", avg);
+    }
+    vpll moves;
+    if (!stck.empty())
+    {
+        ll l = 0, r = stck.top();
+        while (!stck.empty())
+        {
+            l = stck.top();
+            stck.pop();
+        }
+        reverse(s.begin() + l, s.begin() + r + 1);
+        moves.push_back({l + 1, r + 1});
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i % 2 == 0 && s[i] != '(')
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                if (s[j] == '(')
+                {
+                    reverse(s.begin() + i, s.begin() + j + 1);
+                    moves.push_back({i + 1, j + 1});
+                    break;
+                }
+            }
+        }
+        if (i % 2 == 1 && s[i] != ')')
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                if (s[j] == ')')
+                {
+                    reverse(s.begin() + i, s.begin() + j + 1);
+                    moves.push_back({i + 1, j + 1});
+                    break;
+                }
+            }
+        }
+    }
+    ll left = 0, cnt = 0;
+    set<int> critical;
+    fl(i, n)
+    {
+        if (s[i] == '(')
+            left++;
+        else
+            left--;
+        if (left == 0)
+        {
+            critical.insert(i);
+            cnt++;
+        }
+    }
+
+    if (cnt > k)
+    {
+        ll diff = cnt - k;
+        for (int i = 1; i <= diff; i++)
+        {
+            moves.push_back({*critical.begin() + 1, (*critical.begin()) + 2});
+            reverse(s.begin() + *critical.begin(), s.begin() + *critical.begin() + 2);
+            critical.erase(*critical.begin());
+        }
+    }
+    cout << moves.size() << "\n";
+    fl(i, moves.size())
+    {
+        cout << moves[i] << "\n";
     }
 }
 /*
@@ -276,13 +325,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    // ll t;
-    // cin>>t;
-    // fl(i,t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

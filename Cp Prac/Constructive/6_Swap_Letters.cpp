@@ -214,51 +214,79 @@ bool isPerfectSquare(ll x)
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
+//__builtin_popcount(n); for int
+//__builtin_popcountll(x); for long long
+//__builtin_clz(x); for int
+//__builtin_clzll(x); for long long
 
 // Code
 void solve()
 {
     ll n;
     cin >> n;
-    ll sum = 0;
-    vll arr(2e5 + 2, 0), off(2e5 + 2);
-    ll iter = 1;
-    while (n--)
+    string s1, s2;
+    cin >> s1 >> s2;
+    ll ac = 0, bc = 0;
+    map<char, set<int>> freq;
+    int cnt = 0;
+    fl(i, n)
     {
-        int opt;
-        cin >> opt;
-        if (opt == 1)
+        if (s1[i] == s2[i])
         {
-            ll a, b;
-            cin >> a >> b;
-            sum += a * b;
-            off[a] += b;
+            continue;
         }
-        else if (opt == 2)
+        if (s1[i] == 'a')
+            ac++;
+        else
+            bc++;
+        if (s2[i] == 'a')
+            ac++;
+        else
+            bc++;
+        freq[s2[i]].insert(i);
+    }
+
+    if (ac % 2 != 0 || bc % 2 != 0)
+    {
+        pm return;
+    }
+    vector<pair<int, int>> moves;
+    for (int i = 0; i < n; i++)
+    {
+        if (s1[i] == s2[i])
         {
-            iter++;
-            ll a;
-            cin >> a;
-            sum += a;
-            arr[iter] = a;
+            continue;
+        }
+        freq[s2[i]].erase(i);
+        if (freq[s2[i]].empty())
+        {
+            freq.erase(s2[i]);
+        }
+
+        if (freq.find(s2[i]) != freq.end())
+        {
+            moves.push_back({i + 1, *freq[s2[i]].begin() + 1});
+            swap(s1[i], s2[*freq[s2[i]].begin()]);
+            freq[s1[i]].insert(*freq[s2[i]].begin());
+            freq[s2[i]].erase(*freq[s2[i]].begin());
+            if (freq[s2[i]].empty())
+            {
+                freq.erase(s2[i]);
+            }
         }
         else
         {
-            if (off[iter] == 0)
-            {
-                sum -= arr[iter];   
-            }
-            else
-            {
-                sum -= arr[iter] + off[iter];
-                off[iter - 1] += off[iter];
-                off[iter] = 0;
-            }
-            arr[iter] = 0;
-            iter--;
+            moves.push_back({i + 1, i + 1});
+            swap(s1[i], s2[i]);
+            i--;
         }
-        double avg = sum / (double)iter;
-        printf("%0.6lf\n", avg);
+        // cout << s1 << "\n"
+        //      << s2 << "\n\n";
+    }
+    cout << moves.size() << "\n";
+    fl(i, moves.size())
+    {
+        cout << moves[i] << "\n";
     }
 }
 /*
@@ -276,9 +304,9 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    // ll t;
-    // cin>>t;
-    // fl(i,t)
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
     // {
     //     solve();
     // }

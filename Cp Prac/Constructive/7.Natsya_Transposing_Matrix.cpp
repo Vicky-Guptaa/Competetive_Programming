@@ -214,52 +214,48 @@ bool isPerfectSquare(ll x)
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
+//__builtin_popcount(n); for int
+//__builtin_popcountll(x); for long long
+//__builtin_clz(x); for int
+//__builtin_clzll(x); for long long
 
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    ll sum = 0;
-    vll arr(2e5 + 2, 0), off(2e5 + 2);
-    ll iter = 1;
-    while (n--)
+    ll n, m;
+    cin >> n >> m;
+    vector<vll> grid1(n, vll(m, 0)), grid2(n, vll(m, 0));
+    cin >> grid1 >> grid2;
+    map<int, multiset<int>> freq;
+    for (int i = 0; i < n; i++)
     {
-        int opt;
-        cin >> opt;
-        if (opt == 1)
+        for (int j = 0; j < m; j++)
         {
-            ll a, b;
-            cin >> a >> b;
-            sum += a * b;
-            off[a] += b;
+            freq[i + j].insert(grid1[i][j]);
         }
-        else if (opt == 2)
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
         {
-            iter++;
-            ll a;
-            cin >> a;
-            sum += a;
-            arr[iter] = a;
-        }
-        else
-        {
-            if (off[iter] == 0)
+            if (freq[i + j].find(grid2[i][j]) != freq[i + j].end())
             {
-                sum -= arr[iter];   
+                freq[i + j].erase(freq[i + j].find(grid2[i][j]));
             }
             else
             {
-                sum -= arr[iter] + off[iter];
-                off[iter - 1] += off[iter];
-                off[iter] = 0;
+                pn return;
             }
-            arr[iter] = 0;
-            iter--;
         }
-        double avg = sum / (double)iter;
-        printf("%0.6lf\n", avg);
     }
+    for (auto x : freq)
+    {
+        if (!x.second.empty())
+        {
+            pn return;
+        }
+    }
+    py
 }
 /*
 When you are coding,remember to:
@@ -276,9 +272,9 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    // ll t;
-    // cin>>t;
-    // fl(i,t)
+    //     ll t;
+    // cin >> t;
+    // fl(i, t)
     // {
     //     solve();
     // }
