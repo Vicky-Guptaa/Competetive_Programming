@@ -1,0 +1,11 @@
+create procedure 70CScalcBudget(dept varchar(30), out budget int)
+deterministic
+begin
+declare deptnumber varchar(5);
+declare sumSal int default 0;
+select Dno from department where Dept_name = dept into deptnumber;
+select sum(Esal) from employee where Dno = deptnumber into sumSal;
+set budget = sumSal;
+end |
+call 70CScalcBudget('Marketing',@res) |
+select @res |
