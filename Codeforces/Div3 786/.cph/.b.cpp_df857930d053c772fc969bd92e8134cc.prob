@@ -1,0 +1,1 @@
+{"name":"Local: b","url":"e:\\Programming Language\\Competetive\\Codeforces\\Div3 786\\b.cpp","tests":[{"id":1651503332800,"input":"7\nab\nac\naz\nba\nbc\nzx\nzy\n","output":"1\n2\n25\n26\n27\n649\n650\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\Programming Language\\Competetive\\Codeforces\\Div3 786\\b.cpp","group":"local","local":true}
