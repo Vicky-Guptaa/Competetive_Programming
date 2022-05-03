@@ -245,7 +245,7 @@ void solve()
             ll move = ceil(arr[i] / 2.0);
             ll num = arr[i + 1] - move;
             if (num > 0)
-                move += ceil(num / 2);
+                move += ceil(num / 2.0);
             mset.insert(move);
         }
         else if (i == n - 1)
@@ -253,7 +253,7 @@ void solve()
             ll move = ceil(arr[i] / 2.0);
             ll num = arr[i - 1] - move;
             if (num > 0)
-                move += ceil(num / 2);
+                move += ceil(num / 2.0);
             mset.insert(move);
         }
         else
@@ -261,7 +261,7 @@ void solve()
             ll move = ceil(arr[i] / 2.0);
             ll num = min(arr[i - 1], arr[i + 1]) - move;
             if (num > 0)
-                move += ceil(num / 2);
+                move += ceil(num / 2.0);
             mset.insert(move);
         }
     }
@@ -276,33 +276,29 @@ void solve()
         {
             ll num = max(arr[i - 1], arr[i + 1]);
             mset.insert(num);
+            ll req = ceil(abs(arr[i + 1] - arr[i - 1]) / 2.0);
+            ll moves = max(num - 2 * req, min(arr[i - 1], arr[i + 1]));
+            moves += req;
+            mset.insert(moves);
         }
     }
-
-    ans = min(ans, *mset.begin());
+    if (!mset.empty())
+        ans = min(ans, *mset.begin());
     mset.clear();
 
     for (int i = 1; i < n; i++)
     {
         ll num1 = arr[i - 1];
         ll num2 = arr[i];
-
-        if (num1 >= num2 * 2)
+        ll moves = ceil((2 * num1 - num2) / 3.0);
+        num2 -= moves;
+        if (moves < 0 || num2 < 0)
             continue;
-        ll playMove = ceil(num1 / 4.0);
-        num1 -= playMove * 2;
-        num2 -= playMove;
-        ll moves = playMove;
-        ll req = ceil(num2 / 2.0);
-        moves += (req);
-        num1 -= req;
-        if (num1 > 0)
-        {
-            moves += ceil(num1 / 2.0);
-        }
+        moves += ceil(num2 / 2.0);
         mset.insert(moves);
     }
-    ans = min(ans, *mset.begin());
+    if (!mset.empty())
+        ans = min(ans, *mset.begin());
     cout << ans << "\n";
 }
 /*
