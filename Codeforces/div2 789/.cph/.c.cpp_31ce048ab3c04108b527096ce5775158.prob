@@ -1,0 +1,1 @@
+{"name":"Local: c","url":"e:\\Programming Language\\Competetive\\Codeforces\\div2 789\\c.cpp","tests":[{"id":1652025079171,"input":"3\n6\n5 3 6 1 4 2\n4\n1 2 3 4\n10\n5 1 6 2 8 3 4 10 9 7","output":"3\n0\n28"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\Programming Language\\Competetive\\Codeforces\\div2 789\\c.cpp","group":"local","local":true}
