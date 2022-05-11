@@ -2,11 +2,18 @@
 #include <iostream>
 #include <bits/stdc++.h>
 // #include <sys/resource.h>
-// #include <ext/pb_ds/assoc_container.hpp>
-// #include <ext/pb_ds/tree_policy.hpp>
+
 using namespace std;
 // using namespace chrono;
-// using namespace __gnu_pbds;
+
+/* _______________Policy Based DS______________*/
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template <class T>
+using pbds = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update>;
+// provides find_by_order, order_of_key
+/*_____________________________________________*/
 
 // def
 // #define Vicky_Gupta 1
@@ -42,8 +49,8 @@ typedef map<ll, ll> mll;
 #define ss second
 #define pb push_back
 #define mp make_pair
-#define fl(i, n) for (int i = 0; i < n; i++)
-#define rl(i, m, n) for (int i = n; i >= m; i--)
+#define fl(i, s, n) for (int i = s; i < n; i++)
+#define rl(i, n, s) for (int i = n; i >= s; i--)
 #define py cout << "YES\n";
 #define pm cout << "-1\n";
 #define pn cout << "NO\n";
@@ -89,16 +96,17 @@ ostream &operator<<(ostream &ostream, const vector<T> &c)
 // Utility functions
 template <typename T>
 void print(T &&t) { cout << t << '\n'; }
-void printarr(ll arr[], ll n)
+void printarr(ll arr[], ll s, ll n)
 {
-    fl(i, n) cout << arr[i] << " ";
+    fl(i, s, n) cout << arr[i] << " ";
     cout << '\n';
 }
 template <typename T>
 void printvec(vector<T> v)
 {
     ll n = v.size();
-    fl(i, n) cout << v[i] << " ";
+    ll s = 0;
+    fl(i, s, n) cout << v[i] << " ";
     cout << '\n';
 }
 
@@ -137,14 +145,6 @@ ll powermod(ll x, ll y, ll p)
     }
     return res;
 }
-
-// Graph-dfs
-//  bool gone[MN];
-//  vector<int> adj[MN];
-//  void dfs(int loc){
-//      gone[loc]=true;
-//      for(auto x:adj[loc])if(!gone[x])dfs(x);
-//  }
 
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
@@ -220,72 +220,19 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
-long long Count(ll arr[], int s, int m, int n)
-{
-    ll ic = 0;
-    int p = m - s + 1, q = n - m;
-    ll arr1[p], arr2[q];
-    for (int i = 0; i < p; i++)
-        arr1[i] = arr[s + i];
-    for (int i = 0; i < q; i++)
-        arr2[i] = arr[m + 1 + i];
-
-    int x = 0, y = 0, z = s;
-
-    while (p > x && q > y)
-    {
-        if (arr1[x] >= arr2[y])
-        {
-            arr[z] = arr2[y];
-            ic += p - x;
-            y++;
-            z++;
-        }
-        else
-        {
-            arr[z] = arr1[x];
-            x++;
-            z++;
-        }
-    }
-    while (p > x)
-    {
-        arr[z] = arr1[x];
-        x++;
-        z++;
-    }
-    while (q > y)
-    {
-        arr[z] = arr2[y];
-        y++;
-        z++;
-    }
-    return ic;
-}
-
-ll Inversion_Count(ll arr[], int s, int n)
-{
-    ll ic = 0;
-    if (s < n)
-    {
-        int mid = (s + n) / 2;
-        ic += Inversion_Count(arr, s, mid);
-        ic += Inversion_Count(arr, mid + 1, n);
-
-        ic += Count(arr, s, mid, n);
-    }
-    return ic;
-}
-
 void solve()
 {
     ll n;
     cin >> n;
-    ll arr[n];
-    fl(i, n) cin >> arr[i];
-
-    ll ans = Inversion_Count(arr, 0, n);
+    vll arr(n);
+    cin >> arr;
+    pbds<int> pbset;
+    ll ans = 0;
+    rl(i, n - 1, 0)
+    {
+        ans += pbset.order_of_key(arr[i]+1);
+        pbset.insert(arr[i]);
+    }
     cout << ans << "\n";
 }
 /*
@@ -305,12 +252,12 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, t)
+    fl(i, 0, t)
     {
         solve();
     }
     // solve();
-    // fl(i,t) //Kickstart
+    // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
     //     solve();

@@ -2,11 +2,17 @@
 #include <iostream>
 #include <bits/stdc++.h>
 // #include <sys/resource.h>
-// #include <ext/pb_ds/assoc_container.hpp>
-// #include <ext/pb_ds/tree_policy.hpp>
+
 using namespace std;
 // using namespace chrono;
+
+/* _______________Policy Based DS______________*/
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
 // using namespace __gnu_pbds;
+// template <class T> using ordered_set = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update >;
+// provides find_by_order, order_of_key
+/*_____________________________________________*/
 
 // def
 // #define Vicky_Gupta 1
@@ -42,8 +48,8 @@ typedef map<ll, ll> mll;
 #define ss second
 #define pb push_back
 #define mp make_pair
-#define fl(i, n) for (int i = 0; i < n; i++)
-#define rl(i, m, n) for (int i = n; i >= m; i--)
+#define fl(i, s, n) for (int i = s; i < n; i++)
+#define rl(i, n, s) for (int i = n; i >= s; i--)
 #define py cout << "YES\n";
 #define pm cout << "-1\n";
 #define pn cout << "NO\n";
@@ -89,16 +95,16 @@ ostream &operator<<(ostream &ostream, const vector<T> &c)
 // Utility functions
 template <typename T>
 void print(T &&t) { cout << t << '\n'; }
-void printarr(ll arr[], ll n)
+void printarr(ll arr[], ll s, ll n)
 {
-    fl(i, n) cout << arr[i] << " ";
+    fl(i, s, n) cout << arr[i] << " ";
     cout << '\n';
 }
 template <typename T>
 void printvec(vector<T> v)
 {
-    ll n = v.size();
-    fl(i, n) cout << v[i] << " ";
+    ll n = v.size(), s = 0;
+    fl(i, s, n) cout << v[i] << " ";
     cout << '\n';
 }
 
@@ -137,14 +143,6 @@ ll powermod(ll x, ll y, ll p)
     }
     return res;
 }
-
-// Graph-dfs
-//  bool gone[MN];
-//  vector<int> adj[MN];
-//  void dfs(int loc){
-//      gone[loc]=true;
-//      for(auto x:adj[loc])if(!gone[x])dfs(x);
-//  }
 
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
@@ -222,9 +220,42 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll n, m;
+    cin >> n >> m;
+    vll arr(n);
+    cin >> arr;
+    mll smap;
+    fl(i, 0, n)
+    {
+        smap[arr[i]]++;
+    }
+
+    ll ans = 0, l = 0, r = 0;
+    for (auto x : smap)
+    {
+        ll strt = x.first;
+        ll tmp = 0, _l = strt, _r = 0;
+        if (smap.count(strt - 1) && smap[strt - 1] >= m)
+            continue;
+        fl(i, strt, smap.rbegin()->first + 1)
+        {
+            if (smap.count(i) && smap[i] >= m)
+            {
+                tmp++;
+                _r = i;
+            }
+            else
+                break;
+        }
+        if (ans < tmp)
+        {
+            ans = tmp;
+            r = _r;
+            l = _l;
+        }
+    }
+    if (ans == 0)
+        pm else cout << l << " " << r << "\n";
 }
 /*
 When you are coding,remember to:
@@ -243,12 +274,12 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, t)
+    fl(i, 0, t)
     {
         solve();
     }
     // solve();
-    // fl(i,t) //Kickstart
+    // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
     //     solve();
