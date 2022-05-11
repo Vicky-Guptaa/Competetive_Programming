@@ -222,27 +222,30 @@ void solve()
 {
     ll n, m;
     cin >> n >> m;
-    vpll arr(n);
+    vll arr(n);
     cin >> arr;
-    sort(vr(arr));
-
-    ll ansMax = 0, ans = 0;
-    ll low = 0;
-    fl(i, 0, n)
+    stack<ll> stck, temp;
+    ll ans = 0;
+    while (m--)
     {
-        if (arr[i].first - arr[low].first < m)
+        ll q;
+        cin >> q;
+        while (!stck.empty()&&stck.top() != q)
         {
-            ans += arr[i].second;
+            ans += arr[stck.top() - 1];
+            temp.push(stck.top());
+            stck.pop();
         }
-        else
+        if (!stck.empty())
+            stck.pop();
+        while (!temp.empty())
         {
-            i--;
-            ans -= arr[low++].second;
+            stck.push(temp.top());
+            temp.pop();
         }
-        // cout << ans << "\n";
-        ansMax = max(ansMax, ans);
+        stck.push(q);
     }
-    cout << ansMax << "\n";
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
