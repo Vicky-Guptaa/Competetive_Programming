@@ -54,7 +54,7 @@ typedef map<ll, ll> mll;
 #define pm cout << "-1\n";
 #define pn cout << "NO\n";
 #define vr(v) v.begin(), v.end()
-#define rv(v) v.end(), v.begin()
+#define rv(v) v.rbegin(), v.rend()
 
 // Debug
 #ifdef Vicky_Gupta
@@ -218,75 +218,43 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+// ll dfs_helper(ll s, ll _k, ll k, vll &arr, vector<vll> &dp)
+// {
+//     if (s == arr.size())
+//     {
+//         return 0;
+//     }
+
+//     if (dp[s][_k] != -1)
+//         return dp[s][_k];
+
+//     ll ans;
+//     if (_k < k)
+//     {
+//         ans = min(dfs_helper(s + 1, _k + 1, k, arr, dp), arr[s] + _k + dfs_helper(s + 1, _k, k, arr, dp));
+//     }
+//     else
+//     {
+//         ans = _k + arr[s] + dfs_helper(s + 1, _k, k, arr, dp);
+//     }
+//     dp[s][_k] = ans;
+//     return ans;
+// }
+
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
-    vector<vll> arr(n, vll(m, 0));
+    ll n, k;
+    cin >> n >> k;
+    vll arr(n);
     cin >> arr;
-    map<pair<ll, ll>, int> fix;
-    fl(i, 0, n)
-    {
-        fl(j, 1, m)
-        {
-            if (arr[i][j - 1] > arr[i][j])
-            {
-                fix[{j - 1, j}]++;
-            }
-        }
-    }
-    fl(i, 0, n)
-    {
-        fl(j, 1, m)
-        {
-            if (arr[i][j - 1] == arr[i][j] && fix.count({j - 1, j}))
-            {
-                fix[{j - 1, j}]++;
-            }
-        }
-    }
-    if (fix.empty())
-    {
-        cout << "1 1\n";
-        return;
-    }
-    ll init1 = fix.begin()->first.first + 1;
-    ll intit2 = fix.begin()->first.second + 1;
-    if (fix.size() == 1 && fix.begin()->second == n)
-    {
-        bool isTrue = false;
-        fl(i, 0, n)
-        {
-            if (arr[init1 - 1][i] > arr[m - 1][i])
-            {
-                isTrue = true;
-            }
-        }
-        if (isTrue)
-        {
-            cout << init1 << " " << m << "\n";
-        }
-        else
-        {
-            cout << init1 << " " << intit2 << "\n";
-        }
-        return;
-    }
-
-    if (fix.size() == 2 && fix.begin()->second == n &&
-        fix.rbegin()->second == n &&
-        fix.begin()->first.second == fix.rbegin()->first.first)
-    {
-        cout << init1 << " " << intit2 + 1 << "\n";
-        return;
-    }
-
-    if (fix.size() == 2 && fix.begin()->second == n && fix.rbegin()->second == n)
-    {
-        cout << fix.begin()->first.first << " " << fix.rbegin()->first.first << "\n";
-        return;
-    }
-    pm
+    ll tc = accumulate(vr(arr), 0ll);
+    ll ec = k * (k - 1) / 2;
+    fl(i, 0, n) arr[i] -= (n - 1 - i);
+    sort(rv(arr));
+    fl(i, 0, k) tc -= arr[i];
+    tc -= ec;
+    cout << tc << "\n";
 }
 /*
 When you are coding,remember to:
