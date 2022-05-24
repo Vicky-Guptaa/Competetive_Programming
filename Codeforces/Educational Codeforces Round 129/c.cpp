@@ -235,9 +235,35 @@ void solve()
 {
     ll n;
     cin >> n;
-    vpll arr(n), brr(n);
+    vll arr(n), brr(n);
     cin >> arr >> brr;
-    
+    vll temp1 = arr, temp2 = brr;
+    sort(vr(temp1));
+    sort(vr(temp2));
+    vpll res;
+    fl(i, 0, n)
+    {
+        fl(j, i + 1, n)
+        {
+            if (temp1[i] == arr[j] && temp2[i] == brr[j])
+            {
+                swap(arr[j], arr[i]);
+                swap(brr[j], brr[i]);
+                res.push_back({i + 1, j + 1});
+                break;
+            }
+        }
+    }
+    if (isSorted(arr) && isSorted(brr))
+    {
+        cout << res.size() << "\n";
+        fl(i, 0, res.size())
+        {
+            cout << res[i] << "\n";
+        }
+    }
+    else
+        pm
 }
 /*
 When you are coding,remember to:
