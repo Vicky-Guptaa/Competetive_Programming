@@ -219,139 +219,6 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-ll LIS(vll &newArr)
-{
-    vector<ll> temp = {newArr[0]};
-    for (int i = 1; i < newArr.size(); i++)
-    {
-        if (temp.back() < newArr[i])
-        {
-            temp.push_back(newArr[i]);
-        }
-        else
-        {
-            ll indx = lower_bound(vr(temp), newArr[i]) - temp.begin();
-            temp[indx] = newArr[i];
-        }
-    }
-    return temp.size();
-}
-
-ll helper2(int n, mll freq)
-{
-    vll newArr(n, 0);
-    ll low = 0, high = n - 1;
-
-    bool chnge = true;
-    for (auto x : freq)
-    {
-        fl(i, 0, x.second)
-        {
-            if (chnge)
-            {
-                newArr[low++] = x.first;
-            }
-            else
-            {
-                newArr[high--] = x.first;
-            }
-            chnge = !chnge;
-        }
-    }
-    ll ans1 = LIS(newArr);
-    reverse(vr(newArr));
-    ll ans2 = LIS(newArr);
-    return min(ans1, ans2);
-}
-
-ll helper3(int n, mll freq)
-{
-    vll newArr(n, 0);
-    multimap<int temp;
-    for (auto x : freq)
-    {
-        temp[x.second] = x.first;
-    }
-    ll low = 0, high = n - 1;
-    if (n % 2 == 0)
-    {
-        low = (n - 1) / 2;
-        high = (n) / 2;
-    }
-    else
-    {
-        low = (n - 2) / 2;
-        high = (n + 1) / 2;
-        auto &itr = *temp.begin();
-        newArr[n / 2] = itr.first;
-        tem
-            temp.erase(itr.first);
-    }
-    bool chnge = true;
-    for (auto x : temp)
-    {
-        fl(i, 0, x.first)
-        {
-            if (chnge)
-            {
-                newArr[low--] = x.second;
-            }
-            else
-            {
-                newArr[high++] = x.second;
-            }
-            chnge = !chnge;
-        }
-    }
-    ll ans1 = LIS(newArr);
-    reverse(vr(newArr));
-    ll ans2 = LIS(newArr);
-    // cout << newArr << endl;
-    // cout << ans1 << " " << ans2 << "\n";
-    return min(ans1, ans2);
-}
-
-ll helper1(int n, mll freq)
-{
-    vll newArr(n, 0);
-    ll low = 0, high = n - 1;
-    if (n % 2 == 0)
-    {
-        low = (n - 1) / 2;
-        high = (n) / 2;
-    }
-    else
-    {
-        low = (n - 2) / 2;
-        high = (n + 1) / 2;
-        auto &itr = *freq.begin();
-        newArr[n / 2] = itr.first;
-        itr.second--;
-    }
-    bool chnge = true;
-    for (auto x : freq)
-    {
-        fl(i, 0, x.second)
-        {
-            if (chnge)
-            {
-                newArr[low--] = x.first;
-            }
-            else
-            {
-                newArr[high++] = x.first;
-            }
-            chnge = !chnge;
-        }
-    }
-    ll ans1 = LIS(newArr);
-    reverse(vr(newArr));
-    ll ans2 = LIS(newArr);
-    // cout << newArr << "\n";
-    // cout << ans1 << " " << ans2 << "\n";
-    return min(ans1, ans2);
-}
-
 void solve()
 {
     ll n;
@@ -360,9 +227,15 @@ void solve()
     cin >> arr;
     mll freq;
     fl(i, 0, n) freq[arr[i]]++;
-    ll res = max(helper1(n, freq), max(helper2(n, freq), helper3(n, freq)));
-    // cout << helper1(n, freq) << " " << helper2(n, freq) << "\n";
-    cout << res << "\n";
+    ll ans = 0;
+    ll isOne = 0;
+    for (auto x : freq)
+    {
+        ans += (x.second > 1);
+        isOne += (x.second == 1);
+    }
+    ans += (isOne + 1) / 2;
+    cout << ans << '\n';
 }
 /*
 When you are coding,remember to:
