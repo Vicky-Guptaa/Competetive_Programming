@@ -219,78 +219,68 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-ll helper(int k, int s, vll &arr, vector<vi> &dp)
+vll moveX = {0, 1};
+vll moveY = {1, 0};
+
+ll dfs_helper(int x, int y, vector<string> &grid, vector<vll> &dp)
 {
-    if (k <= 0 || s >= arr.size())
+    int rows = grid.size(), cols = grid[0].size();
+    if (x == rows - 1 && y == cols - 1)
     {
-        if (k == 0)
-            return 1;
-        return 0;
+        return 1;
     }
 
-    if (dp[s][k] != -1)
-        return dp[s][k];
+    if (dp[x][y] != -1)
+        return dp[x][y];
 
     ll ways = 0;
-
-    if (k >= arr[s])
+    fl(i, 0, 2)
     {
-        ways += helper(k, s + 1, arr, dp) + helper(k - arr[s], s, arr, dp);
+        int _x = x + moveX[i], _y = y + moveY[i];
+        if (_x >= rows || _x < 0 || _y >= cols || _y < 0 || grid[_x][_y] == '*')
+            continue;
+        ways += dfs_helper(_x, _y, grid, dp);
+        ways %= mod;
     }
-    else
-    {
-        ways += helper(k, s + 1, arr, dp);
-    }
-
-    dp[s][k] = ways;
+    dp[x][y] = ways;
     return ways;
 }
 
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vll arr(n);
-    cin >> arr;
-
-    vector<vi> dp(n + 1, vi(k + 1, 0));
-
-    // ll ans = helper(k, 0, arr, dp);
+    ll n;
+    cin >> n;
+    vector<string> grid(n);
+    cin >> grid;
+    vector<vll> dp(n, vll(n, 0  ));
+    if (grid[0][0] == '*' || grid[n - 1][n - 1] == '*')
+    {
+        cout << 0 << "\n";
+        return;
+    }
+    // ll ans = dfs_helper(0, 0, grid, dp);
     // cout << ans << "\n";
-    fl(i, 0, n + 1)
+    rl(x, n - 1, 0)
     {
-        dp[i][0] = 1;
-    }
-    fl(i, 1, k + 1)
-    {
-        dp[0][k] = 0;
-    }
-    fl(i, 1, n + 1)
-    {
-        fl(j, 1, k + 1)
+        rl(y, n - 1, 0)
         {
-            if (j >= arr[i - 1])
+            if (x == n - 1 && y == n - 1)
             {
-                dp[i][j] += dp[i][j - arr[i - 1]];
-                dp[i][j] += dp[i - 1][j];
+                dp[x][y] = 1;
             }
             else
             {
-                dp[i][j] += dp[i - 1][j];
+                ll move2 = (y == n - 1) ? 0 : dp[x][y + 1];
+                ll move1 = (x == n - 1) ? 0 : dp[x + 1][y];
+                dp[x][y] = move1 + move2;
+                dp[x][y] %= mod;
+                if (grid[x][y] == '*')
+                    dp[x][y] = 0;
             }
-            dp[i][j] %= mod;
         }
     }
 
-    // fl(i, 0, n + 1)
-    // {
-    //     fl(j, 0, k + 1)
-    //     {
-    //         cout << dp[i][j] << " ";
-    //     }
-    //     cout << '\n';
-    // }
-    cout << dp[n][k] << '\n';
+    cout << dp[0][0] << "\n";
 }
 /*
 When you are coding,remember to:
@@ -307,9 +297,9 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, 0, t)
+    // ll t;
+    // cin>>t;
+    // fl(i,0,t)
     // {
     //     solve();
     // }

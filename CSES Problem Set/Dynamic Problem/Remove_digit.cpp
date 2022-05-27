@@ -219,78 +219,46 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-ll helper(int k, int s, vll &arr, vector<vi> &dp)
+ll helper(int n, vll &dp)
 {
-    if (k <= 0 || s >= arr.size())
-    {
-        if (k == 0)
-            return 1;
+    if (n == 0)
         return 0;
-    }
 
-    if (dp[s][k] != -1)
-        return dp[s][k];
+    if (dp[n] != -1)
+        return dp[n];
 
-    ll ways = 0;
-
-    if (k >= arr[s])
+    string num = to_string(n);
+    ll ways = 1e9;
+    fl(i, 0, num.size())
     {
-        ways += helper(k, s + 1, arr, dp) + helper(k - arr[s], s, arr, dp);
+        ll dig = num[i] - '0';
+        if (dig == 0)
+            continue;
+        ways = min(1 + helper(n - dig, dp), ways);
     }
-    else
-    {
-        ways += helper(k, s + 1, arr, dp);
-    }
-
-    dp[s][k] = ways;
+    dp[n] = ways;
     return ways;
 }
 
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vll arr(n);
-    cin >> arr;
-
-    vector<vi> dp(n + 1, vi(k + 1, 0));
-
-    // ll ans = helper(k, 0, arr, dp);
+    ll n ;
+    cin >> n;
+    vll dp(n + 1, 1e9);
+    // ll ans = helper(n, dp);
     // cout << ans << "\n";
-    fl(i, 0, n + 1)
-    {
-        dp[i][0] = 1;
-    }
-    fl(i, 1, k + 1)
-    {
-        dp[0][k] = 0;
-    }
+    dp[0] = 0;
     fl(i, 1, n + 1)
     {
-        fl(j, 1, k + 1)
+        string num = to_string(i);
+
+        fl(j, 0, num.size())
         {
-            if (j >= arr[i - 1])
-            {
-                dp[i][j] += dp[i][j - arr[i - 1]];
-                dp[i][j] += dp[i - 1][j];
-            }
-            else
-            {
-                dp[i][j] += dp[i - 1][j];
-            }
-            dp[i][j] %= mod;
+            ll dig = num[j] - '0';
+            dp[i] = min(dp[i], 1 + dp[i - dig]);
         }
     }
-
-    // fl(i, 0, n + 1)
-    // {
-    //     fl(j, 0, k + 1)
-    //     {
-    //         cout << dp[i][j] << " ";
-    //     }
-    //     cout << '\n';
-    // }
-    cout << dp[n][k] << '\n';
+    cout << dp[n] << "\n";
 }
 /*
 When you are coding,remember to:
