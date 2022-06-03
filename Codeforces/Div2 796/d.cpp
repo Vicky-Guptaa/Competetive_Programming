@@ -227,19 +227,16 @@ void solve()
     if (n > m)
     {
         ll ans = 0, sum = 0, low = 0;
-        fl(i, 0, n)
+        fl(i, 0, m)
         {
-            if (i - low < m)
-            {
-                sum += arr[i];
-                continue;
-            }
+            sum += arr[i];
+        }
+        ans = max(ans, sum);
+        fl(i, m, n)
+        {
+            sum -= arr[low++];
+            sum += arr[i];
             ans = max(ans, sum);
-            if (i - low == m)
-            {
-                sum -= arr[low];
-                low++;
-            }
         }
         ans += (m - 1) * m / 2;
         cout << ans << "\n";
