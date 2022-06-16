@@ -224,30 +224,36 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-
-    mll freq;
-    map<int, pair<int, int>> occr;
-
-    fl(i, 0, n)
+    map<int, vi> mmap;
+    fl(i, 0, n) mmap[arr[i]].push_back(i);
+    ll res = 1, ansA = arr[0], ansL = 1, ansR = 1;
+    for (auto x : mmap)
     {
-        freq[arr[i]]++;
-        occr[arr[i]].first = -1;
-        occr[arr[i]].second = -1;
+        ll ta = x.first, tl = x.second[0], tr = x.second[0], tres = 1, sum = 1, lstrt = x.second[0];
+        for (int j = 1; j < x.second.size(); j++)
+        {
+            sum += -x.second[j] + x.second[j - 1] + 2;
+            if (tres < sum)
+            {
+                tr = x.second[j] + 1;
+                tl = lstrt + 1;
+                tres = sum;
+            }
+            if (sum <= 0)
+            {
+                lstrt = x.second[j];
+                sum = 1;
+            }
+        }
+        if (res < tres)
+        {
+            res = tres;
+            ansL = tl;
+            ansR = tr;
+            ansA = ta;
+        }
     }
-    fl(i, 0, n)
-    {
-        if (occr[arr[i]].first == -1)
-            occr[arr[i]].first = i;
-        occr[arr[i]].second = i;
-    }
-    ll a = freq.begin()->first;
-    ll l = occr[a].first, r = occr[a].second;
-
-    for (auto x : freq)
-    {
-        ll pFreq = freq[a];
-        ll nFreq = occr[x.first].second - occr[x.first].first + 1;
-    }
+    cout << ansA << " " << ansL << " " << ansR << "\n";
 }
 /*
 When you are coding,remember to:
