@@ -218,115 +218,35 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
-vector<int> Primes(ll n)
-{
-    vector<bool> prime(n + 1, false);
-    for (long long i = 2; i <= n; i++)
-    {
-        for (long long j = i * i; j < n + 1ll; j += i)
-        {
-            prime[j] = true;
-        }
-    }
-    vector<int> list;
-    fl(i, 2, n + 1)
-    {
-        if (prime[i] == false)
-            list.push_back(i);
-    }
-    return list;
-}
-
-vector<set<int>> helper(vi prime, ll n)
-{
-    vector<set<int>> res(n + 1);
-    fl(i, 0, prime.size())
-    {
-        for (int j = prime[i]; j < n + 1; j += prime[i])
-        {
-            res[j].insert(prime[i]);
-        }
-    }
-    return res;
-}
-
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
-    vector<int> prime = Primes(n);
-    vector<set<int>> res = helper(prime, n);
-    res[1].insert(1);
-    map<int, pair<int, set<int>>> factors;
-    set<int> act;
-    while (m--)
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    sort(vr(arr));
+    ll sum = accumulate(vr(arr), 0ll);
+    ll res = sum;
+    fl(i, 0, n)
     {
-        char ch;
-        ll num;
-        cin >> ch >> num;
-
-        if (ch == '-')
+        fl(j, 2, arr[i])
         {
-            if (act.count(num))
-            {
-                for (auto x : res[num])
-                {
-                    factors[x].first--;
-                    factors[x].second.erase(num);
-                    if (factors[x].first == 0)
-                    {
-                        factors.erase(x);
-                    }
-                }
-                act.erase(num);
-                cout << "Success\n";
-            }
-            else
-            {
-                cout << "Already off\n";
-            }
-        }
-        else
-        {
-            bool isSafe = true;
-            ll conflict = -1;
-            for (auto x : res[num])
-            {
-                if (factors.count(x))
-                {
-                    conflict = *factors[x].second.begin();
-                    isSafe = false;
-                    break;
-                }
-            }
-            if (isSafe)
-            {
-                for (auto x : res[num])
-                {
-                    factors[x].first++;
-                    factors[x].second.insert(num);
-                }
-                act.insert(num);
-                cout << "Success\n";
-            }
-            else if (act.count(num))
-            {
-                cout << "Already on\n";
-            }
-            else
-            {
-                cout << "Conflict with " << conflict << "\n";
-            }
+            if (arr[i] % j != 0)
+                continue;
+            ll csum = sum - arr[i] - arr[0];
+            csum += arr[i] / j;
+            csum += arr[0] * j;
+            res = min(res, csum);
         }
     }
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:
-      - clear the arrays if a problem has many tasks.
-      - pay attention to some special cases(n=0,1).
-      - Don't code before think completely.
-      - ...
+    - clear the arrays if a problem has many tasks.
+    - pay attention to some special cases(n=0,1).
+    - Don't code before think completely.
+    - ...
 */
 // Main
 int main()
@@ -336,13 +256,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
+        ll t = 1;
     // cin >> t;
-    // fl(i, 0, t)
-    // {
-    //     solve();
-    // }
-    solve();
+    fl(i, 0, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
