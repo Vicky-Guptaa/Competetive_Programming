@@ -218,11 +218,54 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+bool isValid(vll &arr, ll mid)
+{
+    ll sum = 0;
+    fl(i, 0, arr.size())
+    {
+        sum += mid - arr[i];
+        if (sum < 0)
+            return false;
+    }
+    return true;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n);
+    cin >> arr;
+    ll time = 0;
+    ll low = 1, high = 1e9;
+    while (low <= high)
+    {
+        ll mid = low + (high - low) / 2;
+        if (isValid(arr, mid))
+        {
+            high = mid - 1;
+            time = mid;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    ll arrSum = accumulate(vr(arr), 0ll);
+    ll q;
+    cin >> q;
+    while (q--)
+    {
+        ll tme;
+        cin >> tme;
+        if (tme < time)
+        {
+            pm continue;
+        }
+        ll ans = ceil(arrSum / (long double)tme);
+        cout << ans << "\n";
+    }
 }
 /*
 When you are coding,remember to:
@@ -239,8 +282,8 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
+        ll t = 1;
+    // cin >> t;
     fl(i, 0, t)
     {
         solve();

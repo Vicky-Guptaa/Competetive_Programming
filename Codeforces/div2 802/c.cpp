@@ -242,7 +242,29 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-
+    ll res = 0;
+    ll loper = 0;
+    fl(i, 1, n)
+    {
+        arr[i] -= loper;
+        if (arr[i] > arr[i - 1])
+        {
+            loper += arr[i] - arr[i - 1];
+            arr[i] -= arr[i] - arr[i - 1];
+        }
+    }
+    ll roper = 0;
+    rl(i, n - 2, 0)
+    {
+        arr[i] -= roper;
+        if (arr[i] > arr[i + 1])
+        {
+            roper += arr[i] - arr[i + 1];
+            arr[i] -= arr[i] - arr[i + 1];
+        }
+    }
+    res += loper + roper + abs(arr[0]);
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:
