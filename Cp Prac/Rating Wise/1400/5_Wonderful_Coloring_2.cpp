@@ -226,7 +226,53 @@ void solve()
     cin >> arr;
     mll freq;
     fl(i, 0, n) freq[arr[i]]++;
-    
+    stack<int> list[m + 1];
+
+    ll itr = 1;
+    for (auto x : freq)
+    {
+        ll cntr = x.second;
+        for (itr; (list[itr].empty() || list[itr].top() != x.first) && cntr != 0; itr = (itr + 1) % (m + 1))
+        {
+            if (itr == 0)
+            {
+                itr++;
+                if (!list[itr].empty() && list[itr].top() == x.first)
+                    break;
+            }
+            cntr--;
+            list[itr].push(x.first);
+        }
+        while (cntr > 0)
+        {
+            cntr--;
+            list[0].push(x.first);
+        }
+    }
+    ll minSize = 1e9;
+    fl(i, 1, m + 1) minSize = min(minSize, (ll)list[i].size());
+
+    fl(i, 1, m + 1)
+    {
+        while (minSize < list[i].size())
+        {
+            list[0].push(list[i].top());
+            list[i].pop();
+        }
+    }
+    map<int, queue<int>> indx;
+    fl(i, 0, n) indx[arr[i]].push(i);
+
+    fl(i, 0, m + 1)
+    {
+        while (!list[i].empty())
+        {
+            arr[indx[list[i].top()].front()] = i;
+            indx[list[i].top()].pop();
+            list[i].pop();
+        }
+    }
+    cout << arr << "\n";
 }
 /*
 When you are coding,remember to:
