@@ -218,69 +218,38 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-void solve(vll &fact)
+void solve()
 {
     ll n;
     cin >> n;
     vll arr(n);
     cin >> arr;
-    set<int> oset;
-    vll mexArr(n);
-    int strt = 0;
-    fl(i, 0, n)
+    vll pos(n);
+
+    fl(i, 0, n) pos[arr[i]] = i;
+
+    ll res = 1;
+    if (n <= 1)
     {
-        oset.insert(arr[i]);
-        while (oset.count(strt))
-        {
-            strt++;
-        }
-        mexArr[i] = strt;
+        cout << res << "\n";
+        return;
     }
-    ll ans = 0, prev = 0;
-    strt = 0;
-    vpll dist;
-    fl(i, 1, n)
+    ll Min = min(pos[0], pos[1]), Max = max(pos[0], pos[1]);
+
+    fl(i, 2, n)
     {
-        if (mexArr[i] == mexArr[i - 1])
+        if (pos[i] > Min && pos[i] < Max)
         {
-            ans++;
+            res *= (Max - Min + 1 - i);
+            res %= mod;
         }
         else
         {
-            if (ans != 0)
-            {
-                int cnt = 0;
-                fl(j, prev, i + 1)
-                {
-                    if (arr[j] > mexArr[i])
-                        cnt++;
-                }
-                dist.push_back({ans, cnt});
-            }
-            ans = 0;
-            prev = i;
+            Min = min(Min, pos[i]);
+            Max = max(Max, pos[i]);
         }
     }
-    if (ans != 0)
-    {
-        int cnt = 0;
-        dist.push_back({ans, cnt});
-    }
-
-    cout << mexArr << "\n";
-    for (auto x : dist)
-    {
-        cout << x << "\n";
-    }
-
-    if (dist.empty())
-    {
-        cout << 1 << "\n";
-    }
-    else
-    {
-        
-    }
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:
@@ -296,19 +265,12 @@ int main()
     //    freopen("Input.txt", "r", stdin);
     //    freopen("Output.txt", "w", stdout);
     //#endif
-    vll fact(1e5 + 1, 0);
-    fact[1] = 1;
-    fl(i, 2, 1e5 + 1)
-    {
-        fact[i] = fact[i - 1] * i;
-        fact[i] %= mod;
-    }
     You Can Do_It
         ll t;
     cin >> t;
     fl(i, 0, t)
     {
-        solve(fact);
+        solve();
     }
     // solve();
     // fl(i,0,t) //Kickstart
