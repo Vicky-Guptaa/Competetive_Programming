@@ -218,11 +218,47 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+ll helper(int s, int src, vll &arr, map<int, vi> &list, vector<vll> &dp)
+{
+    if (s == arr.size())
+        return 0;
+
+    if (dp[s][src] != -1)
+        return dp[s][src];
+    ll ans = 1e18;
+    for (auto x : list[arr[s]])
+    {
+        if (s == 0)
+        {
+            ans = min(ans, helper(s + 1, x, arr, list, dp));
+        }
+        else
+        {
+            ans = min(ans, abs(src - x) + helper(s + 1, x, arr, list, dp));
+        }
+    }
+    return dp[s][src] = ans;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n);
+    cin >> arr;
+    ll m;
+    cin >> m;
+    vll brr(m);
+    cin >> brr;
+    map<int, vector<int>> list;
+    fl(i, 0, m)
+    {
+        list[brr[i]].push_back(i);
+    }
+    vector<vll> dp(n + 1, (vll(m + 1, -1)));
+    ll ans = helper(0, 0, arr, list, dp);
+    cout << ans;
 }
 /*
 When you are coding,remember to:
@@ -241,16 +277,16 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
-    // fl(i,0,t) //Kickstart
+    // fl(i, 0, t)
     // {
-    //     cout<<"Case #"<<i+1<<": ";
     //     solve();
-    //     cout<<'\n';
     // }
+    // solve();
+    fl(i, 0, t) // Kickstart
+    {
+        cout << "Case #" << i + 1 << ": ";
+        solve();
+        cout << '\n';
+    }
     return 0;
 }

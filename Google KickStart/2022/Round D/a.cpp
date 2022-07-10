@@ -239,7 +239,7 @@ void solve()
     {
         ans += (arr[(size - 1) / 2] + arr[size / 2]) / (long double)2;
     }
-    cout << ans;
+    printf("%0.6Lf", ans);
 }
 /*
 When you are coding,remember to:
@@ -265,9 +265,9 @@ int main()
     // solve();
     fl(i, 0, t) // Kickstart
     {
-        cout << "Case #" << i + 1 << ": ";
+        printf("Case #%d: ", i + 1);
         solve();
-        cout << '\n';
+        printf("\n");
     }
     return 0;
 }

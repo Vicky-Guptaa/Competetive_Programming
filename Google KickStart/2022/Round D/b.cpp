@@ -219,14 +219,14 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-long long solver(vll &arr, vll &dp, int k)
+long long solver(vll &arr, int k)
 {
-    ll sum = 0, minSum = -1e18;
+    ll sum = 0;
     fl(i, 0, k)
     {
         sum += arr[i];
     }
-    minSum = sum;
+    ll minSum = sum;
     fl(i, k, arr.size())
     {
         sum += arr[i];
@@ -238,11 +238,11 @@ long long solver(vll &arr, vll &dp, int k)
 
 void helper(vll &arr, vll &dp)
 {
-    int n = arr.size(), sum = accumulate(vr(arr), 0ll);
-    dp[0] = sum;
+    long long n = arr.size(), sum = accumulate(vr(arr), 0ll);
+    dp[n] = sum;
     for (int i = 1; i <= n; i++)
     {
-        dp[i] = sum - solver(arr, dp, i);
+        dp[n - i] = sum - solver(arr, i);
     }
 }
 
@@ -263,11 +263,22 @@ void solve()
     helper(arr, dpn);
     helper(brr, dpm);
     ll ans = 0;
-    for (int i = 1; i <= k; i++)
+
+    // cout << "\n";
+    // for (auto x : dpn)
+    //     cout << x << " ";
+
+    for (int i = 0; i <= k; i++)
     {
-        ans = max(ans, max(dpn[i] + dpm[k - i], dpn[k - i] + dpm[i]))
+        ll oneA = i;
+        ll twoA = k - i;
+
+        if (oneA <= n && twoA <= m && oneA >= 0 && twoA >= 0)
+            ans = max(ans, dpn[oneA] + dpm[twoA]);
+        if (oneA <= m && twoA <= n && oneA >= 0 && twoA >= 0)
+            ans = max(ans, dpn[twoA] + dpm[oneA]);
     }
-    cout<<ans<<"\n";
+    cout << ans;
 }
 /*
 When you are coding,remember to:
@@ -286,16 +297,16 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
-    // fl(i,0,t) //Kickstart
+    // fl(i, 0, t)
     // {
-    //     cout<<"Case #"<<i+1<<": ";
     //     solve();
-    //     cout<<'\n';
     // }
+    // solve();
+    fl(i, 0, t) // Kickstart
+    {
+        cout << "Case #" << i + 1 << ": ";
+        solve();
+        cout << '\n';
+    }
     return 0;
 }
