@@ -218,57 +218,61 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+bool isBipartite(int src, vector<int> list[], vi &visit, vi &color)
+{
+    visit[src] = true;
+    for (auto x : list[src])
+    {
+        if (visit[x] == false)
+        {
+            color[x] = !color[src];
+            if (!isBipartite(x, list, visit, color))
+            {
+                return false;
+            }
+        }
+        else if (color[x] == color[src])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    vpll arr(n);
-    cin >> arr;
     vector<int> list[n + 1];
+    mll freq;
     fl(i, 0, n)
     {
-        int a = arr[i].first;
-        int b = arr[i].second;
-        if (a > b)
-        {
-            arr[i].first = b;
-            arr[i].second = a;
-        }
-
-        if (a == b)
+        int u, v;
+        cin >> u >> v;
+        freq[u]++;
+        freq[v]++;
+        list[u].push_back(v);
+        list[v].push_back(u);
+    }
+    for (auto x : freq)
+    {
+        if (x.second > 2)
         {
             pn return;
         }
     }
-    set<int> s1, s2;
-    mll f1, f2;
-    fl(i, 0, n)
+    vi visit(n + 1, false);
+    vi color(n + 1, -1);
+    for (int i = 1; i <= n; i++)
     {
-        ll a = arr[i].first, b = arr[i].second;
-        if (!s1.count(a) && !s1.count(b))
-        {
-            s1.insert(a);
-            s1.insert(b);
-            f1[a] = b;
-            continue;
-        }
-        if (!s2.count(a) && !s2.count(b))
-        {
-            s2.insert(a);
-            s2.insert(b);
-            f2[a] = b;
-            continue;
-        }
+        if (color[i] == -1)
+            color[i] = 1;
 
-        if (s1.count(a))
+        if (!isBipartite(i, list, visit, color))
         {
-            if (f1.count(a))
-            {
-                s1.erase(a);
-                s1.erase(f1[a]);
-            }
+            pn return;
         }
-        pn return;
     }
     py
 }

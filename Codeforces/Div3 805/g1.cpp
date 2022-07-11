@@ -217,24 +217,30 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-void helper(int src, set<int> &oset, vi &visit, vi list[])
+bool helper(int src, set<int> &oset, vi &visit, vi list[])
 {
     visit[src] = true;
-    indx = max(indx, i);
     for (auto x : list[src])
     {
         if (visit[x] == false)
         {
-            if (i < arr.size() && x == arr[i])
+            bool isRem = false;
+            if (oset.count(x))
             {
-                helper(x, i + 1, indx, arr, visit, list);
+                isRem = true;
+                oset.erase(x);
             }
-            else
-            {
-                helper(x, i, indx, arr, visit, list);
-            }
+            if (oset.empty())
+                return true;
+
+            if (helper(x, oset, visit, list))
+                return true;
+
+            if (isRem)
+                oset.insert(x);
         }
     }
+    return false;
 }
 
 // Code
@@ -243,9 +249,12 @@ void solve()
     ll n;
     cin >> n;
     vector<int> list[n + 1];
+    mll freq;
     fl(i, 0, n - 1)
     {
         ll u, v;
+        freq[u]++;
+        freq[v]++;
         cin >> u >> v;
         list[u].push_back(v);
         list[v].push_back(u);
@@ -259,19 +268,27 @@ void solve()
         cin >> m;
         vll arr(m);
         cin >> arr;
+        if (m == 1)
+        {
+            py continue;
+        }
         set<int> oset(vr(arr));
-        int indx = 1;
         vector<int> visit(n + 1, 0);
-        oset.erase(i);
-        helper(arr[0], oset, visit, list);
-        if (indx == m)
+        bool isFind = false;
+        for (auto x : arr)
         {
-            py
+            if (freq[x] == 1)
+            {
+                oset.erase(x);
+                if (helper(x, oset, visit, list))
+                {
+                    isFind = true;
+                    py break;
+                }
+            }
         }
-        else
-        {
+        if (!isFind)
             pn
-        }
     }
 }
 /*
