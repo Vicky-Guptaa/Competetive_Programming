@@ -225,32 +225,38 @@ void solve()
     vll arr(n);
     cin >> arr;
     sort(vr(arr));
-    vector<ll> ans;
-    if (arr.back() <= k || arr.back() == arr.front())
+    vector<set<ll>> list(3001);
+    fl(i, 0, n)
     {
-        cout << "0\n";
-    }
-    else
-    {
-        ans.push_back(arr.front());
-        ll num = ans.front();
-        fl(i, 1, n)
-        {
-            ll Min = 1e9, num1 = arr[i];
+        if (list[arr[i]].empty())
             fl(j, 1, k + 1)
             {
-                if (abs((arr[i] / j) - num) < Min)
-                {
-                    Min = abs((arr[i] / j) - num);
-                    num1 = (arr[i] / j);
-                }
+                list[arr[i]].insert(arr[i] / j);
             }
-            ans.push_back(num1);
-        }
-        sort(vr(ans));
-        ll res = ans.back() - ans.front();
-        cout << res << '\n';
     }
+    ll res = 1e18;
+    fl(i, 0, arr.front() + 1)
+    {
+        ll tmx = 0;
+        bool isFound = true, mnFind = false;
+        fl(j, 0, n)
+        {
+            auto pr = list[arr[j]].lower_bound(i);
+            if (pr == list[arr[j]].end())
+            {
+                isFound = false;
+                break;
+            }
+            tmx = max(tmx, *pr);
+            if (*pr == i)
+                mnFind = true;
+        }
+        if (isFound && mnFind)
+        {
+            res = min(tmx - i, res);
+        }
+    }
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:

@@ -222,7 +222,24 @@ void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n);
+    cin >> arr;
+
+    map<int, set<int>> omap;
+    fl(i, 0, n)
+    {
+        if (omap[arr[i]].empty())
+            omap[arr[i]].insert(i);
+        else if ((i - *omap[arr[i]].rbegin() - 1) % 2 == 0)
+        {
+            omap[arr[i]].insert(i);
+        }
+    }
+    fl(i, 0, n)
+    {
+        cout << omap[i + 1].size() << " ";
+    }
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
