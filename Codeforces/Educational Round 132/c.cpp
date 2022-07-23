@@ -220,9 +220,82 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    string str;
+    cin >> str;
+    int n = str.size();
+    int left = 0, right = 0, ques = 0;
+    fl(i, 0, n)
+    {
+        if (str[i] == '(')
+            left++;
+        else if (str[i] == ')')
+            right++;
+        else
+            ques++;
+    }
+    if (ques == 0 || abs(left - right) == ques)
+    {
+        py return;
+    }
+    ques -= abs(left - right);
+    int nrht = (left - right) + ques / 2, nlft = ques / 2;
+    if (left < right)
+    {
+        nlft = (right - left) + ques / 2, nrht = ques / 2;
+    }
+    int itr = 0;
+    while (itr < n)
+    {
+        if (nlft != 0)
+        {
+            if (str[itr] == '?')
+            {
+                if (nlft == 1)
+                {
+                    nrht--;
+                    str[itr] = ')';
+                    while (itr < n && str[itr] != '?')
+                        itr++;
+                    str[itr] = '(';
+                }
+                else
+                {
+                    str[itr] = '(';
+                }
+                nlft--;
+            }
+        }
+        else
+        {
+            if (str[itr] == '?')
+            {
+                str[itr] = ')';
+                nrht--;
+            }
+        }
+        itr++;
+    }
+    if (nlft < 0 || nrht < 0)
+    {
+        py return;
+    }
+    stack<char> st;
+    fl(i, 0, n)
+    {
+        if (!st.empty() && str[i] == ')' && st.top() == '(')
+            st.pop();
+        else
+            st.push(str[i]);
+    }
+
+    if (st.empty())
+    {
+        pn
+    }
+    else
+    {
+        py
+    }
 }
 /*
 When you are coding,remember to:

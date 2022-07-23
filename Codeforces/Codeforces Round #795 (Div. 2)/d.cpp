@@ -219,69 +219,45 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-string Testing(ll t, vll temp)
+string solve1(vll arr, ll n, ll idx)
 {
-    ll n = t;
-    // cin >> n;
-    vll arr = temp;
-    // cin >> arr;
-
-    for (int i = 0; i < n; i++)
+    ll sum = arr[idx], Max = arr[idx];
+    rl(i, idx - 1, 0)
     {
-        ll sum = arr[i];
-        ll Max = arr[i];
-        for (int j = i + 1; j < n; j++)
+        sum += arr[i];
+        if (sum > Max)
         {
-            sum += arr[j];
-            Max = max(Max, arr[j]);
-            if (sum > Max)
-            {
-                return "No";
-            }
+            return "NO";
         }
     }
-    return "Yes";
+    sum = arr[idx], Max = arr[idx];
+    fl(i, idx + 1, n)
+    {
+        sum += arr[i];
+        if (sum > Max)
+        {
+            return "NO";
+        }
+    }
+    return "YES";
 }
 
-string solve(ll t, vll temp)
+void solve()
 {
-    ll n = t;
-    // cin >> n;
-    vll arr = temp;
-    // cin >> arr;
-    int cnt = 0;
-    for (auto x : temp)
-    {
-        if (x <= 0)
-            cnt++;
-    }
-    if (cnt == t)
-    {
-        return "Yes";
-    }
-    ll ans = arr[0], sum = arr[0], Max = INT_MIN;
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    ll idx = max_element(vr(arr)) - arr.begin();
 
-    for (int i = 1; i < n; i++)
+    fl(i, 0, n)
     {
-        Max = max(Max, arr[i]);
-        sum += arr[i];
-        ans = max(ans, sum);
-        if (sum < 0)
+        if (arr[idx] == arr[i] && solve1(arr, n, i) == "NO")
         {
-            Max = INT_MIN;
-            sum = 0;
-        }
-        else if (sum > Max)
-        {
-            return "No";
+            pn return;
         }
     }
-    Max = *max_element(vr(arr));
-    if (Max < ans)
-    {
-        return "No";
-    }
-    return "Yes";
+    py
 }
 /*
 When you are coding,remember to:
@@ -298,30 +274,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        string a1,
-        a2;
-    do
+        ll t;
+    cin >> t;
+    fl(i, 0, t)
     {
-        ll n = rand() % 10 + 1;
-        vll arr;
-        fl(i, 0, n)
-        {
-            int t = rand() & 1;
-            ll num = rand() % 100;
-            if (t)
-                arr.push_back(-num);
-            else
-                arr.push_back(num);
-        }
-        cout << n << "\n";
-        cout << arr << "\n";
-        a2 = Testing(n, arr);
-        a1 = solve(n, arr);
-        cout << a1 << " " << a2 << endl;
-    } while (a1 == a2);
-
-    //     cout
-    // << solve() << "\n";
+        solve();
+    }
+    // solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

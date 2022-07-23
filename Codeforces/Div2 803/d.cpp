@@ -218,11 +218,45 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+bool isValid(vll &temp, ll mid, ll low)
+{
+    int cnt = 0;
+    fl(i, 0, temp.size())
+    {
+        if (temp[i] <= mid && low <= temp[i])
+            cnt++;
+    }
+    if (cnt & 1)
+        return true;
+    return false;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    
+    ll low = 1, high = n;
+    while (low <= high)
+    {
+        ll mid = low + (high - low) / 2;
+        cout << "? " << low << " " << mid << endl;
+        cout.flush();
+
+        vll temp(mid - low + 1);
+        cin >> temp;
+
+        if (isValid(temp, mid, low))
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    cout << "! " << low << endl;
+    cout.flush();
 }
 /*
 When you are coding,remember to:

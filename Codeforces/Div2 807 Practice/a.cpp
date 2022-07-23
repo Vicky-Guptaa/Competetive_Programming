@@ -220,33 +220,19 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
-    vll arr(n);
+    ll n, d;
+    cin >> n >> d;
+    vll arr(2 * n);
     cin >> arr;
-    ll ans = 0, preq = 1;
-    string s = "1";
-    rl(i, n - 2, 0)
+    sort(vr(arr));
+    fl(i, 0, n)
     {
-        if (preq < q && arr[i] > preq)
+        if (arr[i + n] - arr[i] < d)
         {
-            ans++;
-            preq++;
-            s += "1";
-        }
-        else if (arr[i] <= preq)
-        {
-            ans++;
-            s += "1";
-        }
-        else
-        {
-            s += "0";
+            pn return;
         }
     }
-    reverse(vr(s));
-    cout
-        << s << "\n";
+    py
 }
 /*
 When you are coding,remember to:

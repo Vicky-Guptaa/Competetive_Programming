@@ -217,36 +217,30 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+ll helper(int s, int bad, int key, vll &arr, vector<vll> &dp)
+{
+    if (s == arr.size() || bad == 31)
+        return 0;
+
+    if (dp[s][bad] != -1)
+        return dp[s][bad];
+
+    ll goodKey = (arr[s] / (1 << bad)) - key + helper(s + 1, bad, key, arr, dp);
+    ll badKey = (arr[s] / (1 << (bad + 1)))  + helper(s + 1, bad + 1, key, arr, dp);
+
+    return dp[s][bad] = max(goodKey, badKey);
+}
+
 // Code
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    ll n, key;
+    cin >> n >> key;
     vll arr(n);
     cin >> arr;
-    ll ans = 0, preq = 1;
-    string s = "1";
-    rl(i, n - 2, 0)
-    {
-        if (preq < q && arr[i] > preq)
-        {
-            ans++;
-            preq++;
-            s += "1";
-        }
-        else if (arr[i] <= preq)
-        {
-            ans++;
-            s += "1";
-        }
-        else
-        {
-            s += "0";
-        }
-    }
-    reverse(vr(s));
-    cout
-        << s << "\n";
+    vector<vector<ll>> dp(n + 1, vll(31, -1));
+    ll ans = helper(0, 0, key, arr, dp);
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:

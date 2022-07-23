@@ -219,21 +219,21 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-bool helper(int x, int y, int sum, vector<vi> &mat, vector<vector<vi>> &dp)
+bool helper(int x, int y, int sum, vector<vi> &mat, map<pair<int, ppi>, bool> &dp)
 {
-    if (x >= mat.size() || y >= mat[0].size() || abs(sum) > (mat[0].size() + mat.size()) / 2)
+    if (x >= mat.size() || y >= mat[0].size() || abs(sum) > (mat[0].size() + mat.size() - 1) / 2)
         return false;
 
-    if (dp[x][y][sum] != -1)
-        return dp[x][y][sum];
+    if (dp.count({x, {y, sum}}))
+        return dp[{x, {y, sum}}];
 
     if (x == mat.size() - 1 && y == mat[0].size() - 1 && sum + mat[x][y] == 0)
     {
         return true;
     }
 
-    dp[x][y][sum] = helper(x + 1, y, sum + mat[x][y], mat, dp) || helper(x, y + 1, sum + mat[x][y], mat, dp);
-    return dp[x][y][sum];
+    dp[{x, {y, sum}}] = helper(x + 1, y, sum + mat[x][y], mat, dp) || helper(x, y + 1, sum + mat[x][y], mat, dp);
+    return dp[{x, {y, sum}}];
 }
 
 void solve()
@@ -246,7 +246,7 @@ void solve()
     {
         pn return;
     }
-
+    map<pair<int, ppi>, bool> dp;
     ll ans = helper(0, 0, 0, mat, dp);
     if (ans)
         py else pn;

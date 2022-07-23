@@ -218,23 +218,48 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+bool mycomp(pair<int, pll> &a, pair<int, pll> &b)
+{
+    if (a.first != b.first)
+    {
+        return a.first > b.first;
+    }
+    return a.second.first > b.second.first;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
     vll arr(n);
     cin >> arr;
-    vll res(n);
-    set<int> oset;
-    fl(i, 0, n) oset.insert(i + 1);
+
+    vector<vpll> start(n + 1), ended(n + 1);
     fl(i, 0, n)
     {
-        if (i + 1 == arr[i])
+        ll left = (i + 1) / (arr[i] + 1) + 1, right = n;
+        if (arr[i] != 0)
         {
-            oset.erase(1);
-            res[i] = 1;
+            right = (i + 1) / arr[i];
         }
+        start[left].push_back({right, i});
+        ended[right].push_back({right, i});
     }
+    set<pll> oset;
+    vll ans(n, 0);
+    fl(i, 0, n)
+    {
+        for (auto x : start[i])
+            oset.insert(x);
+
+        auto it = oset.begin();
+        ans[it->first] = i;
+        oset.erase(it);
+        for (auto x : ended[i])
+            oset.erase(x);
+    }
+    cout << ans << endl;
 }
 /*
 When you are coding,remember to:
