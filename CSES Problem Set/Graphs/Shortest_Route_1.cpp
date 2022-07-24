@@ -217,139 +217,43 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-vector<int> moveR = {0, 0, -1, 1}, moveC = {1, -1, 0, 0};
-vector<char> moveM = {'R', 'L', 'U', 'D'};
-
 // Code
-
-void bfs_monsters(vector<string> &srr, vector<vi> &visited)
-{
-    int n = srr.size(), m = srr[0].size();
-    queue<pair<int, int>> que;
-    fl(i, 0, n)
-    {
-        fl(j, 0, m)
-        {
-            if (srr[i][j] == 'M')
-            {
-                que.push({i, j});
-                visited[i][j] = 0;
-            }
-        }
-    }
-    int time = 0;
-    while (!que.empty())
-    {
-        int size = que.size();
-        time++;
-        while (size--)
-        {
-            auto node = que.front();
-            que.pop();
-
-            fl(i, 0, 4)
-            {
-                int x = node.first + moveR[i], y = node.second + moveC[i];
-                if (x >= n || y >= m || x < 0 || y < 0 || visited[x][y] != -1 || srr[x][y] == '#')
-                    continue;
-
-                visited[x][y] = time;
-                que.push({x, y});
-            }
-        }
-    }
-
-    fl(i, 0, n)
-    {
-        fl(j, 0, m)
-        {
-            if (visited[i][j] == -1 && srr[i][j] == '.')
-            {
-                visited[i][j] = INT_MAX;
-            }
-        }
-    }
-}
-
 void solve()
 {
     ll n, m;
     cin >> n >> m;
-    vector<string> srr(n);
-    cin >> srr;
-    vector<vector<int>> visited(n, vector<int>(m, -1)), visit(n, vector<int>(m, false));
-    bfs_monsters(srr, visited);
-    queue<pair<int, int>> que;
-    fl(i, 0, n)
+
+    vpll list[n + 1];
+    while (m--)
     {
-        fl(j, 0, m)
+        int u, v, p;
+        cin >> u >> v >> p;
+        list[u].push_back({v, p});
+    }
+    priority_queue<pll, vpll, greater<pll>> pque;
+    vll dist(n + 1, 1e15);
+    dist[1] = 0;
+    pque.push({0, 1}); // dist source
+    while (!pque.empty())
+    {
+        auto node = pque.top();
+        pque.pop();
+        if (dist[node.second] < node.first) // little optimisation
+            continue;
+        for (auto x : list[node.second])
         {
-            if (srr[i][j] == 'A')
-            {
-                que.push({i, j});
-                if (i == n - 1 || j == m - 1 || i == 0 || j == 0)
-                {
-                    py cout << "0\n";
-                    return;\
-                }
-                visit[i][j] = true;
-            }
+            if (dist[x.first] <= node.first + x.second)
+                continue;
+
+            dist[x.first] = node.first + x.second;
+            pque.push({dist[x.first], x.first});
         }
     }
-    vector<vector<char>> dir(n, vector<char>(m, ' '));
-    int time = 0;
-    while (!que.empty())
+    fl(i, 1, n + 1)
     {
-        int size = que.size();
-        time++;
-        while (size--)
-        {
-            auto node = que.front();
-            que.pop();
-
-            fl(i, 0, 4)
-            {
-                int x = node.first + moveR[i], y = node.second + moveC[i];
-                if (x >= n || y >= m || x < 0 || y < 0 || srr[x][y] == '#' || visit[x][y] == true)
-                    continue;
-
-                if (visited[x][y] <= time)
-                    continue;
-
-                if (x == n - 1 || y == m - 1 || x == 0 || y == 0)
-                {
-                    string ans;
-                    dir[x][y] = moveM[i];
-                    while (true)
-                    {
-                        ans += dir[x][y];
-                        if (ans.back() == 'L')
-                            y++;
-                        if (ans.back() == 'R')
-                            y--;
-                        if (ans.back() == 'U')
-                            x++;
-                        if (ans.back() == 'D')
-                            x--;
-                        if (dir[x][y] == ' ')
-                        {
-                            break;
-                        }
-                    }
-                    reverse(vr(ans));
-                    py
-                            cout
-                        << ans.size() << "\n";
-                    cout << ans << "\n";
-                    return;
-                }
-                visit[x][y] = true;
-                dir[x][y] = moveM[i];
-                que.push({x, y});
-            }
-        }
+        cout << dist[i] << " ";
     }
-    pn
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
@@ -366,13 +270,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, 0, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t = 1;
+    // cin>>t;
+    fl(i, 0, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
