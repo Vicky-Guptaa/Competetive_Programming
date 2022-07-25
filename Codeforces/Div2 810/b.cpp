@@ -222,53 +222,40 @@ void solve()
 {
     ll n, m;
     cin >> n >> m;
-    vll arr(n);
-    cin >> arr;
-    ll sum = accumulate(vr(arr), 0ll);
-    vpll narr;
-    fl(i, 0, n)
-    {
-        narr.push_back({arr[i], i + 1});
-    }
-    sort(vr(narr));
+    vll arr(n + 1);
+    fl(i, 1, n + 1) cin >> arr[i];
 
+    vll deg(n + 1, 0);
+    vpll edge;
+    fl(i, 0, m)
+    {
+        int u, v;
+        cin >> u >> v;
+        deg[u]++;
+        deg[v]++;
+        edge.push_back({u, v});
+    }
     if (m % 2 == 0)
     {
         cout << "0\n";
         return;
     }
-
-    map<int, set<int>> list;
-    vector<pair<int, pair<int, int>>> cost;
+    ll ans = 1e18;
+    fl(i, 1, n + 1)
+    {
+        if (deg[i] & 1)
+        {
+            ans = min(arr[i], ans);
+        }
+    }
     fl(i, 0, m)
     {
-        int u, v;
-        cin >> u >> v;
-        list[u].insert(v);
-        list[v].insert(u);
-        cost.push_back({arr[u - 1] + arr[v - 1], {u, v}});
-    }
-    sort(vr(cost), greater<pair<int, pair<int, int>>>());
-    int cnt = 0;
-    ll res = 0;
-    int itr = 0;
-    while (m % 2 != 0 && m > 0)
-    {
-        vector<int> del;
-        for (auto x : list[narr[itr].second])
+        if (deg[edge[i].first] % 2 == 0 && deg[edge[i].second] % 2 == 0)
         {
-            del.push_back(x);
+            ans = min(ans, arr[edge[i].first] + arr[edge[i].second]);
         }
-        res += arr[narr[itr].second];
-        m -= del.size();
-        list.erase(narr[itr].second);
-        for (auto x : del)
-        {
-            list[x].erase(narr[itr].second);
-        }
-        itr++;
     }
-    cout << res << "\n";
+    cout << ans << '\n';
 }
 /*
 When you are coding,remember to:

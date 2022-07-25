@@ -50,9 +50,9 @@ typedef map<ll, ll> mll;
 #define mp make_pair
 #define fl(i, s, n) for (int i = s; i < n; i++)
 #define rl(i, n, s) for (int i = n; i >= s; i--)
-#define py cout << "YES\n";
+#define py cout << "Yes\n";
 #define pm cout << "-1\n";
-#define pn cout << "NO\n";
+#define pn cout << "No\n";
 #define vr(v) v.begin(), v.end()
 #define rv(v) v.end(), v.begin()
 
@@ -218,11 +218,60 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+bool valid(int n, int m, vll &arr)
+{
+    vll prr;
+    fl(i, 0, arr.size())
+    {
+        if ((arr[i] / n) > 1)
+            prr.push_back(arr[i] / n);
+    }
+    if (prr.empty())
+        return false;
+    sort(vr(prr), greater<ll>());
+    ll sm = accumulate(vr(prr), 0ll);
+    if (sm < m)
+    {
+        return false;
+    }
+    if (m % 2 == 0)
+    {
+        return true;
+    }
+    bool isOdd = false;
+    fl(i, 0, prr.size())
+    {
+        if (prr[i] & 1)
+        {
+            isOdd = true;
+            break;
+        }
+    }
+    if (isOdd)
+        return true;
+
+    if (prr.front() <= 2)
+        return false;
+    if (sm - 1 >= m)
+        return true;
+    return false;
+}
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll n, m, r;
+    cin >> n >> m >> r;
+    vll arr(r);
+    cin >> arr;
+    if (valid(n, m, arr) || valid(m, n, arr))
+    {
+        py
+    }
+    else
+    {
+        pn
+    }
 }
 /*
 When you are coding,remember to:
