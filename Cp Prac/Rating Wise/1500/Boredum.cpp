@@ -219,77 +219,29 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-ll helper(char ch, int total, vector<vector<int>> &res)
+ll helper(int s, vll &dp, vi &arr)
 {
-    vector<int> temp(res.size(), 0);
-    for (int i = 0; i < res.size(); i++)
-    {
-        int sum = 0;
-        fl(j, 0, 5)
-        {
-            sum -= res[i][j];
-        }
-        sum += 2 * res[i][ch - 'a'];
-        temp[i] = sum;
-    }
-    sort(vr(temp));
-    ll sum = accumulate(vr(temp), 0ll);
-    int cnt = res.size();
-    if (sum > 0)
-        return cnt;
-    fl(i, 0, res.size())
-    {
-        cnt--;
-        sum -= temp[i];
-        if (sum > 0)
-            break;
-    }
-    return cnt;
+    if (s == 1e5 + 1)
+        return 0;
+    if (dp[s] != -1)
+        return dp[s];
+    return dp[s] = max(helper(s + 1, dp, arr), arr[s] * (ll)s + helper(s + 2, dp, arr));
 }
 
 void solve()
 {
     ll n;
     cin >> n;
-    vector<string> srr(n);
-    cin >> srr;
-    vector<vector<int>> res(n, vector<int>(5, 0));
-    ll total = 0;
+    vi arr(1e5 + 1);
+    int num;
     fl(i, 0, n)
     {
-        total += srr[i].size();
-        fl(j, 0, srr[i].size())
-        {
-            if (srr[i][j] == 'a')
-            {
-                res[i][0]++;
-            }
-            else if (srr[i][j] == 'b')
-            {
-                res[i][1]++;
-            }
-            else if (srr[i][j] == 'c')
-            {
-                res[i][2]++;
-            }
-            else if (srr[i][j] == 'd')
-            {
-                res[i][3]++;
-            }
-            else
-            {
-                res[i][4]++;
-            }
-        }
+        cin >> num;
+        arr[num]++;
     }
-    ll ans = 0;
-    ans = max(ans, helper('a', total, res));
-    ans = max(ans, helper('b', total, res));
-    ans = max(ans, helper('c', total, res));
-    ans = max(ans, helper('d', total, res));
-    ans = max(ans, helper('e', total, res));
-
-    cout << ans << '\n';
+    vll dp(1e5 + 1, -1);
+    ll ans = helper(0, dp, arr);
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -306,13 +258,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

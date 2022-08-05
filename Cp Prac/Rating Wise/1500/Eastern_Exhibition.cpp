@@ -218,78 +218,26 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
-ll helper(char ch, int total, vector<vector<int>> &res)
-{
-    vector<int> temp(res.size(), 0);
-    for (int i = 0; i < res.size(); i++)
-    {
-        int sum = 0;
-        fl(j, 0, 5)
-        {
-            sum -= res[i][j];
-        }
-        sum += 2 * res[i][ch - 'a'];
-        temp[i] = sum;
-    }
-    sort(vr(temp));
-    ll sum = accumulate(vr(temp), 0ll);
-    int cnt = res.size();
-    if (sum > 0)
-        return cnt;
-    fl(i, 0, res.size())
-    {
-        cnt--;
-        sum -= temp[i];
-        if (sum > 0)
-            break;
-    }
-    return cnt;
-}
-
 void solve()
 {
     ll n;
     cin >> n;
-    vector<string> srr(n);
-    cin >> srr;
-    vector<vector<int>> res(n, vector<int>(5, 0));
-    ll total = 0;
+    vll x(n), y(n);
     fl(i, 0, n)
     {
-        total += srr[i].size();
-        fl(j, 0, srr[i].size())
-        {
-            if (srr[i][j] == 'a')
-            {
-                res[i][0]++;
-            }
-            else if (srr[i][j] == 'b')
-            {
-                res[i][1]++;
-            }
-            else if (srr[i][j] == 'c')
-            {
-                res[i][2]++;
-            }
-            else if (srr[i][j] == 'd')
-            {
-                res[i][3]++;
-            }
-            else
-            {
-                res[i][4]++;
-            }
-        }
+        cin >> x[i] >> y[i];
     }
-    ll ans = 0;
-    ans = max(ans, helper('a', total, res));
-    ans = max(ans, helper('b', total, res));
-    ans = max(ans, helper('c', total, res));
-    ans = max(ans, helper('d', total, res));
-    ans = max(ans, helper('e', total, res));
-
-    cout << ans << '\n';
+    sort(vr(x));
+    sort(vr(y));
+    if (n & 1)
+    {
+        cout << 1 << "\n";
+    }
+    else
+    {
+        ll ans = (x[n / 2] - x[(n - 1) / 2] + 1) * (y[n / 2] - y[(n - 1) / 2] + 1);
+        cout << ans << "\n";
+    }
 }
 /*
 When you are coding,remember to:
