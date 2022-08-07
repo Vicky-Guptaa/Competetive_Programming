@@ -224,41 +224,44 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    vll preOdd, preEven;
-    preEven.push_back(arr[0]);
-    preOdd.push_back(arr[1]);
-    fl(i, 2, n)
+    mll mp;
+    set<int> oset;
+    vll brr(n, 0), crr(n, 0);
+    fl(i, 0, n) oset.insert(i + 1);
+    fl(i, 0, n)
     {
-        if (i % 2)
+        if (!mp.count(arr[i]))
         {
-            preOdd.push_back(preOdd.back() + arr[i]);
-        }
-        else
-        {
-            preEven.push_back(preEven.back() + arr[i]);
+            oset.erase(arr[i]);
+            mp[arr[i]] = i;
         }
     }
-    fl(i, 0, preOdd.size())
-    {
-        preOdd[i] += arr[i * 2 + 1] * (n - i - 1);
-    }
 
-    fl(i, 0, preEven.size())
+    for (auto x : mp)
     {
-        preEven[i] += arr[i * 2] * (n - i - 1);
+        brr[x.second] = x.first;
+        crr[x.second] = x.first;
     }
+    int itr = 0;
+    for (auto x : oset)
+    {
+        while (brr[itr] != 0)
+            itr++;
 
-    ll result = preEven[0] + preOdd[0];
-    fl(i, 0, preOdd.size())
-    {
-        result = min(result, preEven[i] + preOdd[i]);
+        brr[itr] = x;
     }
-    fl(i, 1, preEven.size())
+    fl(i, 0, n)
     {
-        result = min(result, preEven[i] + preOdd[i - 1]);
+        if (crr[i] == 0)
+        {
+            auto num = oset.lower_bound(arr[i]);
+            num--;
+            crr[i] = *num;
+            oset.erase(num);
+        }
     }
-
-    cout << result << "\n";
+    cout << brr << "\n"
+         << crr << "\n";
 }
 /*
 When you are coding,remember to:
