@@ -224,37 +224,20 @@ void solve()
     cin >> n;
     vpll arr(n);
     cin >> arr;
-    ll cntMax = 0;
-    vpll xaxis, yaxis;
-    fl(i, 0, n)
-    {
-        if (arr[i].first >= 0)
-        {
-            xaxis.push_back(arr[i]);
-        }
-        else
-        {
-            yaxis.push_back(arr[i]);
-        }
-    }
-    sort(vr(xaxis), sortpa);
-    sort(vr(yaxis), sortpa);
-    ll cnt = 0;
-    fl(i, 1, xaxis.size())
-    {
-        cnt += abs(xaxis[i - 1].first - xaxis[i].first) + abs(xaxis[i].second - xaxis[i - 1].second);
-    }
+    sort(vr(arr));
+    ll ans = 0;
 
-    fl(i, 1, yaxis.size())
-    {
-        cnt += abs(yaxis[i - 1].first - yaxis[i].first) + abs(yaxis[i].second - yaxis[i - 1].second);
-    }
+    if (arr.front().first < 0)
+        ans += 2 * abs(arr.front().first);
+    if (arr.back().first > 0)
+        ans += 2 * abs(arr.back().first);
 
-    cnt += abs(xaxis[0].first) + abs(xaxis[0].second);
-    cnt += abs(xaxis.back().first - yaxis[0].first) + abs(xaxis.back().second - yaxis[0].second);
-    cnt += abs(yaxis.back().first) + abs(yaxis.back().second);
-
-    cout << cnt << "\n";
+    sort(vr(arr), sortpa);
+    if (arr.front().second < 0)
+        ans += 2 * abs(arr.front().second);
+    if (arr.back().second > 0)
+        ans += 2 * abs(arr.back().second);
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
