@@ -226,28 +226,24 @@ void solve()
     cin >> s;
     vpll arr(c);
     cin >> arr;
-
+    vector<int> len;
+    len.push_back(n);
+    for (int i = 0; i < c; i++)
+    {
+        len.push_back(arr[i].second - arr[i].first + 1);
+    }
     while (q--)
     {
-        ll idx, findx, gap;
-        cin >> idx;
-        int curr = n;
-        if (idx <= curr)
+        int indx;
+        cin >> indx;
+        int tar = -1, val = 0;
+        while (indx > val)
         {
-            cout << s[idx - 1] << "\n";
+            val += len[++tar];
         }
-        for (int i = 0; i < c; i++)
-        {
-            ll next = arr[i].second - arr[i].first + 1 + curr;
-            if (curr <= idx && next >= idx)
-            {
-                findx = i;
-                gap = idx - curr;
-                break;
-            }
-            curr = next;
-        }
-        rl(i,findx,0)
+        ll gap = indx + len[tar] - val;
+        tar--;
+        while (tar != 0)
         {
             
         }

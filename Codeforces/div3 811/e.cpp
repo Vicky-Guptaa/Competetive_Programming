@@ -225,87 +225,35 @@ void solve()
     vll arr(n);
     cin >> arr;
 
-    map<ll, int> freq;
-    int cnt = 0, cnt2 = 0;
-    fl(i, 0, n) freq[arr[i]]++;
-    vector<ll> rem;
-    for (auto x : freq)
+    fl(i, 0, n)
     {
-        if (x.first % 10 == 0)
+        fl(j, 0, 10)
         {
-            cnt++;
-            if (freq.count(x.first - 5))
+            if (arr[i] % 10 == 2)
             {
-                rem.push_back(x.first);
-                rem.push_back(x.first - 5);
+                break;
             }
-        }
-        else if (x.first % 5 == 0)
-        {
-            cnt2++;
+            arr[i] += (arr[i] % 10);
         }
     }
-    if (cnt > 1 || rem.size() > 2 || cnt2 > 1)
+    int tc = 0;
+    set<int> oset(vr(arr));
+    for (auto x : oset)
+    {
+        if (x % 10 == 0)
+            tc++;
+    }
+    if (tc > 1)
     {
         pn return;
     }
-
-    if (!rem.empty())
-    {
-        freq.erase(rem[0]);
-        freq.erase(rem[1]);
-        if (freq.empty())
-        {
-            py
-        }
-        else
-        {
-            pn
-        }
-        return;
-    }
-
-    fl(i, 0, n)
-    {
-        if (arr[i] % 20 > 15)
-        {
-            arr[i] += 10;
-        }
-        arr[i] %= 20;
-    }
-
-    set<ll> res, temp, temp2;
-    int num = arr[0];
-    fl(j, 0, 20)
-    {
-        num += (num % 10);
-        res.insert(num);
-    }
     fl(i, 1, n)
     {
-        num = arr[i];
-        fl(j, 0, 20)
-        {
-            num += (num % 10);
-            temp.insert(num);
-        }
-        for (auto x : temp)
-        {
-            if (res.count(x))
-            {
-                temp2.insert(x);
-            }
-        }
-        res = temp2;
-        if (res.empty())
+        if (abs(arr[i] - arr[i - 1]) % 20 != 0)
         {
             pn return;
         }
-        temp.clear();
-        temp2.clear();
     }
-    for (auto x : res)
-        cout << x << "\n";
     py
 }
 /*
