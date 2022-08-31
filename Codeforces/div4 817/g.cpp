@@ -220,30 +220,42 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
-    vector<vll> preSum(1001, vll(1001, 0));
-    fl(i, 0, n)
+    ll n;
+    cin >> n;
+    if (n % 4 == 0)
     {
-        ll l, b;
-        cin >> l >> b;
-        preSum[l][b] += l * b;
-    }
-    fl(i, 1, 1001)
-    {
-        fl(j, 1, 1001)
+        fl(i, 2, n + 2)
         {
-            preSum[i][j] += -preSum[i - 1][j - 1] + preSum[i - 1][j] + preSum[i][j - 1];
+            cout << i << " ";
         }
     }
-
-    while (q--)
+    else if (n % 4 == 1)
     {
-        ll hs, ws, hb, wb;
-        cin >> hs >> ws >> hb >> wb;
-        ll ans = preSum[hb - 1][wb - 1] + preSum[hs][ws] - preSum[hb - 1][ws] - preSum[hs][wb - 1];
-        cout << ans << "\n";
+        cout << "0 ";
+        fl(i, 2, n + 1)
+        {
+            cout << i << " ";
+        }
     }
+    else if (n % 4 == 2)
+    {
+        cout << "4 1 2 12 3 8 ";
+        n -= 6;
+        int p = 14;
+        while (n--)
+        {
+            cout << p++ << " ";
+        }
+    }
+    else
+    {
+        cout << "2 1 3 ";
+        fl(i, 4, n + 1)
+        {
+            cout << i << " ";
+        }
+    }
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
