@@ -1,0 +1,1 @@
+{"name":"Local: c","url":"e:\\Programming Language\\Competetive\\Codeforces\\div1 + div2 819\\c.cpp","tests":[{"id":1662476159474,"input":"4\n1\n()\n3\n()(())\n3\n((()))\n4\n(())(())\n","output":"1\n2\n3\n3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\Programming Language\\Competetive\\Codeforces\\div1 + div2 819\\c.cpp","group":"local","local":true}
