@@ -220,20 +220,71 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    ll lcm = 1, ans = 0;
-    fl(i, 2, 101)
+    int n, m;
+    cin >> n >> m;
+    string str;
+    cin >> str;
+    vector<int> findx;
+    fl(i, 1, str.size())
     {
-        ll prev = n / lcm;
-        lcm = (lcm * i) / __gcd(lcm, (ll)i); // to get next lcm of numbers
-        ll curr = n / lcm;
-        ans += (prev - curr) * i;
-        ans %= mod;
+        if (str[0] < str[i])
+        {
+            str = str.substr(0, i);
+            break;
+        }
+        if (str[0] == str[i])
+            findx.emplace_back(i);
     }
-    cout << ans << "\n";
+    int cnt = 0;
+    rl(i, (int)str.size() - 1, 1)
+    {
+        if (str[i] != str[0])
+            break;
+        cnt++;
+    }
+    str = str.substr(0, (int)str.size() - cnt);
+    fl(i, 0, findx.size() - cnt)
+    {
+        int indx = 0;
+        bool isTrue = true;
+        while (indx < findx[i])
+        {
+            if (str[indx] > str[indx + findx[i]])
+            {
+                isTrue = true;
+                break;
+            }
+            if (str[indx] < str[indx + findx[i]])
+            {
+                isTrue = false;
+                break;
+            }
+            indx++;
+        }
+        if (!isTrue)
+        {
+            str = str.substr(0, findx[i]);
+            break;
+        }
+    }
+    while (m > 0)
+    {
+        if (str.size() < m)
+        {
+            m -= str.size();
+            cout << str;
+        }
+        else
+        {
+            str = str.substr(0, m);
+            cout << str << "\n";
+            break;
+        }
+    }
 }
 /*
+15 6
+ycufqyyqvpsayyy
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
       - pay attention to some special cases(n=0,1).
@@ -248,13 +299,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

@@ -221,17 +221,11 @@ bool isPerfectSquare(ll x)
 void solve()
 {
     ll n;
-    cin >> n;
-    ll lcm = 1, ans = 0;
-    fl(i, 2, 101)
+    // cin >> n;
+    fl(i, 0, 500000)
     {
-        ll prev = n / lcm;
-        lcm = (lcm * i) / __gcd(lcm, (ll)i); // to get next lcm of numbers
-        ll curr = n / lcm;
-        ans += (prev - curr) * i;
-        ans %= mod;
+        cout << 'z';
     }
-    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -243,18 +237,18 @@ When you are coding,remember to:
 // Main
 int main()
 {
-    //#ifndef ONLINE_JUDGE
-    //    freopen("Input.txt", "r", stdin);
-    //    freopen("Output.txt", "w", stdout);
-    //#endif
+#ifndef ONLINE_JUDGE
+    freopen("Input.txt", "r", stdin);
+    freopen("Output.txt", "w", stdout);
+#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

@@ -222,14 +222,19 @@ void solve()
 {
     ll n;
     cin >> n;
-    ll lcm = 1, ans = 0;
-    fl(i, 2, 101)
+    vll arr(n);
+    cin >> arr;
+    map<int, vector<int>> indx;
+    fl(i, 0, n) indx[arr[i]].push_back(i+1);
+    ll ans = 0;
+    for (auto &x : indx)
     {
-        ll prev = n / lcm;
-        lcm = (lcm * i) / __gcd(lcm, (ll)i); // to get next lcm of numbers
-        ll curr = n / lcm;
-        ans += (prev - curr) * i;
-        ans %= mod;
+        ll sum = 0;
+        for (auto y : x.second)
+        {
+            ans += sum * (n - y + 1);
+            sum += y;
+        }
     }
     cout << ans << "\n";
 }
