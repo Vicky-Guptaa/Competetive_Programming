@@ -222,23 +222,34 @@ void solve()
 {
     ll n;
     cin >> n;
-    vll arr;
-    ll result = 1;
-    fl(i, 1, n)
+    vpll arr(n);
+    cin >> arr;
+    fl(i, 0, n) swap(arr[i].first, arr[i].second);
+    sort(vr(arr));
+    ll cost = 0, buy = 0, end = n - 1, strt = 0;
+    while (strt <= end)
     {
-        if (__gcd((ll)i, n) == 1)
+        if (buy >= arr[strt].first)
         {
-            arr.push_back(i);
-            result *= i;
-            result %= n;
+            cost += arr[strt].second;
+            buy += arr[strt].second;
+            strt++;
+        }
+        else
+        {
+            ll req = min(arr[strt].first - buy, arr[end].second);
+            cost += 2 * req;
+            buy += req;
+            arr[end].second -= req;
+            if (arr[end].second == 0)
+            {
+                end--;
+            }
         }
     }
-    if (result != 1)
-        arr.pop_back();
-    cout << arr.size() << '\n';
-    cout << arr << '\n';
+    cout << cost << "\n";
 }
-/*P
+/*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
       - pay attention to some special cases(n=0,1).

@@ -220,25 +220,26 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr;
-    ll result = 1;
-    fl(i, 1, n)
+    string s, n1 = "0", n2 = "0";
+    cin >> s;
+    int num1, num2;
+    fl(i, 0, s.size())
     {
-        if (__gcd((ll)i, n) == 1)
+        if (i % 2)
         {
-            arr.push_back(i);
-            result *= i;
-            result %= n;
+            n2 += s[i];
+        }
+        else
+        {
+            n1 += s[i];
         }
     }
-    if (result != 1)
-        arr.pop_back();
-    cout << arr.size() << '\n';
-    cout << arr << '\n';
+    num1 = stoi(n1) + 1;
+    num2 = stoi(n2) + 1;
+    ll res = num1 * num2 - 2;
+    cout << res << "\n";
 }
-/*P
+/*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
       - pay attention to some special cases(n=0,1).
@@ -253,13 +254,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, 0, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, 0, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

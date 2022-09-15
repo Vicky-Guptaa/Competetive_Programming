@@ -222,23 +222,24 @@ void solve()
 {
     ll n;
     cin >> n;
-    vll arr;
-    ll result = 1;
-    fl(i, 1, n)
+    string s;
+    cin >> s;
+    map<int, int> preSum;
+    ll ans = 0, sum = 0;
+    fl(i, 0, n)
     {
-        if (__gcd((ll)i, n) == 1)
+        sum += s[i] - '1';
+        if (preSum.count(sum))
         {
-            arr.push_back(i);
-            result *= i;
-            result %= n;
+            ans += preSum[sum];
         }
+        preSum[sum]++;
+        if (sum == 0)
+            ans++;
     }
-    if (result != 1)
-        arr.pop_back();
-    cout << arr.size() << '\n';
-    cout << arr << '\n';
+    cout << ans << "\n";
 }
-/*P
+/*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
       - pay attention to some special cases(n=0,1).
@@ -253,13 +254,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, 0, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, 0, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

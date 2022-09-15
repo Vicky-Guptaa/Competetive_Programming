@@ -50,13 +50,8 @@ int minAdjacentSwaps(int n, vector<char> &crr, vector<char> &arr)
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<char> crr(n);
-    for (auto &x : crr)
-        cin >> x;
-    vector<char> arr(2);
-    cin >> arr[0] >> arr[1];
-    cout << minAdjacentSwaps(n, crr, arr);
+    int end = 0;
+    int b=end, ++end, ++end, --end;
+    cout << b << "\n";
     return 0;
 }
