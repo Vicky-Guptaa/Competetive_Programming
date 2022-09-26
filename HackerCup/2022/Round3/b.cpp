@@ -217,27 +217,30 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-// Code
-
 struct node
 {
-    ll val;
     map<int, int> freq;
+    ll val;
     // can add more if required or remove
     node(ll v = 0, ll c = 0)
     {
-        val = v;
+        if (!c)
+        {
+            val = v;
+            freq[val]++;
+        }
     }
 };
 
 class segTree
 {
 public:
-    vector<node> segArr, lazy;
+    vector<node> segArr;
     vector<ll> narr;
 
     segTree(vector<ll> arr)
     {
+        narr = arr;
         int arrSize = arr.size();
         narr = arr;
         /*
@@ -245,15 +248,22 @@ public:
 we have to make 4*n size array for n size given array
 */
         segArr.resize(4 * arrSize);
-        lazy.resize(4 * arrSize);
         constructSegTree(0, 0, arrSize - 1);
     }
 
     // here you can change the combine logic according to questions
     node Combine(node &left, node &right)
     {
-
-        return node(left.val + right.val);
+        node newNode(0, 1);
+        for (auto x : left.freq)
+        {
+            newNode.freq[x.first] += x.second;
+        }
+        for (auto x : right.freq)
+        {
+            newNode.freq[x.first] += x.second;
+        }
+        return newNode;
     }
 
     void constructSegTree(int index, int startIndx, int endIndx)
@@ -261,7 +271,7 @@ we have to make 4*n size array for n size given array
         if (startIndx == endIndx)
         {
             // Leaf Logic
-            segArr[index] = node(narr[startIndx]);
+            segArr[index] = node(narr[startIndx], 0);
             return;
         }
         int midIndx = startIndx + (endIndx - startIndx) / 2;
@@ -270,28 +280,11 @@ we have to make 4*n size array for n size given array
         constructSegTree(2 * index + 2, midIndx + 1, endIndx);
         segArr[index] = Combine(segArr[2 * index + 1], segArr[2 * index + 2]);
     }
-
     node getQuery(int index, int startIndx, int endIndx, int lquery, int rquery)
     {
         // no overlap
         if (startIndx > rquery || lquery > endIndx)
-            return node(0);
-
-        // lazy propagation / clear the lazy updates
-        if (lazy[index].val != 0)
-        {
-            // pending updates
-            // update the segmenet tree node
-            node newNode = node(lazy[index].val * (endIndx - startIndx + 1));
-            segArr[index] = Combine(segArr[index], newNode);
-            if (startIndx != endIndx)
-            {
-                // propagaetd the updated value
-                lazy[2 * index + 1] = Combine(lazy[2 * index + 1], lazy[index]);
-                lazy[2 * index + 2] = Combine(lazy[2 * index + 2], lazy[index]);
-            }
-            lazy[index] = node(0);
-        }
+            return node(0, 1);
 
         // complete overlap
         if (startIndx >= lquery && endIndx <= rquery)
@@ -305,54 +298,29 @@ we have to make 4*n size array for n size given array
         return Combine(left, right);
     }
 
-    void updateQuery(int index, int startIndx, int endIndx, int lquery, int rquery, int val)
+    void updateQuery(int index, int startIndx, int endIndx, int position, int val)
     {
-        // no overlap
-        if (startIndx > rquery || lquery > endIndx)
+        if (position < startIndx || position > endIndx)
             return;
 
-        // lazy propagation / clear the lazy updates
-        if (lazy[index].val != 0)
+        if (startIndx == endIndx)
         {
-            // pending updates
-            // update the segmenet tree node
-            node newNode = node(lazy[index].val * (endIndx - startIndx + 1));
-            segArr[index] = Combine(segArr[index], newNode);
-            if (startIndx != endIndx)
-            {
-                // propagaetd the updated value
-                lazy[2 * index + 1] = Combine(lazy[2 * index + 1], lazy[index]);
-                lazy[2 * index + 2] = Combine(lazy[2 * index + 2], lazy[index]);
-            }
-            lazy[index] = node(0);
-        }
-
-        // complete overlap
-        if (startIndx >= lquery && endIndx <= rquery)
-        {
-            node newNode = node(val * (endIndx - startIndx + 1));
-            segArr[index] = Combine(segArr[index], newNode);
-            if (startIndx != endIndx)
-            {
-                // propagaetd the updated value
-                node valNode = node(val);
-                lazy[2 * index + 1] = Combine(lazy[2 * index + 1], valNode);
-                lazy[2 * index + 2] = Combine(lazy[2 * index + 2], valNode);
-            }
+            // Leaf Condition
+            segArr[index] = node(val, 0);
+            narr[startIndx] = val;
             return;
         }
 
-        // partial overlap
         int midIndx = startIndx + (endIndx - startIndx) / 2;
-        updateQuery(2 * index + 1, startIndx, midIndx, lquery, rquery, val);
-        updateQuery(2 * index + 2, midIndx + 1, endIndx, lquery, rquery, val);
+        updateQuery(2 * index + 1, startIndx, midIndx, position, val);
+        updateQuery(2 * index + 2, midIndx + 1, endIndx, position, val);
         segArr[index] = Combine(segArr[2 * index + 1], segArr[2 * index + 2]);
     }
 
     // Use To Get The result of the queries
-    void updateQuery(int l, int r, int value)
+    void updateQuery(int postion, int value)
     {
-        updateQuery(0, 0, (int)narr.size() - 1, l, r, value);
+        updateQuery(0, 0, (int)narr.size() - 1, postion, value);
     }
 
     node getQuery(int lquery, int rquery)
@@ -362,10 +330,85 @@ we have to make 4*n size array for n size given array
 };
 // use 0 based indexing while calling the update and query func
 
+// Code
 void solve()
 {
     ll n;
     cin >> n;
+    vll arr(n);
+    cin >> arr;
+    segTree tree(arr);
+    ll q, ans = 0, qq;
+    cin >> q;
+    qq = q;
+    while (q--)
+    {
+        ll a, l, r;
+        cin >> a >> l >> r;
+        if (a == 1)
+        {
+            l--;
+            tree.updateQuery(l, r);
+        }
+        else
+        {
+            l--;
+            r--;
+            ll len = r - l + 1;
+            bool isFind = true;
+            if (len & 1)
+            {
+                bool first = true, second = true;
+                ll mid = l + len / 2, cntr = 0;
+                map<int, int> f1 = tree.getQuery(l, mid).freq, f2 = tree.getQuery(mid + 1, r).freq;
+                for (auto x : f1)
+                {
+                    if (!f2.count(x.first) || (f2.count(x.first) && f2[x.first] != x.second))
+                        cntr++;
+                }
+                if (cntr > 1)
+                    first = false;
+                cntr = 0;
+                for (auto x : f2)
+                {
+                    if (!f1.count(x.first) || (f1.count(x.first) && f1[x.first] != x.second))
+                        cntr++;
+                }
+                if (cntr > 1)
+                    first = false;
+                cntr = 0;
+                f1 = tree.getQuery(l, mid - 1).freq, f2 = tree.getQuery(mid, r).freq;
+                for (auto x : f1)
+                {
+                    if (!f2.count(x.first) || (f2.count(x.first) && f2[x.first] != x.second))
+                        cntr++;
+                }
+                if (cntr > 1)
+                    second = false;
+                cntr = 0;
+                for (auto x : f2)
+                {
+                    if (!f1.count(x.first) || (f1.count(x.first) && f1[x.first] != x.second))
+                        cntr++;
+                }
+                if (cntr > 1)
+                    second = false;
+                cntr = 0;
+                if (!first && !second)
+                    isFind = false;
+            }
+            else
+            {
+                ll mid = l + len / 2;
+                if (tree.getQuery(l, mid).freq != tree.getQuery(mid + 1, r).freq)
+                {
+                    isFind = false;
+                }
+            }
+            ans += isFind;
+        }
+    }
+    cout << ans;
 }
 /*
 When you are coding,remember to:
@@ -377,23 +420,23 @@ When you are coding,remember to:
 // Main
 int main()
 {
-    //#ifndef ONLINE_JUDGE
-    //    freopen("Input.txt", "r", stdin);
-    //    freopen("Output.txt", "w", stdout);
-    //#endif
+#ifndef ONLINE_JUDGE
+    freopen("Input.txt", "r", stdin);
+    freopen("Output.txt", "w", stdout);
+#endif
     You Can Do_It
         ll t;
     cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
-    // fl(i,0,t) //Kickstart
+    // fl(i, 0, t)
     // {
-    //     cout<<"Case #"<<i+1<<": ";
     //     solve();
-    //     cout<<'\n';
     // }
+    // solve();
+    fl(i, 0, t) // Kickstart
+    {
+        cout << "Case #" << i + 1 << ": ";
+        solve();
+        cout << '\n';
+    }
     return 0;
 }
