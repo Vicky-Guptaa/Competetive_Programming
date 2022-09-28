@@ -244,21 +244,57 @@ void solve()
     ll cost = 0;
     if (y * 2 <= x)
     {
+        if (indx.size() == 2 && indx[1] - indx[0] == 1)
+        {
+            cost += 2 * y;
+        }
+        else
+        {
+            cost += (indx.size() * y) / 2;
+        }
+    }
+    else if (2 * x < y)
+    {
+        ll count = 0;
         fl(i, 1, indx.size())
         {
             if (indx[i] - indx[i - 1] == 1)
             {
-                cost+=
+                cost += x;
+                i++;
+                count++;
             }
-            else 
+            else if (indx[i] - indx[i - 1] == 2)
             {
-
+                cost += 2 * x;
+                i++;
+                count++;
             }
         }
+        cost += ((indx.size() - 2 * count) / 2) * y;
     }
     else
     {
+        if (x > y && !(indx.size() == 2 && indx[1] - indx[0] == 1))
+        {
+            cost += y * (indx.size() / 2);
+        }
+        else
+        {
+            ll count = 0;
+            fl(i, 1, indx.size())
+            {
+                if (indx[i] - indx[i - 1] == 1)
+                {
+                    cost += x;
+                    i++;
+                    count++;
+                }
+            }
+            cost += ((indx.size() - 2 * count) / 2) * y;
+        }
     }
+    cout << cost << "\n";
 }
 /*
 When you are coding,remember to:
