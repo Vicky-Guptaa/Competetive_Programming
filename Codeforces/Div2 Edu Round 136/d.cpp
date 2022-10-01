@@ -218,11 +218,58 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+ll helper(ll src, ll par, vector<int> list[], ll mid, ll &total)
+{
+    ll size = 1;
+    for (auto curr : list[src])
+    {
+        if (curr == par)
+            continue;
+        size = max(helper(curr, src, list, mid, total) + 1ll, size);
+    }
+    if (size == mid && src != 1 && par != 1)
+    {
+        total++;
+        return 0;
+    }
+    return size;
+}
+
+bool isValid(vector<int> list[], ll mid, ll k, ll n)
+{
+    ll total = 0;
+    helper(1, -1, list, mid, total);
+    // cout << "Total : " << total << " " << mid << '\n';
+    return total <= k;
+}
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll n, k;
+    cin >> n >> k;
+    vll arr(n - 1);
+    cin >> arr;
+    vector<int> list[n + 1];
+    fl(i, 0, n - 1)
+    {
+        list[arr[i]].push_back(i + 2);
+    }
+    ll low = 1, high = 2e5 + 7, ans = 0;
+    while (low <= high)
+    {
+        ll mid = low + (high - low) / 2;
+        if (isValid(list, mid, k, n))
+        {
+            high = mid - 1;
+            ans = mid;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:

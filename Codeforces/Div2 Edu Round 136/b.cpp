@@ -224,16 +224,6 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    if (n <= 2)
-    {
-        if (n == 1)
-        {
-            cout << arr << "\n";
-        }
-        else
-            cout << arr[0] << " " << arr[0] + arr[1] << "\n";
-        return;
-    }
     vll narr = {arr[0]};
     ll sum = arr[0];
     fl(i, 1, n)
