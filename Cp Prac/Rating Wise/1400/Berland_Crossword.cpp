@@ -254,13 +254,6 @@ bool ncheck(ll n, ll &u, ll &d, ll &r, ll &l)
         if (l < 0 || r < 0)
             return false;
     }
-    return true;
-}
-
-bool nonecheck(ll n, ll &u, ll &d, ll &r, ll &l)
-{
-    // n check
-    ll _u = u, _d = d, _r = r, _l = l;
     if (_u == n - 1)
     {
         if (l > 0)
@@ -281,7 +274,7 @@ bool nonecheck(ll n, ll &u, ll &d, ll &r, ll &l)
             return false;
     }
 
-    if (l == n - 1)
+    if (_l == n - 1)
     {
         if (u > 0)
             u--;
@@ -291,7 +284,7 @@ bool nonecheck(ll n, ll &u, ll &d, ll &r, ll &l)
             return false;
     }
 
-    if (d == n - 1)
+    if (_d == n - 1)
     {
         if (l > 0)
             l--;
@@ -312,10 +305,6 @@ void solve()
         py return;
     }
     if (!ncheck(n, u, d, r, l))
-    {
-        pn return;
-    }
-    if (!nonecheck(n, u, d, r, l))
     {
         pn return;
     }
