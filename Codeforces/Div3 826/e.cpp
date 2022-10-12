@@ -255,8 +255,16 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    vll dp(n + 1, -1);
-    if (helper(0, n, arr, dp))
+    vll dp(n + 1, false);
+    dp[0] = true;
+    for (ll i = 1; i <= n; i++)
+    {
+        if (i - arr[i - 1] - 1ll >= 0 && dp[i - arr[i - 1] - 1] == true)
+            dp[i] = true;
+        if (i + arr[i - 1] <= n && dp[i - 1] == true)
+            dp[i + arr[i - 1]] = true;
+    }
+    if (dp[n])
     {
         py
     }
