@@ -219,28 +219,68 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-
-
 void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n);
+    vi arr(n);
     cin >> arr;
-    vector<int> bits(32, 0);
-    map<int, mll> freq;
+    vi setBits;
+    unordered_set<int> freq[32];
+    map<int, int> cnt;
+    ll orall = 0;
     fl(i, 0, n)
     {
-        ll num = arr[i], itr = 0;
-        while (num)
+        cnt[arr[i]]++;
+        orall |= arr[i];
+        fl(j, 0, 32)
         {
-            bits[itr] += num & 2;
-            num /= 2;
-            freq[itr][arr[i]]++;
-            itr++;
+            if ((arr[i] & (1ll << j)))
+            {
+                freq[j].insert(arr[i]);
+            }
         }
     }
+    ll orans = 0;
+    rl(i, 31, 0)
+    {
+        ll temp = orans, candidate = 0;
+        if ((orans & (1ll << i)) || freq[i].empty())
+            continue;
+        for (auto x : freq[i])
+        {
+            if (temp < (orans | x))
+            {
+                temp = (orans | x);
+                candidate = x;
+            }
+        }
+        if (candidate == 0)
+            continue;
 
+        cnt[candidate]--;
+        if (cnt[candidate] == 0)
+        {
+            cnt.erase(candidate);
+        }
+        fl(k, 0, 32)
+        {
+            if (freq[k].count(candidate))
+            {
+                freq[k].erase(candidate);
+            }
+        }
+        cout << candidate << " ";
+        orans |= candidate;
+    }
+    for (auto x : cnt)
+    {
+        fl(i, 0, x.second)
+        {
+            cout << x.first << " ";
+        }
+    }
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
