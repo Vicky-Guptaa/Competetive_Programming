@@ -2,17 +2,11 @@
 #include <iostream>
 #include <bits/stdc++.h>
 // #include <sys/resource.h>
-
-using namespace std;
-// using namespace chrono;
-
-/* _______________Policy Based DS______________*/
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
+using namespace std;
+// using namespace chrono;
 // using namespace __gnu_pbds;
-// template <class T> using ordered_set = tree<T, null_type, less_equal<T>, rb_tree_tag, tree_order_statistics_node_update >;
-// provides find_by_order, order_of_key
-/*_____________________________________________*/
 
 // def
 // #define Vicky_Gupta 1
@@ -48,8 +42,8 @@ typedef map<ll, ll> mll;
 #define ss second
 #define pb push_back
 #define mp make_pair
-#define fl(i, s, n) for (int i = s; i < n; i++)
-#define rl(i, n, s) for (int i = n; i >= s; i--)
+#define fl(i, n) for (int i = 0; i < n; i++)
+#define rl(i, m, n) for (int i = n; i >= m; i--)
 #define py cout << "YES\n";
 #define pm cout << "-1\n";
 #define pn cout << "NO\n";
@@ -95,16 +89,16 @@ ostream &operator<<(ostream &ostream, const vector<T> &c)
 // Utility functions
 template <typename T>
 void print(T &&t) { cout << t << '\n'; }
-void printarr(ll arr[], ll s, ll n)
+void printarr(ll arr[], ll n)
 {
-    fl(i, s, n) cout << arr[i] << " ";
+    fl(i, n) cout << arr[i] << " ";
     cout << '\n';
 }
 template <typename T>
 void printvec(vector<T> v)
 {
-    ll n = v.size(), s = 0;
-    fl(i, s, n) cout << v[i] << " ";
+    ll n = v.size();
+    fl(i, n) cout << v[i] << " ";
     cout << '\n';
 }
 
@@ -143,6 +137,14 @@ ll powermod(ll x, ll y, ll p)
     }
     return res;
 }
+
+// Graph-dfs
+//  bool gone[MN];
+//  vector<int> adj[MN];
+//  void dfs(int loc){
+//      gone[loc]=true;
+//      for(auto x:adj[loc])if(!gone[x])dfs(x);
+//  }
 
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
@@ -212,62 +214,68 @@ bool isPerfectSquare(ll x)
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
-//__builtin_popcount(n); for int
-//__builtin_popcountll(x); for long long
-//__builtin_clz(x); for int
-//__builtin_clzll(x); for long long
 
 // Code
-
-ll helper(ll x, ll y, bool isForward, vector<vll> &mat, vector<vector<vll>> &dp, ll e)
+bool isPallindrome(string s, int i, int n)
 {
-    if (y < 0 || 501 < x || x < 0)
-        return 0;
-
-    if (dp[x][y][isForward] != -1)
+    while (i < n)
     {
-        return dp[x][y][isForward];
+        if (s[i++] != s[n--])
+        {
+            return false;
+        }
     }
-
-    ll result = 0;
-    if (isForward)
-    {
-        result = mat[x][y] + max(helper(x + 1, y, isForward, mat, dp, e),
-                                 max(helper(x, y - 1, isForward, mat, dp, e),
-                                     helper(x, y - 1, !isForward, mat, dp, e) - e));
-    }
-    else
-    {
-        result = mat[x][y] + max(helper(x - 1, y, isForward, mat, dp, e),
-                                 max(helper(x, y - 1, isForward, mat, dp, e),
-                                     helper(x, y - 1, !isForward, mat, dp, e) - e));
-    }
-    return dp[x][y][isForward] = result;
+    return true;
 }
 
 void solve()
 {
-    ll n, e;
-    cin >> n >> e;
-    vector<vll> mat(502, vll(502, 0));
-    ll mx = 0, my = 0;
-    fl(i, 0, n)
+    ll n;
+    cin >> n;
+    string s;
+    cin >> s;
+    if (n < 5)
     {
-        ll x, y, c;
-        cin >> x >> y >> c;
-        mat[x][y] = c;
-        my = max(my, y);
+        cout << "POSSIBLE";
+        return;
     }
-    vector<vector<vll>> dp(502, vector<vll>(502, vll(2, -1)));
-    cout << helper(0, 501, true, mat, dp, e);
+    int qc = 0;
+    fl(i, n) if (s[i] == '?') qc++;
+
+    ll subsets = (1 << qc);
+    for (int i = 0; i < subsets; i++)
+    {
+        string temp = s;
+        int num = i;
+        for (int i = 0; i < n; i++)
+        {
+            if (temp[i] == '?')
+            {
+                temp[i] = (num % 2) + '0';
+                num /= 2;
+            }
+        }
+        int counter = 0;
+        for (int p = 4; p < n; p++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (p + j > n)
+                    break;
+                if (isPallindrome(temp, j, p + j))
+                {
+                    counter++;
+                }
+            }
+        }
+        if (counter == 0)
+        {
+            cout << "POSSIBLE";
+            return;
+        }
+    }
+    cout << "IMPOSSIBLE";
 }
-/*
-When you are coding,remember to:
-      - clear the arrays if a problem has many tasks.
-      - pay attention to some special cases(n=0,1).
-      - Don't code before think completely.
-      - ...
-*/
 // Main
 int main()
 {
@@ -278,12 +286,12 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
-    // fl(i, 0, t)
+    // fl(i, t)
     // {
     //     solve();
     // }
     // solve();
-    fl(i, 0, t) // Kickstart
+    fl(i, t) // Kickstart
     {
         cout << "Case #" << i + 1 << ": ";
         solve();

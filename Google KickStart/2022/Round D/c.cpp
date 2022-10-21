@@ -219,14 +219,15 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-ll helper(int s, int src, vll &arr, map<int, vi> &list, vector<vll> &dp)
+int helper(int s, int src, vi &arr, vector<int> list[], vector<vi> &dp)
 {
     if (s == arr.size())
         return 0;
 
     if (dp[s][src] != -1)
         return dp[s][src];
-    ll ans = 1e18;
+
+    int ans = 1e9;
     for (auto x : list[arr[s]])
     {
         if (s == 0)
@@ -243,20 +244,20 @@ ll helper(int s, int src, vll &arr, map<int, vi> &list, vector<vll> &dp)
 
 void solve()
 {
-    ll n;
+    int n;
     cin >> n;
-    vll arr(n);
+    vi arr(n);
     cin >> arr;
-    ll m;
+    int m;
     cin >> m;
-    vll brr(m);
+    vi brr(m);
     cin >> brr;
-    map<int, vector<int>> list;
+    vector<int> list[2501];
     fl(i, 0, m)
     {
         list[brr[i]].push_back(i);
     }
-    vector<vll> dp(n + 1, (vll(m + 1, -1)));
+    vector<vi> dp(n + 1, (vi(m + 1, -1)));
     ll ans = helper(0, 0, arr, list, dp);
     cout << ans;
 }
