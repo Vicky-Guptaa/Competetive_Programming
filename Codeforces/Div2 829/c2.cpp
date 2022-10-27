@@ -200,67 +200,87 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
-vll preComputeFactor()
-{
-    ll n = 5 * 10e5 + 1;
-    vll sieve(n, 0);
-    fl(i, 2, n) sieve[i] = i;
-    fl(i, 2, n)
-    {
-        if (sieve[i] == i)
-        {
-            for (int j = 2 * i; j < n; j += i)
-            {
-                if (sieve[j] == j)
-                    sieve[j] = i;
-            }
-        }
-    }
-    return sieve;
-}
-
-mll computeFactor(mll &freq, vll &sieve)
-{
-    mll factors;
-    while (!freq.empty())
-    {
-        auto curr = freq.rbegin();
-        ll num = curr->first;
-        ll cnt = curr->second;
-        while (num != 1)
-        {
-            factors[sieve[num]] += cnt;
-            num /= sieve[num];
-        }
-        if (curr->first != 1)
-            freq[curr->first - 1] += cnt;
-        freq.erase(curr->first);
-    }
-    return factors;
-}
-
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
+    ll n;
+    cin >> n;
     vll arr(n);
     cin >> arr;
-    mll freq, freq2;
-    freq2[m]++;
-    for (auto x : arr)
-        freq[x]++;
-    vll sieve = preComputeFactor();
-    mll fact1 = computeFactor(freq, sieve);
-    mll fact2 = computeFactor(freq2, sieve);
-    for (auto [f, c] : fact2)
+    ll strtIndx = 0;
+    fl(i, 0, n)
     {
-        if (!fact1.count(f) || fact1[f] < c)
+        if (arr[i] == 0)
         {
-            pn return;
+            strtIndx++;
         }
+        else
+            break;
     }
-    py
+    vpll seg;
+    ll prev = strtIndx;
+    if (arr.front() == 0)
+        seg.push_back({1, strtIndx});
+    fl(i, strtIndx, n)
+    {
+        if (arr[i] == 0)
+        {
+            strtIndx = i + 1;
+            while (i < n && arr[i] == 0)
+            {
+                i++;
+            }
+            seg.push_back({strtIndx, i});
+            i--;
+        }
+        else
+        {
+            if (i == n - 1)
+            {
+                pm return;
+            }
+            strtIndx = i + 1;
+            while (i + 1 < n && arr[i + 1] == 0)
+            {
+                i++;
+            }
+            if (i == n - 1 && arr[i] == 0)
+            {
+                pm return;
+            }
+            i++;
+            ll diff = i - strtIndx + 1;
+            if (diff & 1)
+            {
+                if (arr[i] == arr[strtIndx - 1])
+                {
+                    seg.push_back({strtIndx, i + 1});
+                }
+                else
+                {
+                    seg.push_back({strtIndx, i});
+                    seg.push_back({i + 1, i + 1});
+                }
+            }
+            else
+            {
+                if (arr[i] == arr[strtIndx - 1])
+                {
+                    seg.push_back({strtIndx, i - 1});
+                    seg.push_back({i, i + 1});
+                }
+                else
+                {
+                    seg.push_back({strtIndx, i + 1});
+                }
+            }
+        }
+        prev = i;
+    }
+    cout << seg.size() << "\n";
+    for (auto x : seg)
+    {
+        cout << x << "\n";
+    }
 }
 /*
 When you are coding,remember to:
@@ -277,13 +297,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, 0, t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, 0, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
