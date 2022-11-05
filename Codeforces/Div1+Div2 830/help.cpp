@@ -2,51 +2,37 @@
 #include <math.h>
 #include <vector>
 #include <algorithm>
-#include <set>
-#include <queue>
 using namespace std;
 
 typedef long long ll;
 
-int minMutation(string start, string end, vector<string> &bank)
+int helper(int N, vector<int> &dp)
 {
-    set<string> sset(bank.begin(), bank.end());
-    queue<string> que;
-    que.push(start);
-    int oper = -1;
-    string convert = "ACGT";
-    while (!que.empty())
+    if (N == 1)
+        return 0;
+    if (dp[N] != -1)
     {
-        oper++;
-        int size = que.size();
-        while (size--)
+        return dp[N];
+    }
+    int ans = helper(N - 1, dp);
+    for (int i = 1; i < N; i++)
+    {
+        if (N % i == 0)
         {
-            string curr = que.front();
-            que.pop();
-            if (curr == end)
-            {
-                return oper;
-            }
-            for (int i = 0; i < curr.size(); i++)
-            {
-                for (auto ch : convert)
-                {
-                    curr[i] = ch;
-                    if (sset.count(curr))
-                    {
-                        sset.erase(curr);
-                        que.push(curr);
-                    }
-                }
-            }
+            ans = min(ans, helper(N - i, dp));
         }
     }
-    return -1;
+    return dp[N] = ans + 1;
 }
+
+int reduceToOne(int N)
+{
+    vector<int> dp(N + 1, -1);
+    return helper(N, dp);
+}
+
 int main()
 {
-    vector<string> bank = {"AACCGGTA"};
-    cout << minMutation("AACCGGTT", "AACCGGTA", bank) << endl;
-    cout << "\n";
+    cout << reduceToOne(5) << "\n";
     return 0;
 }
