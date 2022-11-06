@@ -6,33 +6,42 @@ using namespace std;
 
 typedef long long ll;
 
-int helper(int N, vector<int> &dp)
+long long helper(int i1, int i2, vector<int> &robot, vector<vector<int>> &factory, vector<vector<long long>> &dp)
 {
-    if (N == 1)
+    if (i2 == robot.size())
+    {
         return 0;
-    if (dp[N] != -1)
-    {
-        return dp[N];
     }
-    int ans = helper(N - 1, dp);
-    for (int i = 1; i < N; i++)
+    if (i1 == factory.size())
     {
-        if (N % i == 0)
-        {
-            ans = min(ans, helper(N - i, dp));
-        }
+        return 1e15;
     }
-    return dp[N] = ans + 1;
+    if (dp[i1][i2] != -1)
+    {
+        return dp[i1][i2];
+    }
+
+    long long sum = 1e15, cost = 0;
+
+    for (int i = i2; i < robot.size() && i - i2 < factory[i1][1]; i++)
+    {
+        cost += abs(factory[i1][0] - robot[i]);
+        sum = min(sum, cost + helper(i1 + 1, i + 1, robot, factory, dp));
+    }
+    return dp[i1][i2] = sum;
 }
 
-int reduceToOne(int N)
+long long minimumTotalDistance(vector<int> &robot, vector<vector<int>> &factory)
 {
-    vector<int> dp(N + 1, -1);
-    return helper(N, dp);
+    int n = robot.size(), m = factory.size();
+    vector<vector<long long>> dp(m + 1, vector<long long>(n + 1, -1));
+    return helper(0, 0, robot, factory, dp);
 }
 
 int main()
 {
-    cout << reduceToOne(5) << "\n";
+    vector<int> robot = {1, -1};
+    vector<vector<int>> factory = {{2, 2}, {6, 2}};
+    cout << minimumTotalDistance(robot, factory) << "\n";
     return 0;
 }
