@@ -199,38 +199,40 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll helper(int s, int k, int n, vll &arr, vector<vll> &dp)
-{
-    if (s >= n)
-    {
-        return 0;
-    }
-    if (dp[s][k] != -1)
-        return dp[s][k];
-
-    if (k == 0)
-    {
-        return dp[s][k] = arr[s] + max(helper(s + 2, k, n, arr, dp), helper(s + 2, k + 1, n, arr, dp));
-    }
-    else if (k == 1)
-    {
-        return dp[s][k] = arr[s - 1] + max(helper(s + 2, k, n, arr, dp), helper(s + 2, k +ass1, n, arr, dp));
-    }
-    else
-    {
-        return dp[s][k] = arr[s] + helper(s + 2, k, n, arr, dp);
-    }
-}
-
 // Code
 void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n);
-    cin >> arr;
-    vector<vector<ll>> dp(n + 1, vll(3, -1));
-    cout << max(helper(0, 0, n, arr, dp), helper(2, 1, n, arr, dp)) << "\n";
+    if (n == 2 || n == 3 || n == 5)
+    {
+        cout << 1 << "\n";
+        return;
+    }
+    if (n == 4)
+    {
+        cout << 2 << "\n";
+        return;
+    }
+    if (n & 1)
+    {
+        if (isPrime(n))
+        {
+            cout << 1 << "\n";
+        }
+        else if (isPrime(n - 2))
+        {
+            cout << 2 << "\n";
+        }
+        else
+        {
+            cout << "3\n";
+        }
+    }
+    else
+    {
+        cout << 2 << "\n";
+    }
 }
 /*
 When you are coding,remember to:
@@ -247,13 +249,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

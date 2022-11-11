@@ -199,38 +199,46 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll helper(int s, int k, int n, vll &arr, vector<vll> &dp)
-{
-    if (s >= n)
-    {
-        return 0;
-    }
-    if (dp[s][k] != -1)
-        return dp[s][k];
+// Code
 
-    if (k == 0)
+bool helper(string &a, string &b, int i, int j)
+{
+    int curr = 0;
+    fl(k, 0, i)
     {
-        return dp[s][k] = arr[s] + max(helper(s + 2, k, n, arr, dp), helper(s + 2, k + 1, n, arr, dp));
+        if (a[k] == b[curr])
+            curr++;
+
+        if (curr == b.size())
+            return true;
     }
-    else if (k == 1)
+    fl(k, j + 1, a.size())
     {
-        return dp[s][k] = arr[s - 1] + max(helper(s + 2, k, n, arr, dp), helper(s + 2, k +ass1, n, arr, dp));
+        if (a[k] == b[curr])
+            curr++;
+
+        if (curr == b.size())
+            return true;
     }
-    else
-    {
-        return dp[s][k] = arr[s] + helper(s + 2, k, n, arr, dp);
-    }
+    return false;
 }
 
-// Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    vector<vector<ll>> dp(n + 1, vll(3, -1));
-    cout << max(helper(0, 0, n, arr, dp), helper(2, 1, n, arr, dp)) << "\n";
+    string a, b;
+    cin >> a >> b;
+    int n = a.size(), m = b.size(), Max = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = i; j < n; j++)
+        {
+            if (helper(a, b, i, j))
+            {
+                Max = max(Max, j - i + 1);
+            }
+        }
+    }
+    cout << Max << "\n";
 }
 /*
 When you are coding,remember to:
@@ -247,13 +255,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    // ll t;
+    // cin>>t;
+    // fl(i,0,t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
