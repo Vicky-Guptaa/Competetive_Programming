@@ -203,24 +203,24 @@ bool isPerfectSquare(ll x)
 
 bool helper(ll a, ll b, ll c)
 {
+    if (b > a)
+        return helper(b, a, c);
     if (a == 0 || b == 0)
         return false;
     if (b == c || a == c)
         return true;
-
-    if (helper(abs(a - b), b, c))
+    if (a - c > 0 && (a - c) % b == 0)
+    {
         return true;
-    if (helper(a, abs(a - b), c))
-        return true;
-    return false;
+    }
+    else
+        return helper(b, a % b, c);
 }
 
 void solve()
 {
     ll a, b, c;
     cin >> a >> b >> c;
-    cout << endl
-         << "\n";
     if (helper(a, b, c))
     {
         py
