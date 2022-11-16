@@ -109,72 +109,59 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll gcd(ll a, ll b)
+ll sum(ll a, ll b)
 {
-    if (b == 0)
-        return a;
-    return gcd(b, a % b);
-} //__gcd
-ll lcm(ll a, ll b) { return (a / gcd(a, b) * b); }
-ll moduloMultiplication(ll a, ll b, ll mod)
-{
-    ll res = 0;
-    a %= mod;
-    while (b)
-    {
-        if (b & 1)
-            res = (res + a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-ll powermod(ll x, ll y, ll p)
-{
-    ll res = 1;
-    x = x % p;
-    if (x == 0)
-        return 0;
-    while (y > 0)
-    {
-        if (y & 1)
-            res = (res * x) % p;
-        y = y >> 1;
-        x = (x * x) % p;
-    }
-    return res;
+    return (a + b) % mod;
 }
 
+ll diff(ll a, ll b)
+{
+    return ((a - b) % mod + mod) % mod;
+}
+
+ll product(ll a, ll b)
+{
+    return (((ll)a % mod) * ((ll)b % mod)) % mod;
+}
+
+ll power(ll a, ll b)
+{
+    ll result = 1;
+    while (b != 0)
+    {
+        if (b & 1)
+            result = product(result, a);
+        a = product(a, a);
+        b /= 2;
+    }
+    return result;
+}
+
+ll division(ll a, ll b)
+{
+    return (product(a, power(b, mod - 2)));
+}
+
+vector<ll> fact(1e6 + 2, 1);
+
+void factorial()
+{
+    ll f = 1;
+    for (int i = 2; i <= 1e6; i++)
+    {
+        f *= i;
+        f %= mod;
+        fact[i] = f;
+    }
+}
+
+ll nCr(ll n, ll r)
+{
+    return product(fact[n], power(product(fact[n - r], fact[r]), mod - 2));
+}
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
 bool sortpd(const pair<int, int> &a, const pair<int, int> &b) { return (a.second > b.second); }
-
-// Bits
-string decToBinary(int n)
-{
-    string s = "";
-    int i = 0;
-    while (n > 0)
-    {
-        s = to_string(n % 2) + s;
-        n = n / 2;
-        i++;
-    }
-    return s;
-}
-ll binaryToDecimal(string n)
-{
-    string num = n;
-    ll dec_value = 0;
-    int base = 1;
-    int len = num.length();
-    for (int i = len - 1; i >= 0; i--)
-    {
-        if (num[i] == '1')
-            dec_value += base;
-        base = base * 2;
-    }
-    return dec_value;
-}
 
 // Check
 bool isPrime(ll n)
@@ -190,12 +177,7 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-bool isPowerOfTwo(int n)
-{
-    if (n == 0)
-        return false;
-    return (ceil(log2(n)) == floor(log2(n)));
-}
+bool isPowerOfTwo(int n) { return (n & (n - 1)) == 0; }
 bool isPerfectSquare(ll x)
 {
     if (x >= 0)
@@ -218,37 +200,40 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
-void reverseP(vpll &arr, int i, int j)
-{
-    while (i < j)
-    {
-        swap(arr[i].first, arr[j].first);
-        i++;
-        j--;
-    }
-}
-
-ll helper(ll n, ll k, ll d, ll isTrue, vector<vector<ll>> &dp)
-{
-    if (n == 0)
-        return 0;
-    ll ways = isTrue;
-    for (int i = 1; i <= k; i++)
-    {
-        if (n < i)
-            continue;
-        ways += 1 + helper(n - k, k, d, isTrue || (d == i), dp);
-    }
-    return dp[n][isTrue] = ways;
-}
-
 void solve()
 {
-    ll n, k, d;
-    cin >> n >> k >> d;
-    vector<vector<ll>> dp(n + 1, vector<ll>(2, -1));
-    cout << helper(n, k, d, 0, dp) << "\n";
+    ll n;
+    cin >> n;
+    vll arr(n);
+    cin >> arr;
+    if (n == 1)
+    {
+        cout << 1 << " " << 1 << "\n";
+        cout << 1 << "\n";
+        arr[0] += 1;
+        cout << 1 << " " << 1 << "\n";
+        cout << 1 << "\n";
+        arr[0] += 1;
+        cout << 1 << " " << 1 << "\n";
+        cout << -arr[0] << "\n";
+        return;
+    }
+    cout << 1 << " " << n << "\n";
+    fl(i, 0, n)
+    {
+        ll val = (arr[i] % (n - 1) + (n - 1)) % (n - 1);
+        arr[i] += (n - 1 - val) * n;
+        cout << (n - 1 - val) * n << " ";
+    }
+    cout << "\n";
+    cout << 1 << " " << n - 1 << '\n';
+    fl(i, 0, n - 1)
+    {
+        cout << -arr[i] << " ";
+    }
+    cout << "\n";
+    cout << n << " " << n << "\n";
+    cout << -arr.back() << "\n";
 }
 /*
 When you are coding,remember to:
@@ -265,9 +250,9 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, 0, t)
+    // ll t;
+    // cin>>t;
+    // fl(i,0,t)
     // {
     //     solve();
     // }
