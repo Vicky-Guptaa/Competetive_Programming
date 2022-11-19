@@ -201,74 +201,40 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-int zC(string s)
+int helper(ll s, ll h, ll n, ll g, ll b, vll &arr, vector<vector<vector<map<ll, int>>>> &dp)
 {
-    int cnt = 0;
-    rl(i, s.size() - 1, 0)
+    if (s == n)
     {
-        if (s[i] != '0')
-            break;
-        cnt++;
+        return 0;
     }
-    return cnt;
+    if (dp[s][g][b].count(h))
+        return dp[s][g][b][h];
+
+    if (h > arr[s])
+    {
+        return dp[s][g][b][h] = 1 + helper(s + 1, h + arr[s] / 2, n, g, b, arr, dp);
+    }
+    int Max = 0;
+    if (g > 0)
+    {
+        Max = max(Max, helper(s, h * 2, n, g - 1, b, arr, dp));
+    }
+    if (b > 0)
+    {
+        Max = max(Max, helper(s, h * 3, n, g, b - 1, arr, dp));
+    }
+    return dp[s][g][b][h] = Max;
 }
 
 void solve()
 {
-    ll n, m, res = 0;
-    cin >> n >> m;
-    res = n;
-    int fcnt = 0, tcnt = 0;
-    while (n % 5 == 0)
-    {
-        n /= 5;
-        fcnt++;
-    }
-    while (n % 2 == 0)
-    {
-        n /= 2;
-        tcnt++;
-    }
-    n = res;
-    res = abs(fcnt - tcnt);
-    ll ans = 1;
-    if (fcnt > tcnt)
-    {
-        while (res && ans * 2 <= m)
-        {
-            ans *= 2;
-            res--;
-        }
-        while (ans * 10 <= m)
-        {
-            ans *= 10;
-        }
-        ans = (m / ans) * ans;
-        cout << n * ans << "\n";
-    }
-    else if (fcnt == tcnt)
-    {
-        while (ans * 10 <= m)
-        {
-            ans *= 10;
-        }
-        ans = (m / ans) * ans;
-        cout << n * ans << "\n";
-    }
-    else
-    {
-        while (res && ans * 5 <= m)
-        {
-            ans *= 5;
-            res--;
-        }
-        while (ans * 10 <= m)
-        {
-            ans *= 10;
-        }
-        ans = (m / ans) * ans;
-        cout << n * ans << "\n";
-    }
+    ll n, h;
+    cin >> n >> h;
+    vll arr(n);
+    cin >> arr;
+    sort(vr(arr));
+    vector<vector<vector<map<ll, int>>>> dp(n + 1, vector<vector<map<ll, int>>>(3, vector<map<ll, int>>(2)));
+    cout << helper(0, h, n, 2, 1, arr, dp) << "\n";
 }
 /*
 When you are coding,remember to:
