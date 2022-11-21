@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"e:\\Programming Language\\Competetive\\Codeforces\\Pinley Round 1\\a.cpp","tests":[{"id":1668955127466,"input":"4\n1 1 1\n2 1 2\n3 1 1\n4 1 1","output":"Yes\nNo\nNo\nYes"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\Programming Language\\Competetive\\Codeforces\\Pinley Round 1\\a.cpp","group":"local","local":true}
