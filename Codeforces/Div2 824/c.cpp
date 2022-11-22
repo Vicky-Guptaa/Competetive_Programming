@@ -222,64 +222,42 @@ void solve()
 {
     ll n;
     cin >> n;
-    string s, nstr;
+    string s, alpha;
     cin >> s;
-    set<char> oset, left;
-    for (auto x : s)
-        oset.insert(x);
-    char last = oset.size() + 'a' - 1, strt = 'a';
+    fl(i, 0, 26)
+        alpha += char(i + 'a');
+    ll itr = 0;
+    // if (s[0] != 'a')
+    // {
+    //     alpha += s[0];
+    //     alpha.erase(alpha.find(s[0]), 1);
+    // }
     map<char, char> mp;
-    if (s.size() == 1)
-    {
-        if (s == "a")
-            cout << "b\n";
-        else
-            cout << "a\n";
-        return;
-    }
     fl(i, 0, n)
     {
-        if (strt != s[i])
+        if (mp.count(s[i]))
+            continue;
+        if (s[i] != alpha[itr])
         {
-            if (mp.count(s[i]))
-            {
-                nstr += mp[s[i]];
-            }
-            else
-            {
-                if (strt > last)
-                {
-                    mp[s[i]] = *left.begin();
-                    nstr += *left.begin();
-                    left.erase(left.begin());
-                }
-                else
-                {
-                    mp[s[i]] = strt;
-                    nstr += strt;
-                    strt++;
-                }
-            }
+            mp[s[i]] = alpha[itr];
+            itr++;
         }
         else
         {
-            left.insert(strt);
-            strt++;
-            if (strt > last)
-            {
-                mp[s[i]] = *left.begin();
-                nstr += *left.begin();
-                left.erase(left.begin());
-            }
-            else
-            {
-                mp[s[i]] = strt;
-                nstr += strt;
-                strt++;
-            }
+            i--;
+            char ch = alpha[itr];
+            alpha.erase(itr, 1);
+            alpha += ch;
         }
+        if (itr > 'z')
+            break;
     }
-    cout << nstr << "\n";
+    string res;
+    fl(i, 0, n)
+    {
+        res += mp[s[i]];
+    }
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:

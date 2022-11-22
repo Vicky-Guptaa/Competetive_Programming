@@ -218,11 +218,34 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+int helper(int s, int e, string &str, vector<vector<int>> &dp)
+{
+    if (s > e)
+    {
+        return;
+    }
+}
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    string str;
+    cin >> str;
+    int n = str.size();
+    vector<vector<int>> dp(n + 1, vector<int>(n, -1));
+    ll ans = helper(0, n - 1, str, dp);
+    if (ans)
+    {
+        cout << "Alice\n";
+    }
+    else if (!ans)
+    {
+        cout << "Bob\n";
+    }
+    else
+    {
+        cout << "Draw\n";
+    }
 }
 /*
 When you are coding,remember to:

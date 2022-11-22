@@ -256,17 +256,12 @@ void solve()
     else if (2 * x < y)
     {
         ll count = 0;
+        ll howmuch = y / x;
         fl(i, 1, indx.size())
         {
-            if (indx[i] - indx[i - 1] == 1)
+            if (indx[i] - indx[i - 1] <= howmuch)
             {
-                cost += x;
-                i++;
-                count++;
-            }
-            else if (indx[i] - indx[i - 1] == 2)
-            {
-                cost += 2 * x;
+                cost += x * (indx[i] - indx[i - 1]);
                 i++;
                 count++;
             }

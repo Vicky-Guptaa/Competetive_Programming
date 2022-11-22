@@ -228,13 +228,6 @@ void solve()
     {
         py return;
     }
-    fl(i, 1, k)
-    {
-        if (arr[i] < arr[i - 1])
-        {
-            pn return;
-        }
-    }
     vll narr;
 
     if (n != k)

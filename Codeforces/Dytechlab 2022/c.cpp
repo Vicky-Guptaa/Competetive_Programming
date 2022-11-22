@@ -238,7 +238,10 @@ void solve()
                 }
                 else
                 {
-                    pn
+                    if (r3 == n && c3 == n)
+                        pn else if ((abs(r3 - x) % 2 == 0 || abs(y - c3) % 2 == 1) ||
+                                    (abs(r3 - x) % 2 == 1 || abs(y - c3) % 2 == 0))
+                            py else pn
                 }
             }
             else if (r3 == 1 || c3 == 1)
@@ -249,7 +252,10 @@ void solve()
                 }
                 else
                 {
-                    pn
+                    if (r3 == n && c3 == 1)
+                        pn else if ((abs(r3 - x) % 2 == 0 || abs(y - c3) % 2 == 1) ||
+                                    (abs(r3 - x) % 2 == 1 || abs(y - c3) % 2 == 0))
+                            py else pn
                 }
             }
             else
@@ -274,7 +280,10 @@ void solve()
                 }
                 else
                 {
-                    pn
+                    if (r2 == n && c2 == n)
+                        pn else if ((abs(r2 - x) % 2 == 0 || abs(y - c2) % 2 == 1) ||
+                                    (abs(r2 - x) % 2 == 1 || abs(y - c2) % 2 == 0))
+                            py else pn
                 }
             }
             else if (r2 == 1 || c2 == 1)
@@ -285,7 +294,10 @@ void solve()
                 }
                 else
                 {
-                    pn
+                    if (r2 == 1 && c2 == 1)
+                        pn else if ((abs(r2 - x) % 2 == 0 || abs(y - c2) % 2 == 1) ||
+                                    (abs(r2 - x) % 2 == 1 || abs(y - c2) % 2 == 0))
+                            py else pn
                 }
             }
             else
@@ -310,7 +322,10 @@ void solve()
                 }
                 else
                 {
-                    pn
+                    if (r1 == n && c1 == n)
+                        pn else if ((abs(r1 - x) % 2 == 0 || abs(y - c1) % 2 == 1) ||
+                                    (abs(r1 - x) % 2 == 1 || abs(y - c1) % 2 == 0))
+                            py else pn
                 }
             }
             else if (r1 == 1 || c1 == 1)
@@ -321,7 +336,10 @@ void solve()
                 }
                 else
                 {
-                    pn
+                    if (r1 == 1 && c1 == 1)
+                        pn else if ((abs(r1 - x) % 2 == 0 || abs(y - c1) % 2 == 1) ||
+                                    (abs(r1 - x) % 2 == 1 || abs(y - c1) % 2 == 0))
+                            py else pn
                 }
             }
             else

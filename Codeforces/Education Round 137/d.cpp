@@ -219,36 +219,26 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-vll longest_P_S(string str)
+int findSub(string &a, string &b)
 {
-    int n = str.size();
-    vll lps(n, 0);
-    lps[0] = 0;
-    int i = 0, j = 1;
-
-    while (j < n)
+    int ans = 0;
+    fl(i, 0, a.size())
     {
-        if (str[i] == str[j] || (str[i] == '?' && str[j] != '$') || (str[j] == '?'))
+        int mtc = 0;
+        fl(j, 0, b.size())
         {
-            lps[j] = i + 1;
-            i++;
-            j++;
-        }
-        else
-        {
-            if (i != 0)
+            if (b[j] == '?' || (a[i + j] == b[j]))
             {
-                i = lps[i - 1];
+                mtc++;
             }
             else
-            {
-                lps[j] = 0;
-                j++;
-            }
+                break;
         }
+        ans = max(ans, mtc);
     }
-    return lps;
+    return ans;
 }
+
 void solve()
 {
     ll n;
@@ -266,16 +256,24 @@ void solve()
     {
         s2 += (s[i] == '0') ? '1' : '?';
     }
-    cout << s2 << "\n";
-    string rlt = s2 + "$" + s;
-    vll ans = longest_P_S(rlt);
-    ll mx = *max_element(vr(ans));
-    cout << ans << "\n";
+    ll mx = findSub(s, s2);
     fl(i, indx, indx + mx)
     {
         s[i] = '1';
     }
-    cout << s << "\n";
+    int findx = s.find('1');
+    if (findx == string::npos)
+    {
+        cout << "0\n";
+    }
+    else
+    {
+        fl(i, findx, n)
+        {
+            cout << s[i];
+        }
+        cout << "\n";
+    }
 }
 /*
 When you are coding,remember to:

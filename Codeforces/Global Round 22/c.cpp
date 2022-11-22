@@ -219,27 +219,35 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-bool helper(ll oc, ll ec, ll cnt, bool isAlice, vector<vector<vector<int>>> &dp)
+bool helper(ll oc, ll ec, bool parity, vector<vector<vector<int>>> &dp)
 {
-    if (oc == 0 && !(cnt & 1) && !(ec & 1))
+    if (oc == 0)
     {
-        return 1;
+        return parity;
     }
-    if (dp[oc][ec][isAlice] != -1)
-        return dp[oc][ec][isAlice];
-
-    if (isAlice)
+    if (ec == 0 && oc == 1)
     {
-        ll val1 = helper(oc - 1, ec, cnt, !isAlice, dp);
-        ll val2 = helper(oc, ec - 1, cnt, !isAlice, dp);
-        return dp[oc][ec][isAlice] = cnt & 1; 
+        return !parity;
+    }
+    if (dp[oc][ec][parity] != -1)
+        return dp[oc][ec][parity];
+
+    if (ec == 0)
+    {
+        return dp[oc][ec][parity] = helper(oc - 2, ec, !parity, dp);
     }
     else
     {
-        if (!(val1 & 1))
-            return dp[oc][ec][isAlice] = val2;
-        else
-            return dp[oc][ec][isAlice] = val1;
+        // bob will pick those in which alex will lose
+        // and alex pick thoes which in he will win
+        // alex pick the first odd then bob has chance to pick and odd or even so in which alex will lose bob will pick that one
+        ll fodd = (helper(oc - 1, ec - 1, !parity, dp)) && (oc >= 2 ? helper(oc - 2, ec, !parity, dp) : 1);
+        // similarly
+        ll feven = (helper(oc - 1, ec - 1, parity, dp)) && (ec >= 2 ? helper(oc, ec - 2, parity, dp) : 1);
+
+        // now alex will decide which one to play first odd or first even 
+        dp[oc][ec][parity] = fodd | feven;
+        return dp[oc][ec][parity];
     }
 }
 
@@ -257,14 +265,8 @@ void solve()
         else
             ec++;
     }
-    if (oc == 0)
-    {
-        cout << "Alice"
-             << "\n";
-        return;
-    }
     vector<vector<vector<int>>> dp(101, vector<vector<int>>(101, vector<int>(2, -1)));
-    if (!(helper(oc, ec, 0, 1, dp) & 1))
+    if (helper(oc, ec, 1, dp))
     {
         cout << "Alice\n";
     }

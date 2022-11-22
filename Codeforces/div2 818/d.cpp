@@ -218,11 +218,53 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+ll product(ll a, ll b)
+{
+    return (((ll)a % mod) * ((ll)b % mod)) % mod;
+}
+
+ll power(ll a, ll b)
+{
+    ll result = 1;
+    while (b != 0)
+    {
+        if (b & 1)
+            result = product(result, a);
+        a = product(a, a);
+        b /= 2;
+    }
+    return result;
+}
+
+vll fact(100005, 0);
+
+void factorial()
+{
+    fact[0] = 1;
+    for (int i = 1; i <= 100005; i++)
+    {
+        fact[i] = i * fact[i - 1];
+        fact[i] %= mod;
+    }
+}
+
+ll nCr(ll n, ll r)
+{
+    return product(fact[n], power(product(fact[n - r], fact[r]), mod - 2));
+}
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll n, m;
+    cin >> n >> m;
+    ll res = 0;
+    fl(i, 0, min(m, n) + 1)
+    {
+        res += nCr(n, i);
+        res %= mod;
+    }
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:
@@ -239,13 +281,14 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    factorial();
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
