@@ -200,45 +200,46 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
-ll helper(int a1, int a2, int n, int m, vector<vector<vll>> &dp)
-{
-    if (m == 1)
-        return 1;
-    if (dp[a1][a2][m] != -1)
-        return dp[a1][a2][m];
-    ll ways = helper(a1, a2, n, m - 1, dp);
-    ways %= mod;
-    if (a1 < a2)
-    {
-        ways += helper(a1 + 1, a2, n, m, dp);
-        ways %= mod;
-        ways += helper(a1, a2 - 1, n, m, dp);
-        ways %= mod;
-    }
-    if (a2 - a1 >= 2)
-    {
-        ways -= helper(a1 + 1, a2 - 1, n, m, dp);
-        ways = ((ways % mod) + mod) % mod;
-    }
-    return dp[a1][a2][m] = ways;
-}
-
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
-    vector<vector<vll>> dp(n + 1, vector<vll>(n + 1, vll(m + 1, -1)));
-    ll ans = 0;
-    fl(i, 1, n + 1)
+    string a, b;
+    cin >> a >> b;
+    ll n = a.size();
+    map<char, int> freq;
+    fl(i, 0, n)
     {
-        fl(j, i, n + 1)
+        freq[a[i]]++;
+    }
+    fl(i, 0, n)
+    {
+        if (a[i] > freq.begin()->first)
         {
-            ans += helper(i, j, n, m, dp);
-            ans %= mod;
+            ll indx = 0;
+            fl(j, i + 1, n)
+            {
+                if (a[j] == freq.begin()->first)
+                    indx = j;
+            }
+            swap(a[indx], a[i]);
+            break;
+        }
+        else
+        {
+            freq[a[i]]--;
+            if (freq[a[i]] == 0)
+            {
+                freq.erase(a[i]);
+            }
         }
     }
-    cout << ans << "\n";
+    if (a < b)
+    {
+        cout << a << "\n";
+    }
+    else
+    {
+        cout << "---\n";
+    }
 }
 /*
 When you are coding,remember to:
@@ -255,13 +256,13 @@ int main()
     //    freopen("Output.txt", "w", stdout);
     //#endif
     You Can Do_It
-    // ll t;
-    // cin>>t;
-    // fl(i,0,t)
-    // {
-    //     solve();
-    // }
-    solve();
+        ll t;
+    cin >> t;
+    fl(i, 0, t)
+    {
+        solve();
+    }
+    // solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
