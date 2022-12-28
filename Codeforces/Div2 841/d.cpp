@@ -199,139 +199,45 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-bool isValid(int mid, vector<vll> &mat, ll &n, ll &m)
+bool isValid(ll mid, vector<vi> &mat, int &n, int &m)
 {
-    if (n < mid || m < mid)
-        return false;
-    map<int, int> freq;
-    fl(i, 0, mid)
+    vector<vector<int>> preMat(n + 1, vector<int>(m + 1, 0));
+    fl(i, 1, n + 1)
     {
-        fl(j, 0, mid)
+        fl(j, 1, m + 1)
         {
-            freq[mat[i][j]]++;
+            preMat[i][j] = (mid <= mat[i - 1][j - 1]);
         }
     }
-    if (freq.begin()->first >= mid)
-        return true;
-    int endI = n - mid, endJ = m - mid;
-    int i = 0, j = mid;
-    bool inc = true;
-    while (true)
+    fl(i, 1, n + 1)
     {
-        if (j != m && j != 0)
+        fl(j, 1, m + 1)
         {
-            if (inc)
-            {
-                fl(k, 0, mid)
-                {
-                    freq[mat[k + i][j - mid]]--;
-                    if (freq[mat[i + k][j - mid]] == 0)
-                    {
-                        freq.erase(mat[i + k][j - mid]);
-                    }
-                }
-                fl(k, 0, mid)
-                {
-                    freq[mat[i + k][j]]++;
-                }
-                if (freq.begin()->first >= mid)
-                    return true;
-                j++;
-            }
-            else
-            {
-                fl(k, 0, mid)
-                {
-                    freq[mat[k + i][j + mid]]--;
-                    if (freq[mat[k + i][j + mid]] == 0)
-                    {
-                        freq.erase(mat[k + i][j + mid]);
-                    }
-                }
-                fl(k, 0, mid)
-                {
-                    freq[mat[k + i][j]]++;
-                }
-                if (freq.begin()->first >= mid)
-                    return true;
-                j--;
-            }
-        }
-        else
-        {
-            if (i == endI && (j == m || j == 0))
-                break;
-            if (inc)
-            {
-                fl(k, 0, mid)
-                {
-                    freq[mat[i][j - mid + k]]--;
-                    if (freq[mat[i][j - mid + k]] == 0)
-                    {
-                        freq.erase(mat[i][j - mid + k]);
-                    }
-                }
-                fl(k, 0, mid)
-                {
-                    freq[mat[i + mid][j - mid + k]]++;
-                }
-                if (freq.begin()->first >= mid)
-                    return true;
-                inc = 0;
-                j = m - mid - 1;
-            }
-            else
-            {
-                fl(k, 0, mid)
-                {
-                    freq[mat[i][j + k]]--;
-                    if (freq[mat[i][j + k]] == 0)
-                    {
-                        freq.erase(mat[i][j + k]);
-                    }
-                }
-                fl(k, 0, mid)
-                {
-                    freq[mat[i + mid][j + k]]++;
-                }
-                if (freq.begin()->first >= mid)
-                    return true;
-                inc = 1;
-                j = mid;
-            }
-            i++;
+            preMat[i][j] += preMat[i - 1][j] + preMat[i][j - 1] - preMat[i - 1][j - 1];
         }
     }
-
-    // fl(i, 0, n - mid + 1)
-    // {
-    //     fl(j, 0, m - mid + 1)
-    //     {
-    //         map<int, int> freq;
-    //         fl(p, i, i + mid)
-    //         {
-    //             fl(q, j, j + mid)
-    //             {
-    //                 freq[mat[p][q]]++;
-    //             }
-    //         }
-    //         if (freq.begin()->first >= mid)
-    //         {
-    //             return true;
-    //         }
-    //     }
-    // }
+    fl(i, 1, n - mid + 2)
+    {
+        fl(j, 1, m - mid + 2)
+        {
+            ll val = preMat[i + mid - 1][j + mid - 1] - preMat[i + mid - 1][j - 1] - preMat[i - 1][j + mid - 1] + preMat[i - 1][j - 1];
+            if (val == mid * mid)
+            {
+                return true;
+            }
+        }
+    }
     return false;
 }
 
 // Code
 void solve()
 {
-    ll n, m;
+    int n, m;
     cin >> n >> m;
-    vector<vll> mat(n, vll(m));
+    vector<vi> mat(n, vi(m));
     cin >> mat;
-    ll low = 1, high = 6, ans = 0;
+    int low = 1, high = min(n, m), ans = 0;
     while (low <= high)
     {
         ll mid = (high + low) / 2;

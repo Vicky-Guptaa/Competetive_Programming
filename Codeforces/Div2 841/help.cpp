@@ -200,33 +200,11 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-
-void solve(vector<int> &sq)
+void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    vector<int> mcnt(4 * n + 1, 0);
-    int xrr = 0;
-    ll ans = 0;
-    mcnt[0] = 1;
-    for (auto &x : arr)
-    {
-        xrr ^= x;
-        for (auto &y : sq)
-        {
-            ll val = xrr ^ y;
-            if (val >= 4 * n + 1)
-                break;
-            ans += mcnt[val];
-        }
-        mcnt[xrr]++;
-    }
-    // cout << ans << "\n";
-    ll total = (n * (n + 1)) / 2;
-    total -= ans;
-    cout << total << "\n";
+    ll a=2,b=3;
+    ll n = a ^ b;
+    cout << n << "\n";
 }
 /*
 When you are coding,remember to:
@@ -242,17 +220,12 @@ int main()
     //     freopen("Input.txt", "r", stdin);
     //     freopen("Output.txt", "w", stdout);
     // #endif
-    You Can Do_It int sqrtt = sqrt(4e5 + 5);
-    vector<int> sq;
-    fl(i, 0, sqrtt + 1)
-    {
-        sq.push_back(i * i);
-    }
-    ll t;
+    You Can Do_It
+        ll t;
     cin >> t;
     fl(i, 0, t)
     {
-        solve(sq);
+        solve();
     }
     // solve();
     // fl(i,0,t) //Kickstart
