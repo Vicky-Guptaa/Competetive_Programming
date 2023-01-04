@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"h:\\Competetive_Programming\\Codeforces\\Hello 2023\\a.cpp","tests":[{"id":1672757073945,"input":"6\n2\nLL\n2\nLR\n2\nRL\n2\nRR\n7\nLLRLLLR\n7\nLLLLRRR\n","output":"-1\n1\n0\n-1\n3\n6\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Codeforces\\Hello 2023\\a.cpp","group":"local","local":true}
