@@ -109,59 +109,72 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll sum(ll a, ll b)
+ll gcd(ll a, ll b)
 {
-    return (a + b) % mod;
-}
-
-ll diff(ll a, ll b)
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+} //__gcd
+ll lcm(ll a, ll b) { return (a / gcd(a, b) * b); }
+ll moduloMultiplication(ll a, ll b, ll mod)
 {
-    return ((a - b) % mod + mod) % mod;
-}
-
-ll product(ll a, ll b)
-{
-    return (((ll)a % mod) * ((ll)b % mod)) % mod;
-}
-
-ll power(ll a, ll b)
-{
-    ll result = 1;
-    while (b != 0)
+    ll res = 0;
+    a %= mod;
+    while (b)
     {
         if (b & 1)
-            result = product(result, a);
-        a = product(a, a);
-        b /= 2;
+            res = (res + a) % mod;
+        b >>= 1;
     }
-    return result;
+    return res;
 }
-
-ll division(ll a, ll b)
+ll powermod(ll x, ll y, ll p)
 {
-    return (product(a, power(b, mod - 2)));
-}
-
-vector<ll> fact(1e6 + 2, 1);
-
-void factorial()
-{
-    ll f = 1;
-    for (int i = 2; i <= 1e6; i++)
+    ll res = 1;
+    x = x % p;
+    if (x == 0)
+        return 0;
+    while (y > 0)
     {
-        f *= i;
-        f %= mod;
-        fact[i] = f;
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
     }
+    return res;
 }
 
-ll nCr(ll n, ll r)
-{
-    return product(fact[n], power(product(fact[n - r], fact[r]), mod - 2));
-}
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
 bool sortpd(const pair<int, int> &a, const pair<int, int> &b) { return (a.second > b.second); }
+
+// Bits
+string decToBinary(int n)
+{
+    string s = "";
+    int i = 0;
+    while (n > 0)
+    {
+        s = to_string(n % 2) + s;
+        n = n / 2;
+        i++;
+    }
+    return s;
+}
+ll binaryToDecimal(string n)
+{
+    string num = n;
+    ll dec_value = 0;
+    int base = 1;
+    int len = num.length();
+    for (int i = len - 1; i >= 0; i--)
+    {
+        if (num[i] == '1')
+            dec_value += base;
+        base = base * 2;
+    }
+    return dec_value;
+}
 
 // Check
 bool isPrime(ll n)
@@ -177,7 +190,12 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-bool isPowerOfTwo(int n) { return (n & (n - 1)) == 0; }
+bool isPowerOfTwo(int n)
+{
+    if (n == 0)
+        return false;
+    return (ceil(log2(n)) == floor(log2(n)));
+}
 bool isPerfectSquare(ll x)
 {
     if (x >= 0)
@@ -201,116 +219,52 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-class DisjSet
+long long binpow(long long a, long long b, long long m)
 {
-    int *parent;
-    int *rank;
-    int size;
-
-public:
-    DisjSet(int capacity)
+    a %= m;
+    long long res = 1;
+    while (b > 0)
     {
-        size = capacity;
-        parent = new int[size];
-        rank = new int[size];
-        initializer();
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
     }
-    void initializer()
-    {
-        for (int i = 0; i < size; i++)
-        {
-            parent[i] = i;
-            rank[i] = 0;
-        }
-    }
-    int Find(int x)
-    {
-        if (parent[x] == x)
-            return x;
-        parent[x] = Find(parent[x]);
-        return parent[x];
-    }
-    void Union(int x, int y)
-    {
-        int x_rep = Find(x);
-        int y_rep = Find(y);
-
-        if (x_rep == y_rep)
-            return;
-        if (rank[x_rep] > rank[y_rep])
-            parent[y_rep] = x_rep;
-        else if (rank[y_rep] > rank[x_rep])
-            parent[x_rep] = y_rep;
-        else
-        {
-            parent[y_rep] = x_rep;
-            rank[x_rep]++;
-        }
-    }
-};
+    return res;
+}
 
 void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n), brr(n);
-    cin >> arr >> brr;
-    mll freq;
-    for (auto x : arr)
+    int totalMatch = n * (n - 1) / 2;
+    int draw = totalMatch % n;
+    vector<vector<int>> result(n + 1, vector<int>(n + 1, -1));
+    if (draw)
     {
-        freq[x]++;
-    }
-    for (auto x : brr)
-    {
-        freq[x]++;
-    }
-    fl(i, 1, n + 1)
-    {
-        if (!freq.count(i))
+        int f = 1, s = 2;
+        while (s <= n)
         {
-            cout << 0 << "\n";
-            return;
+            result[f][s] = 0;
+            f += 2;
+            s += 2;
         }
     }
-    ll mod = 998244353ll, cnt = 0, ans = 1;
-    DisjSet f(n + 1);
-    set<int> sme;
-    fl(i, 0, n)
+    int eachWin = totalMatch / n;
+    for (int i = 1; i <= n; i++)
     {
-        if (arr[i] == brr[i])
-            sme.insert(arr[i]);
-    }
-    vll narr, nbrr;
-    set<int> allEle;    set<int> sme;
-    fl(i, 0, n)
-    {
-        f.Union(arr[i], brr[i]);
-    }
-    fl(i, 1, n + 1)
-    {
-        f.Find(i);
-    }
-    mll fq;
-    fl(i, 1, n + 1)
-    {
-        cout << i << " " << f.Find(i) << "\n";
-        fq[f.Find(i)]++;
-    }
-
-    for (auto x : fq)
-    {
-        if (x.second == 1)
+        bool cntr = 0;
+        for (int j = i + 1; j <= n; j++)
         {
-            ans *= n;
-            ans %= mod;
-        }
-        else
-        {
-            ans *= 2;
-            ans %= mod;
+            if (result[i][j] == -1)
+            {
+                result[i][j] = (cntr) ? 1 : -1;
+            }
+            cntr = !cntr;
+            cout << result[i][j] << " ";
         }
     }
-    cout << ans << "\n";
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
@@ -318,11 +272,6 @@ When you are coding,remember to:
       - pay attention to some special cases(n=0,1).
       - Don't code before think completely.
       - ...
-
-1
-6
-1 1 1 1 4 5
-1 2 3 4 5 6
 */
 // Main
 int main()
