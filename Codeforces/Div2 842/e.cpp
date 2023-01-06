@@ -30,7 +30,7 @@ using ull = unsigned long;
 // Constants
 const lld pi = 3.141592653;
 const ll INF = 1e18;
-const ll mod = 1e9 + 7;
+ll mod = 1e9 + 7;
 
 // TypeDEf
 typedef pair<int, int> ppi;
@@ -109,17 +109,17 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll sum(ll a, ll b)
+inline ll sum(ll a, ll b)
 {
     return (a + b) % mod;
 }
 
-ll diff(ll a, ll b)
+inline ll diff(ll a, ll b)
 {
     return ((a - b) % mod + mod) % mod;
 }
 
-ll product(ll a, ll b)
+inline ll product(ll a, ll b)
 {
     return (((ll)a % mod) * ((ll)b % mod)) % mod;
 }
@@ -137,27 +137,32 @@ ll power(ll a, ll b)
     return result;
 }
 
-ll division(ll a, ll b)
+inline ll division(ll a, ll b)
 {
     return (product(a, power(b, mod - 2)));
 }
 
-vector<ll> fact(1e6 + 2, 1);
-
-void factorial()
+void factorial(int size, vll &fact, vll &fInv)
 {
     ll f = 1;
-    for (int i = 2; i <= 1e6; i++)
+    for (int i = 2; i <= size; i++)
     {
         f *= i;
         f %= mod;
         fact[i] = f;
     }
+
+    fInv[size] = power(fact[size], mod - 2);
+
+    for (int i = size; i > 0; i--)
+    {
+        fInv[i - 1] = (fInv[i] * i) % mod;
+    }
 }
 
-ll nCr(ll n, ll r)
+inline ll nCr(ll n, ll r, vll &fact, vll &finv)
 {
-    return product(fact[n], power(product(fact[n - r], fact[r]), mod - 2));
+    return product(fact[n], product(finv[n - r], finv[r]));
 }
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
@@ -201,64 +206,25 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-void dfs(int src, set<int> list[], vector<int> &visit, vector<int> &cycleEle)
-{
-    visit[src] = true;
-    for (auto x : list[src])
-    {
-        if (!visit[x])
-        {
-            cycleEle.push_back(x);
-            dfs(x, list, visit, cycleEle);
-        }
-    }
-}
-
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n + 1, 0);
-    fl(i, 1, n + 1) cin >> arr[i];
-    set<int> list[n + 1];
-    fl(i, 1, n + 1)
+    ll n, m;
+    cin >> n >> m;
+    mod = m;
+    vector<ll> fact(3 * n + 2, 1), factInv(3 * n + 2, 1);
+    factorial(3 * n, fact, factInv);
+    ll total = product(3, fact[3 * n]);
+    ll case1 = 1;                                                                                // 0 operations
+    ll case2 = diff(product(fact[2 * n], 2), fact[n]);                                           // 1 operations or 0
+    ll case3 = product(fact[2 * n], product(fact[n], product(2, nCr(2 * n, n, fact, factInv)))); // 2 operations or 1 or 0
+    fl(i, 0, n + 1)
     {
-        list[i].insert(arr[i]);
-        list[arr[i]].insert(i);
+        case3 = diff(case3,
+                     product(fact[n], product(fact[n], product(fact[n],
+                                                               product(nCr(n, i, fact, factInv), product(nCr(n, n - i, fact, factInv), nCr(2 * n - i, n, fact, factInv)))))));
     }
-    vector<int> visit(n + 1, false);
-    bool isFind = false;
-    int swaps = 0;
-    fl(i, 1, n + 1)
-    {
-        if (!visit[i])
-        {
-            vector<int> cycleEle = {i};
-            dfs(i, list, visit, cycleEle);
-            if (!isFind)
-            {
-                sort(vr(cycleEle));
-                fl(i, 1, cycleEle.size())
-                {
-                    if (cycleEle[i] - cycleEle[i - 1] == 1)
-                    {
-                        isFind = true;
-                        break;
-                    }
-                }
-            }
-            swaps -= 1;
-            swaps += cycleEle.size();
-        }
-    }
-    if (isFind)
-    {
-        cout << swaps - 1 << "\n";
-    }
-    else
-    {
-        cout << swaps + 1 << "\n";
-    }
+    ll ans = diff(total, sum(case3, sum(case2, case1)));
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -276,12 +242,12 @@ int main()
     // #endif
     You Can Do_It
         ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
