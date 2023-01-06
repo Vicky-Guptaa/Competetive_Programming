@@ -274,10 +274,12 @@ void solve()
     }
     ll mod = 998244353ll, cnt = 0, ans = 1;
     DisjSet f(n + 1);
-
+    set<int> sme;
     fl(i, 0, n)
     {
         f.Union(arr[i], brr[i]);
+        if (arr[i] == brr[i])
+            sme.insert(arr[i]);
     }
     fl(i, 1, n + 1)
     {
@@ -286,12 +288,12 @@ void solve()
     mll fq;
     fl(i, 1, n + 1)
     {
-        cout << i << " " << f.Find(i) << "\n";
         fq[f.Find(i)]++;
     }
+
     for (auto x : fq)
     {
-        if (x.second == 1)
+        if (sme.count(x.first))
         {
             ans *= n;
             ans %= mod;

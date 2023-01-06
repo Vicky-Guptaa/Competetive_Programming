@@ -214,17 +214,27 @@ void solve()
             pn return;
         }
     }
-    int oc = 0, ec = 0;
-    fl(i, 0, n)
+    fl(i, 2, n + 2)
     {
-        if (arr[i] & 1)
-            oc++;
-        else
-            ec++;
-    }
-    if (oc >= 2 && ec >= 2)
-    {
-        pn return;
+        vi cntr(i, 0);
+        fl(j, 0, n)
+        {
+            int rem = arr[j] % i;
+            cntr[rem]++;
+        }
+        bool isTrue = true;
+        fl(j, 0, i)
+        {
+            if (cntr[j] < 2)
+            {
+                isTrue = false;
+                break;
+            }
+        }
+        if (isTrue)
+        {
+            pn return;
+        }
     }
     py
 }
