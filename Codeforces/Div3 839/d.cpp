@@ -239,77 +239,37 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    bool isSorted = true;
-    int indx = 0;
-    for (int i = 1; i < n; i++)
+    ll x = -1, low = 0, high = 1e9;
+    while (low <= high)
     {
-        if (arr[i - 1] > arr[i])
+        ll mid = (low + high) / 2;
+        ll type = 0;
+        fl(i, 1, n)
         {
-            indx = i - 1;
-            isSorted = false;
+            if (abs(arr[i - 1] - mid) > abs(arr[i] - mid))
+            {
+                if (arr[i - 1] > arr[i])
+                    type = 1;
+                else
+                    type = 2;
+                break;
+            }
+        }
+        if (type == 1)
+        {
+            low = mid + 1;
+        }
+        else if (type == 2)
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            x = mid;
             break;
         }
     }
-    if (isSorted)
-    {
-        cout << "0\n";
-    }
-    else if (indx == 0)
-    {
-        isSorted = true;
-        fl(i, 0, n - 1)
-        {
-            if (arr[i - 1] < arr[i])
-            {
-                isSorted = false;
-                break;
-            }
-        }
-        if (isSorted)
-        {
-            cout << arr[0] * 2 << "\n";
-        }
-        int sub = arr[0];
-        arr[0] = 0;
-        isSorted = true;
-        fl(i, 1, n)
-        {
-            arr[i] = abs(arr[i] - sub);
-            if (arr[i - 1] > arr[i])
-            {
-                isSorted = false;
-                break;
-            }
-        }
-        if (isSorted)
-        {
-            cout << sub << "\n";
-        }
-        else
-        {
-            cout << "-1\n";
-        }
-    }
-    else
-    {
-        ll add = (arr[indx] + arr[indx + 1]) / 2;
-        arr[0] = abs(arr[0] - add);
-        isSorted = true;
-        fl(i, 1, n)
-        {
-            arr[i] = abs(arr[i] - add);
-            if (arr[i - 1] > arr[i])
-            {
-                isSorted = false;
-                break;
-            }
-        }
-        if (isSorted)
-            cout << add << "\n";
-        else
-            cout << "-1\n";
-    }
-    cout << endl;
+    cout << x << "\n";
 }
 /*
 When you are coding,remember to:
