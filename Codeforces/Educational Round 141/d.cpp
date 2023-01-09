@@ -200,11 +200,38 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+int helper(int indx, int pval, int n, vll &arr, vector<vll> &dp)
+{
+    if (indx == n - 1)
+    {
+        return 0;
+    }
+    if (dp[indx][pval + 1] != -1)
+        return dp[indx][pval + 1];
+
+    int multi = 0;
+    if (pval != arr[indx] + arr[indx - 1])
+    {
+        multi++;
+    }
+
+    if (pval != arr[indx] - arr[indx - 1])
+    {
+        multi++;
+    }
+
+    dp[indx][vpal]=multi*()
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n);
+    cin >> arr;
+    vector<vector<ll>> dp(n + 1, vll(300 + 2, -1));
+    cout << helper(1, -1, n, arr, dp) << "\n";
 }
 /*
 When you are coding,remember to:
@@ -221,13 +248,13 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

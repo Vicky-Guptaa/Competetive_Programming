@@ -215,6 +215,7 @@ bool isValid1(vpll &brr, vll eachW, int mid, int n, int m)
     {
         if (brr[i].first <= m)
         {
+            m -= brr[i].first;
             wcnt++;
             eachW[brr[i].second]--;
         }
@@ -255,7 +256,7 @@ bool isValid2(vpll &brr, vll eachW, int mid, int n, int m)
     int indx = 0;
     fl(i, 0, n)
     {
-        if (brr[i].second == mid - 1)
+        if (brr[i].second == n - mid )
         {
             indx = i;
         }
@@ -263,6 +264,7 @@ bool isValid2(vpll &brr, vll eachW, int mid, int n, int m)
     ll wcnt = 0;
     if (m >= brr[indx].first)
     {
+        m -= brr[indx].first;
         eachW[brr[indx].second]--;
         wcnt++;
     }
@@ -329,7 +331,7 @@ void solve()
         brr.push_back({arr[i], i});
     }
     sort(vr(brr), mycomp);
-    int low = 1, high = n + 1, rank = n + 1;
+    int low = 1, high = n+1, rank = n + 1;
     while (low <= high)
     {
         int mid = (low + high) / 2;
