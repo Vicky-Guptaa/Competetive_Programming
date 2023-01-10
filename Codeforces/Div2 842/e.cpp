@@ -30,7 +30,7 @@ using ull = unsigned long;
 // Constants
 const lld pi = 3.141592653;
 const ll INF = 1e18;
-const ll mod = 1e9 + 7;
+ll mod = 1e9 + 7;
 
 // TypeDEf
 typedef pair<int, int> ppi;
@@ -109,72 +109,64 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll gcd(ll a, ll b)
+inline ll sum(ll a, ll b)
 {
-    if (b == 0)
-        return a;
-    return gcd(b, a % b);
-} //__gcd
-ll lcm(ll a, ll b) { return (a / gcd(a, b) * b); }
-ll moduloMultiplication(ll a, ll b, ll mod)
-{
-    ll res = 0;
-    a %= mod;
-    while (b)
-    {
-        if (b & 1)
-            res = (res + a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-ll powermod(ll x, ll y, ll p)
-{
-    ll res = 1;
-    x = x % p;
-    if (x == 0)
-        return 0;
-    while (y > 0)
-    {
-        if (y & 1)
-            res = (res * x) % p;
-        y = y >> 1;
-        x = (x * x) % p;
-    }
-    return res;
+    return (a + b) % mod;
 }
 
+inline ll diff(ll a, ll b)
+{
+    return ((a - b) % mod + mod) % mod;
+}
+
+inline ll product(ll a, ll b)
+{
+    return (((ll)a % mod) * ((ll)b % mod)) % mod;
+}
+
+ll power(ll a, ll b)
+{
+    ll result = 1;
+    while (b != 0)
+    {
+        if (b & 1)
+            result = product(result, a);
+        a = product(a, a);
+        b /= 2;
+    }
+    return result;
+}
+
+inline ll division(ll a, ll b)
+{
+    return (product(a, power(b, mod - 2)));
+}
+
+void factorial(int size, vll &fact, vll &fInv)
+{
+    ll f = 1;
+    for (int i = 2; i <= size; i++)
+    {
+        f *= i;
+        f %= mod;
+        fact[i] = f;
+    }
+
+    fInv[size] = power(fact[size], mod - 2);
+
+    for (int i = size; i > 0; i--)
+    {
+        fInv[i - 1] = (fInv[i] * i) % mod;
+    }
+}
+
+inline ll nCr(ll n, ll r, vll &fact, vll &finv)
+{
+    return product(fact[n], product(finv[n - r], finv[r]));
+}
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
 bool sortpd(const pair<int, int> &a, const pair<int, int> &b) { return (a.second > b.second); }
-
-// Bits
-string decToBinary(int n)
-{
-    string s = "";
-    int i = 0;
-    while (n > 0)
-    {
-        s = to_string(n % 2) + s;
-        n = n / 2;
-        i++;
-    }
-    return s;
-}
-ll binaryToDecimal(string n)
-{
-    string num = n;
-    ll dec_value = 0;
-    int base = 1;
-    int len = num.length();
-    for (int i = len - 1; i >= 0; i--)
-    {
-        if (num[i] == '1')
-            dec_value += base;
-        base = base * 2;
-    }
-    return dec_value;
-}
 
 // Check
 bool isPrime(ll n)
@@ -190,12 +182,7 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-bool isPowerOfTwo(int n)
-{
-    if (n == 0)
-        return false;
-    return (ceil(log2(n)) == floor(log2(n)));
-}
+bool isPowerOfTwo(int n) { return (n & (n - 1)) == 0; }
 bool isPerfectSquare(ll x)
 {
     if (x >= 0)
@@ -204,20 +191,6 @@ bool isPerfectSquare(ll x)
         return (sr * sr == x);
     }
     return false;
-}
-
-long long binpow(long long a, long long b, long long m)
-{
-    a %= m;
-    long long res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = res * a % m;
-        a = a * a % m;
-        b >>= 1;
-    }
-    return res;
 }
 
 // Code by Vicky Gupta
@@ -235,41 +208,23 @@ long long binpow(long long a, long long b, long long m)
 
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    ll x = -1, low = 0, high = 1e9;
-    while (low <= high)
+    ll n, m;
+    cin >> n >> m;
+    mod = m;
+    vector<ll> fact(3 * n + 2, 1), factInv(3 * n + 2, 1);
+    factorial(3 * n, fact, factInv);
+    ll total = product(3, fact[3 * n]);
+    ll case1 = 1;                                                                                // 0 operations
+    ll case2 = diff(product(fact[2 * n], 2), fact[n]);                                           // 1 operations or 0
+    ll case3 = product(fact[2 * n], product(fact[n], product(2, nCr(2 * n, n, fact, factInv)))); // 2 operations or 1 or 0
+    fl(i, 0, n + 1)
     {
-        ll mid = (low + high) / 2;
-        ll type = 0;
-        fl(i, 1, n)
-        {
-            if (abs(arr[i - 1] - mid) > abs(arr[i] - mid))
-            {
-                if (arr[i - 1] > arr[i])
-                    type = 1;
-                else
-                    type = 2;
-                break;
-            }
-        }
-        if (type == 1)
-        {
-            low = mid + 1;
-        }
-        else if (type == 2)
-        {
-            high = mid - 1;
-        }
-        else
-        {
-            x = mid;
-            break;
-        }
+        case3 = diff(case3,
+                     product(fact[n], product(fact[n], product(fact[n],
+                                                               product(nCr(n, i, fact, factInv), product(nCr(n, n - i, fact, factInv), nCr(2 * n - i, n, fact, factInv)))))));
     }
-    cout << x << "\n";
+    ll ans = diff(total, sum(case3, sum(case2, case1)));
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -287,12 +242,12 @@ int main()
     // #endif
     You Can Do_It
         ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

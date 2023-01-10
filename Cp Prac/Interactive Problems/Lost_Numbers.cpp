@@ -309,7 +309,6 @@ void solve()
     arr.push_back(n23 / arr.back());
 
     cout << "! " << arr << endl;
-
 }
 /*
 When you are coding,remember to:

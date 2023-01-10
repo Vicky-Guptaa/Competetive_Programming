@@ -109,72 +109,59 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll gcd(ll a, ll b)
+ll sum(ll a, ll b)
 {
-    if (b == 0)
-        return a;
-    return gcd(b, a % b);
-} //__gcd
-ll lcm(ll a, ll b) { return (a / gcd(a, b) * b); }
-ll moduloMultiplication(ll a, ll b, ll mod)
-{
-    ll res = 0;
-    a %= mod;
-    while (b)
-    {
-        if (b & 1)
-            res = (res + a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-ll powermod(ll x, ll y, ll p)
-{
-    ll res = 1;
-    x = x % p;
-    if (x == 0)
-        return 0;
-    while (y > 0)
-    {
-        if (y & 1)
-            res = (res * x) % p;
-        y = y >> 1;
-        x = (x * x) % p;
-    }
-    return res;
+    return (a + b) % mod;
 }
 
+ll diff(ll a, ll b)
+{
+    return ((a - b) % mod + mod) % mod;
+}
+
+ll product(ll a, ll b)
+{
+    return (((ll)a % mod) * ((ll)b % mod)) % mod;
+}
+
+ll power(ll a, ll b)
+{
+    ll result = 1;
+    while (b != 0)
+    {
+        if (b & 1)
+            result = product(result, a);
+        a = product(a, a);
+        b /= 2;
+    }
+    return result;
+}
+
+ll division(ll a, ll b)
+{
+    return (product(a, power(b, mod - 2)));
+}
+
+vector<ll> fact(1e6 + 2, 1);
+
+void factorial()
+{
+    ll f = 1;
+    for (int i = 2; i <= 1e6; i++)
+    {
+        f *= i;
+        f %= mod;
+        fact[i] = f;
+    }
+}
+
+ll nCr(ll n, ll r)
+{
+    return product(fact[n], power(product(fact[n - r], fact[r]), mod - 2));
+}
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
 bool sortpd(const pair<int, int> &a, const pair<int, int> &b) { return (a.second > b.second); }
-
-// Bits
-string decToBinary(int n)
-{
-    string s = "";
-    int i = 0;
-    while (n > 0)
-    {
-        s = to_string(n % 2) + s;
-        n = n / 2;
-        i++;
-    }
-    return s;
-}
-ll binaryToDecimal(string n)
-{
-    string num = n;
-    ll dec_value = 0;
-    int base = 1;
-    int len = num.length();
-    for (int i = len - 1; i >= 0; i--)
-    {
-        if (num[i] == '1')
-            dec_value += base;
-        base = base * 2;
-    }
-    return dec_value;
-}
 
 // Check
 bool isPrime(ll n)
@@ -190,12 +177,7 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-bool isPowerOfTwo(int n)
-{
-    if (n == 0)
-        return false;
-    return (ceil(log2(n)) == floor(log2(n)));
-}
+bool isPowerOfTwo(int n) { return (n & (n - 1)) == 0; }
 bool isPerfectSquare(ll x)
 {
     if (x >= 0)
@@ -204,20 +186,6 @@ bool isPerfectSquare(ll x)
         return (sr * sr == x);
     }
     return false;
-}
-
-long long binpow(long long a, long long b, long long m)
-{
-    a %= m;
-    long long res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = res * a % m;
-        a = a * a % m;
-        b >>= 1;
-    }
-    return res;
 }
 
 // Code by Vicky Gupta
@@ -232,44 +200,26 @@ long long binpow(long long a, long long b, long long m)
 //__builtin_clzll(x); for long long
 
 // Code
-
 void solve()
 {
     ll n;
     cin >> n;
     vll arr(n);
     cin >> arr;
-    ll x = -1, low = 0, high = 1e9;
-    while (low <= high)
+    sort(vr(arr), greater<ll>());
+
+    if (arr[1] == arr[0])
+        swap(arr.front(), arr.back());
+    ll preSum = 0;
+    fl(i, 0, n)
     {
-        ll mid = (low + high) / 2;
-        ll type = 0;
-        fl(i, 1, n)
+        if (preSum == arr[i])
         {
-            if (abs(arr[i - 1] - mid) > abs(arr[i] - mid))
-            {
-                if (arr[i - 1] > arr[i])
-                    type = 1;
-                else
-                    type = 2;
-                break;
-            }
+            pn return;
         }
-        if (type == 1)
-        {
-            low = mid + 1;
-        }
-        else if (type == 2)
-        {
-            high = mid - 1;
-        }
-        else
-        {
-            x = mid;
-            break;
-        }
+        preSum += arr[i];
     }
-    cout << x << "\n";
+    py cout << arr << "\n";
 }
 /*
 When you are coding,remember to:

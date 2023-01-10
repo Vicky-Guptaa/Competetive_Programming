@@ -281,66 +281,10 @@ void solve()
             sme.insert(arr[i]);
     }
     vll narr, nbrr;
-    set<int> allEle;
+    set<int> allEle;    set<int> sme;
     fl(i, 0, n)
     {
-        if (arr[i] == brr[i])
-        {
-            narr.push_back(arr[i]);
-            nbrr.push_back(arr[i]);
-            allEle.insert(arr[i]);
-        }
-        else if (sme.count(arr[i]) && sme.count(brr[i]))
-        {
-            cout << "0\n";
-            return;
-        }
-        else if (sme.count(arr[i]))
-        {
-            allEle.insert(brr[i]);
-        }
-        else if (sme.count(brr[i]))
-        {
-            allEle.insert(arr[i]);
-        }
-        else if (!sme.count(arr[i]) && !sme.count(brr[i]))
-        {
-            if (freq[arr[i]] == 1 && freq[brr[i]] == 1)
-            {
-                cout << "0\n";
-                return;
-            }
-            else if (freq[arr[i]] == 1)
-            {
-                allEle.insert(arr[i]);
-            }
-            else if (freq[brr[i]] == 1)
-            {
-                allEle.insert(brr[i]);
-            }
-            else
-            {
-                narr.push_back(arr[i]);
-                nbrr.push_back(brr[i]);
-                allEle.insert(arr[i]);
-                allEle.insert(brr[i]);
-            }
-        }
-    }
-    if (allEle.size() != n)
-    {
-        cout << "0\n";
-        return;
-    }
-    fl(i, 0, narr.size())
-    {
-        if (narr[i] != nbrr[i])
-            f.Union(narr[i], nbrr[i]);
-        else
-        {
-            ans *= n;
-            ans %= mod;
-        }
+        f.Union(arr[i], brr[i]);
     }
     fl(i, 1, n + 1)
     {
@@ -349,13 +293,22 @@ void solve()
     mll fq;
     fl(i, 1, n + 1)
     {
-        if (i != f.Find(i))
-            fq[f.Find(i)]++;
+        cout << i << " " << f.Find(i) << "\n";
+        fq[f.Find(i)]++;
     }
+
     for (auto x : fq)
     {
-        ans *= 2;
-        ans %= mod;
+        if (x.second == 1)
+        {
+            ans *= n;
+            ans %= mod;
+        }
+        else
+        {
+            ans *= 2;
+            ans %= mod;
+        }
     }
     cout << ans << "\n";
 }

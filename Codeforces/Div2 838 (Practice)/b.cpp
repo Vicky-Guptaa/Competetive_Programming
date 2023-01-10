@@ -239,11 +239,23 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    ll mx = *max_element(vr(arr));
-    cout << n << "\n";
+    vpll ans;
     fl(i, 0, n)
     {
-        cout << i + 1 << " " << mx - arr[i] << "\n";
+        if ((arr[i] & (arr[i] - 1)) == 0)
+        {
+            continue;
+        }
+        else
+        {
+            int num = ceil(log2(arr[i]));
+            ans.push_back({i + 1, (1ll << num) - arr[i]});
+        }
+    }
+    cout << ans.size() << "\n";
+    fl(i, 0, ans.size())
+    {
+        cout << ans[i] << "\n";
     }
 }
 /*

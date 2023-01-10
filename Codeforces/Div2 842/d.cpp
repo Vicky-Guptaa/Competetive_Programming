@@ -200,16 +200,65 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+void dfs(int src, set<int> list[], vector<int> &visit, vector<int> &cycleEle)
+{
+    visit[src] = true;
+    for (auto x : list[src])
+    {
+        if (!visit[x])
+        {
+            cycleEle.push_back(x);
+            dfs(x, list, visit, cycleEle);
+        }
+    }
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n);
-    cin >> arr;
-    vll brr(n);
-    fl(i, 0, n) brr[i] = i + 1;
-    swap(brr[n - 1], brr[n - 2]);
-    
+    vll arr(n + 1, 0);
+    fl(i, 1, n + 1) cin >> arr[i];
+    set<int> list[n + 1];
+    fl(i, 1, n + 1)
+    {
+        list[i].insert(arr[i]);
+        list[arr[i]].insert(i);
+    }
+    vector<int> visit(n + 1, false);
+    bool isFind = false;
+    int swaps = 0;
+    fl(i, 1, n + 1)
+    {
+        if (!visit[i])
+        {
+            vector<int> cycleEle = {i};
+            dfs(i, list, visit, cycleEle);
+            if (!isFind)
+            {
+                sort(vr(cycleEle));
+                fl(i, 1, cycleEle.size())
+                {
+                    if (cycleEle[i] - cycleEle[i - 1] == 1)
+                    {
+                        isFind = true;
+                        break;
+                    }
+                }
+            }
+            swaps -= 1;
+            swaps += cycleEle.size();
+        }
+    }
+    if (isFind)
+    {
+        cout << swaps - 1 << "\n";
+    }
+    else
+    {
+        cout << swaps + 1 << "\n";
+    }
 }
 /*
 When you are coding,remember to:
