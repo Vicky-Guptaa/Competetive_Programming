@@ -231,68 +231,39 @@ long long binpow(long long a, long long b, long long m)
 
 // Code
 
+ll rangeAnd(ll l, ll r)
+{
+    ll shift_count = 0;
+    while (l != r && l > 0)
+    {
+        shift_count++;
+        l >>= 1;
+        r >>= 1;
+    }
+    return (l << shift_count);
+}
+
 void solve()
 {
     ll n, x;
     cin >> n >> x;
-    if (n < x || (n | x) != n)
+    ll low = n, high = 5e18, ans = 0;
+    while (low <= high)
     {
-        cout << "-1\n";
-        return;
-    }
-    if (n == x)
-    {
-        cout << n << "\n";
-        return;
-    }
-    if (x == 0)
-    {
-        long long val = 1, temp = n;
-
-        while (temp)
+        ll mid = low + (high - low) / 2;
+        if (rangeAnd(n, mid) <= x)
         {
-            val *= 2;
-            temp /= 2;
-        }
-        if (val == n)
-        {
-            cout << val + 1 << "\n";
+            ans = mid;
+            high = mid - 1;
         }
         else
         {
-            cout << val << "\n";
-        }
-        return;
-    }
-    string sn = decToBinary(n);
-    string sx = decToBinary(x);
-    if (sn.size() != sx.size())
-    {
-        cout << "-1\n";
-        return;
-    }
-    int indx = 0;
-    fl(i, 0, sn.size())
-    {
-        if (sn[i] != sx[i])
-        {
-            indx = i;
-            break;
+            low = mid + 1;
         }
     }
-    ll vn = binaryToDecimal(sn.substr(indx));
-    ll vx = binaryToDecimal(sx.substr(indx));
-    ll ans = n + abs(vn - vx);
-    ll temp = n, val = 1;
-    while (temp)
+    if (rangeAnd(n, ans) != x)
     {
-        val *= 2;
-        temp /= 2;
-    }
-    if (ans >= val)
-    {
-        cout << "-1\n";
-        return;
+        pm return;
     }
     cout << ans << "\n";
 }
