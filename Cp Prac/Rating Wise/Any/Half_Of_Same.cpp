@@ -235,11 +235,11 @@ long long binpow(long long a, long long b, long long m)
 
 void solve()
 {
-    ll n;
+    int n;
     cin >> n;
-    vll arr(n);
+    vi arr(n);
     cin >> arr;
-    mll freq;
+    map<int, int> freq;
     for (auto x : arr)
     {
         freq[x]++;
@@ -248,35 +248,38 @@ void solve()
             pm return;
         }
     }
-    vll temp(n, 0);
-    ll ans = 1, mx = *max_element(vr(arr));
-    for (auto x : arr)
+    int ans = 1;
+    fl(i, 0, n)
     {
-        temp = arr;
-        for (auto &y : temp)
-            y -= x;
-        for (int i = 1; i * i <= mx; i++)
+        vi distinct;
+        int same = 0;
+        fl(j, 0, n)
         {
-            mll freq;
-            for (auto y : temp)
+            if (arr[i] == arr[j])
+                same++;
+            else
+                distinct.push_back(abs(arr[i] - arr[j]));
+        }
+        map<int, int> ffreq;
+        fl(j, 0, distinct.size())
+        {
+            for (int k = 1; k * k <= distinct[j]; k++)
             {
-                if (y % i == 0)
+                if (distinct[j] % k == 0)
                 {
-                    freq[i]++;
-                    if (i != y / i)
-                        freq[y / i]++;
-                }
-            }
-            for (auto x : freq)
-            {
-                if (x.second >= n / 2)
-                {
-                    ans = max(ans, x.first);
+                    ffreq[k]++;
+                    if (k != distinct[j] / k)
+                        ffreq[distinct[j] / k]++;
                 }
             }
         }
+        for (auto x : ffreq)
+        {
+            if (x.second + same >= n / 2)
+                ans = max(ans, x.first);
+        }
     }
-    cout<<ans<<"\n";
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
