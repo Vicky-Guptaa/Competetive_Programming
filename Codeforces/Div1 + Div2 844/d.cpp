@@ -200,15 +200,61 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+vector<ll> divisors(ll x)
+{
+    vll div;
+    for (int i = 1; i * i <= x; i++)
+    {
+        if (x % i)
+            continue;
+        div.push_back(i);
+        div.push_back(x / i);
+    }
+    return div;
+}
+
+ll countOfSquare(vll arr, ll x)
+{
+    ll cnt = 0;
+    fl(i, 0, arr.size())
+    {
+        if (isPerfectSquare(arr[i] + x))
+            cnt++;
+    }
+    return cnt;
+}
+
 void solve()
 {
     ll n;
     cin >> n;
-    map<int, int> oset = {{1, 2}};
-    auto curr = oset.find(1);
-    curr->second = 5;
-    for (auto x : oset)
-        cout << x.first << " " << x.second << endl;
+    vll arr(n);
+    cin >> arr;
+    ll ans = 1;
+    fl(i, 0, n)
+    {
+        fl(j, i + 1, n)
+        {
+            ll diff = arr[j] - arr[i];
+            vll div = divisors(diff);
+            for (int k = 0; k < div.size(); k += 2)
+            {
+                // diff=p*q
+                ll p = div[k], q = div[k + 1];
+                if ((p + q) % 2 || (q - p) % 2)
+                    continue;
+                ll x = (p + q) / 2, y = (q - p) / 2;
+                if (y * y - arr[i] != x * x - arr[j])
+                    continue;
+                ll z = y * y - arr[i];
+                if (z < 0 || z > 1e18)
+                    continue;
+                ans = max(ans, countOfSquare(arr, z));
+            }
+        }
+    }
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
