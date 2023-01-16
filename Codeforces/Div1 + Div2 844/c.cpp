@@ -204,21 +204,21 @@ ll check(ll mid, string &s)
     if ((s.size() / mid) > 26)
         return 1e9;
 
-    map<char, int> freq, less;
+    map<char, set<int>> freq, less;
     set<char> used, notUsed;
     fl(i, 0, 26) notUsed.insert(i + 'a');
     fl(i, 0, s.size())
     {
         notUsed.erase(s[i]);
-        freq[s[i]]++;
+        freq[s[i]].insert(i);
     }
     for (auto x : freq)
     {
-        if (x.second == mid)
+        if (x.second.size() == mid)
         {
             used.insert(x.first);
         }
-        else if (x.second < mid)
+        else if (x.second.size() < mid)
         {
             less[x.first] = x.second;
         }
@@ -227,97 +227,59 @@ ll check(ll mid, string &s)
         freq.erase(x);
     for (auto x : less)
         freq.erase(x.first);
-
-    ll oper = 0;
-    fl(i, 0, s.size())
+    multimap<int, char> mless, mmore;
+    for (auto x : less)
     {
-        if (less.count(s[i]))
+        mless.insert({x.second.size(), x.first});
+    }
+    for (auto y : freq)
+    {
+        mmore.insert({y.second.size(), y.first});
+    }
+    int oper = 0;
+    while (!mmore.empty())
+    {
+        auto l = mless.find(mless.rbegin()->first);
+        auto m = mmore.find(mmore.begin()->first);
+        oper++;
+        if (mless.empty())
         {
-            if (!freq.empty())
-            {
-                continue;
-            }
-            else
-            {
-                auto curr = less.begin();
-                if (curr->first == s[i])
-                {
-                    curr = next(curr);
-                }
-                char crr = curr->first;
-                for (auto x : less)
-                {
-                    if (x.first != s[i] && x.second >= less[crr])
-                    {
-                        crr = x.first;
-                    }
-                }
-                curr = less.find(crr);
-                if (less[s[i]] > less[crr])
-                {
-                    continue;
-                }
-                else
-                {
-                    less[s[i]]--;
-                    less[crr]++;
-                    if (less[s[i]] == 0)
-                    {
-                        less.erase(s[i]);
-                        notUsed.insert(s[i]);
-                    }
-                    s[i] = crr;
-                    if (less[crr] == mid)
-                        less.erase(crr);
-                }
-            }
-            oper++;
+            mless.insert({0, *notUsed.begin()});
+            notUsed.erase(*notUsed.begin());
+            l = mless.find(mless.rbegin()->first);
         }
-        if (freq.count(s[i]))
+        s[*freq[m->second].begin()] = l->second;
+        freq[m->second].erase(*freq[m->second].begin());
+        if (m->first - 1 != mid)
         {
-            if (!less.empty())
-            {
-                int size = 0;
-                char crr;
-                for (auto x : less)
-                {
-                    if (x.second > size)
-                    {
-                        crr = x.first;
-                        size = x.second;
-                    }
-                }
-                less[crr]++;
-                freq[s[i]]--;
-                if (freq[s[i]] == mid)
-                    freq.erase(s[i]);
-                s[i] = crr;
-                if (less[crr] == mid)
-                    less.erase(crr);
-            }
-            else
-            {
-                int size = freq[s[i]];
-                if (mid == 1)
-                {
-                    freq[s[i]]--;
-                    if (freq[s[i]] == mid)
-                        freq.erase(s[i]);
-                    s[i] = *notUsed.begin();
-                    notUsed.erase(notUsed.begin());
-                }
-                else
-                {
-                    freq[s[i]]--;
-                    if (freq[s[i]] == mid)
-                        freq.erase(s[i]);
-                    s[i] = *notUsed.begin();
-                    less[*notUsed.begin()]++;
-                    notUsed.erase(notUsed.begin());
-                }
-            }
-            oper++;
+            mmore.insert({m->first - 1, m->second});
         }
+        mmore.erase(m);
+        if (l->first + 1 != mid)
+        {
+            mless.insert({l->first + 1, l->second});
+        }
+        mless.erase(l);
+    }
+    while (!less.empty())
+    {
+        oper++;
+        auto h = mless.find(mless.rbegin()->first);
+        auto l = mless.find(mless.begin()->first);
+        if (h->second == l->second)
+            return 1e9;
+        s[*less[l->second].begin()] = h->second;
+        less[l->second].erase(*less[l->second].begin());
+        if (h->first + 1 != mid)
+        {
+            mless.insert({h->first + 1, h->second});
+        }
+        mless.erase(h);
+        if (l->first - 1 != 0)
+        {
+            mless.insert({l->first - 1, l->second});
+        }
+        mless.erase(l);
     }
     return oper;
 }

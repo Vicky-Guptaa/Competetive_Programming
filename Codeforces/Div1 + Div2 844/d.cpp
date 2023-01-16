@@ -204,7 +204,11 @@ void solve()
 {
     ll n;
     cin >> n;
-    
+    map<int, int> oset = {{1, 2}};
+    auto curr = oset.find(1);
+    curr->second = 5;
+    for (auto x : oset)
+        cout << x.first << " " << x.second << endl;
 }
 /*
 When you are coding,remember to:
