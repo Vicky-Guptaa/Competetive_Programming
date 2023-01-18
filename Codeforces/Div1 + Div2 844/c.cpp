@@ -239,15 +239,14 @@ ll check(ll mid, string &s)
     int oper = 0;
     while (!mmore.empty())
     {
-        auto l = mless.find(mless.rbegin()->first);
-        auto m = mmore.find(mmore.begin()->first);
-        oper++;
         if (mless.empty())
         {
             mless.insert({0, *notUsed.begin()});
             notUsed.erase(*notUsed.begin());
-            l = mless.find(mless.rbegin()->first);
         }
+        auto l = mless.find(mless.rbegin()->first);
+        auto m = mmore.find(mmore.begin()->first);
+        oper++;
         s[*freq[m->second].begin()] = l->second;
         freq[m->second].erase(*freq[m->second].begin());
         if (m->first - 1 != mid)
@@ -261,13 +260,20 @@ ll check(ll mid, string &s)
         }
         mless.erase(l);
     }
-    while (!less.empty())
+    while (!mless.empty())
     {
         oper++;
         auto h = mless.find(mless.rbegin()->first);
         auto l = mless.find(mless.begin()->first);
         if (h->second == l->second)
-            return 1e9;
+        {
+            if (mless.size() > 1)
+            {
+                l = next(l);
+            }
+            else
+                return 1e9;
+        }
         s[*less[l->second].begin()] = h->second;
         less[l->second].erase(*less[l->second].begin());
         if (h->first + 1 != mid)
@@ -318,7 +324,7 @@ void solve()
     }
     cout << ans << "\n"
          << ans_temp << "\n";
-    // cout << check(5, s) << "\n";
+    // cout << check(1, s) << "\n";
     // cout << s << "\n";
 }
 /*
