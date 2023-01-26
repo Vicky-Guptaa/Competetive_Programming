@@ -202,39 +202,40 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-
-    ll prev, curr;
-    srand(time(NULL));
-    ll md = 1e9;
-    ll num = rand() % md;
-    prev = __builtin_popcountll(x);
-    // cin >> prev;
-    ll ans = 0;
-    while (true)
+    ll prev, init, ans = 0, mask = 0, curr = 0;
+    // srand(time(NULL));
+    // ll num, mod = 1e9, temp;
+    // cin >> num;
+    // temp = num;
+    // prev = __builtin_popcountll(num);
+    cin >> prev;
+    init = prev;
+    ll calc = 0;
+    while (prev)
     {
-        cout << "- 1" << endl;
-        ans++;
+        ll sub = (1 << calc);
+        cout << "- " << sub << endl;
+        // temp -= sub;
+        // curr = __builtin_popcountll(temp);
         cin >> curr;
-        if (curr == 0)
+        if (curr + 1 == prev)
         {
-            cout << "! " << ans << endl;
-            return;
+            mask |= (1 << calc);
+            ans++;
         }
-        if (curr > prev)
+        else
         {
-            ll diff = curr - prev + 1;
-            ll sub = (1 << diff) - 1;
-            cout << "- " << sub << endl;
-            cin >> curr;
-            ans += sub;
-            if (curr == 0)
-            {
-                cout << "! " << ans << endl;
-                return;
-            }
+            ll diff = curr - prev + 1 + calc;
+            mask |= (1 << diff);
+            ans++;
+            calc = diff;
         }
+        if (ans == init)
+            break;
+        calc++;
         prev = curr;
     }
+    cout <<"! "<< mask << endl;
 }
 /*
 When you are coding,remember to:
@@ -250,8 +251,8 @@ int main()
     //     freopen("Input.txt", "r", stdin);
     //     freopen("Output.txt", "w", stdout);
     // #endif
-    // You Can Do_It
-    ll t;
+    You Can Do_It
+        ll t;
     cin >> t;
     fl(i, 0, t)
     {
