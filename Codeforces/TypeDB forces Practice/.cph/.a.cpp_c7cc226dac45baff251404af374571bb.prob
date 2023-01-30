@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"h:\\Competetive_Programming\\Codeforces\\TypeDB forces Practice\\a.cpp","tests":[{"id":1675061843575,"input":"5\n3\n7\n42\n31250\n20732790\n","output":"-1\n-1\n2 3\n5 5\n3 13\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Codeforces\\TypeDB forces Practice\\a.cpp","group":"local","local":true}
