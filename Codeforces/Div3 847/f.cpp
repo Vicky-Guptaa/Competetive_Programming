@@ -200,25 +200,56 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+void dfs(int src, int par, vll list[], vll &parents)
+{
+
+    for (auto child : list[src])
+    {
+        if (child != par)
+        {
+            parents[child] = src;
+            dfs(child, src, list, parents);
+        }
+    }
+}
+
 void solve()
 {
     ll n, co;
     cin >> n >> co;
     vll arr(n - 1);
     cin >> arr;
-    reverse(vr(arr));
     vll ans;
     vll list[n + 1];
-    priority_queue<pair<ll, pll>, vector<pair<ll, pll>>, greater<pair<ll, pll>>> pque;
     fl(i, 0, n - 1)
     {
         ll u, v;
         cin >> u >> v;
         list[u].push_back(v);
         list[v].push_back(u);
-        pque.push({1, {u, v}});
     }
-    
+    vll parents(n + 1, -1);
+    dfs(co, -1, list, parents);
+    vll distance(n + 1, 1e9);
+    distance[co] = 0;
+    ll res = 1e9;
+    fl(i, 0, arr.size())
+    {
+        ll curr_dist = 0, curr_node = arr[i];
+        while (curr_node != -1 && curr_dist < res)
+        {
+            res = min(distance[curr_node] + curr_dist, res);
+            if (distance[curr_node] > curr_dist)
+            {
+                distance[curr_node] = curr_dist;
+            }
+            curr_dist++;
+            curr_node = parents[curr_node];
+        }
+        cout << res << " ";
+    }
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
