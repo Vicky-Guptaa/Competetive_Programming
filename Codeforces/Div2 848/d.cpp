@@ -211,7 +211,22 @@ void solve()
         cout << 0 << '\n';
         return;
     }
-    
+    ll dif = 0;
+    fl(i, 0, n)
+    {
+        if (a[i] != b[i])
+            dif++;
+    }
+    ll mod = 998244353;
+    ll d1 = 0, d2 = diff(power(2, n, mod), 1, mod);
+    fl(i, 1, dif)
+    {
+        ll d3 = division(diff(product(n, d2, mod), sum(n, product(i, d1, mod), mod), mod),
+                         n - i, mod);
+        d1 = d2;
+        d2 = d3;
+    }
+    cout << d2 << "\n";
 }
 /*
 When you are coding,remember to:
