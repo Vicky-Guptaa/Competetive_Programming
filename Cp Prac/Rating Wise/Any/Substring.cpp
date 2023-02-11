@@ -199,90 +199,75 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-void eulerTourDfs(int src, int par, vector<int> list[], int &timer, vector<int> &strt, vector<int> &end)
+bool detectCycle(int src, vector<int> list[], vector<bool> &visited, vector<bool> &recurVisit)
 {
-    strt[src] = timer;
-    timer++;
-    for (auto child : list[src])
-    {
-        if (par != child)
-            eulerTourDfs(child, src, list, timer, strt, end);
-    }
-    end[src] = timer;
-    timer++;
-}
-
-void dfs(int src, int pr, int h, vector<int> list[], vll &hght, vll &par)
-{
+    visited[src] = true;
+    recurVisit[src] = true;
     for (auto x : list[src])
     {
-        if (pr != x)
-        {
-            dfs(x, src, h + 1, list, hght, par);
-        }
+        if (recurVisit[x])
+            return true;
+        if (visited[x])
+            continue;
+        if (detectCycle(x, list, visited, recurVisit))
+            return true;
     }
-    hght[src] = h;
-    par[src] = pr;
+    recurVisit[src] = false;
+    return false;
 }
 
+vi dfs(int src, vector<int> list[], int &maxBeauty, map<int, vector<int>> &dp, string &s)
+{
+    if (dp.count(src))
+        return dp[src];
+    vector<int> charFreq(26, 0);
+    for (auto x : list[src])
+    {
+        vector<int> arr = dfs(x, list, maxBeauty, dp, s);
+        fl(i, 0, 26)
+        {
+            charFreq[i] = max(charFreq[i], arr[i]);
+            maxBeauty = max(maxBeauty, charFreq[i]);
+        }
+    }
+    charFreq[s[src - 1] - 'a']++;
+    maxBeauty = max(maxBeauty, charFreq[s[src - 1] - 'a']);
+    return dp[src] = charFreq;
+}
 // Code
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    ll n, m;
+    cin >> n >> m;
+    string values;
+    cin >> values;
     vector<int> list[n + 1];
-    fl(i, 0, n - 1)
+    vector<int> inEdge(n + 1, 0);
+    vll x(2);
+    fl(i, 0, m)
     {
-        ll u, v;
-        cin >> u >> v;
-        list[u].push_back(v);
-        list[v].push_back(u);
+        cin >> x;
+        list[x[0]].push_back(x[1]);
+        inEdge[x[1]]++;
     }
-    vll hght(n + 1), par(n + 1);
-    dfs(1, 0, 0, list, hght, par);
-    vector<int> st(n + 1, 0);
-    vector<int> end(n + 1, 0);
-    int timer = 0;
-    st[0] = -1;
-    end[0] = 2 * n + 2;
-    eulerTourDfs(1, -1, list, timer, st, end);
-    vector<bool> query(n + 1, 0);
-    while (q--)
+    vector<bool> visited(n + 1, false), recurVisit(n + 1, false);
+    for (int i = 1; i <= n; i++)
     {
-        ll m;
-        cin >> m;
-        vi ele;
-        pll strt;
-        fl(i, 0, m)
+        if (!visited[i] && detectCycle(i, list, visited, recurVisit))
         {
-            ll nm;
-            cin >> nm;
-            query[par[nm]] = true;
-            ele.push_back(par[nm]);
-            if (strt.second < hght[nm])
-            {
-                strt = {nm, hght[nm]};
-            }
-        }
-        bool isFind = true;
-        for (auto x : ele)
-        {
-            if (st[x] <= st[strt.first] && st[strt.first] <= end[strt.first] && end[strt.first] <= end[x])
-            {
-                continue;
-            }
-            isFind = false;
-            break;
-        }
-        if (isFind)
-        {
-            py
-        }
-        else
-        {
-            pn
+            pm return;
         }
     }
+    int maxBeauty = 1;
+    map<int, vector<int>> dp;
+    for (int i = 1; i <= n; i++)
+    {
+        if (inEdge[i] == 0)
+        {
+            dfs(i, list, maxBeauty, dp, values);
+        }
+    }
+    cout << maxBeauty << "\n";
 }
 /*
 When you are coding,remember to:
@@ -300,8 +285,8 @@ int main()
     // #endif
     You Can Do_It
         ll t;
-    // cin>>t;
-    // fl(i,0,t)
+    // cin >> t;
+    // fl(i, 0, t)
     // {
     //     solve();
     // }
