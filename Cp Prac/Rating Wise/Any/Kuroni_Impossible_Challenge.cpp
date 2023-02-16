@@ -109,59 +109,72 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll sum(ll a, ll b, ll mod = 1e9 + 7)
+ll gcd(ll a, ll b)
 {
-    return (a + b) % mod;
-}
-
-ll diff(ll a, ll b, ll mod = 1e9 + 7)
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+} //__gcd
+ll lcm(ll a, ll b) { return (a / gcd(a, b) * b); }
+ll moduloMultiplication(ll a, ll b, ll mod)
 {
-    return ((a - b) % mod + mod) % mod;
-}
-
-ll product(ll a, ll b, ll mod = 1e9 + 7)
-{
-    return (((ll)a % mod) * ((ll)b % mod)) % mod;
-}
-
-ll power(ll a, ll b, ll mod = 1e9 + 7)
-{
-    ll result = 1;
-    while (b != 0)
+    ll res = 0;
+    a %= mod;
+    while (b)
     {
         if (b & 1)
-            result = product(result, a, mod);
-        a = product(a, a, mod);
-        b /= 2;
+            res = (res + a) % mod;
+        b >>= 1;
     }
-    return result;
+    return res;
 }
-
-ll division(ll a, ll b, ll mod = 1e9 + 7)
+ll powermod(ll x, ll y, ll p)
 {
-    return (product(a, power(b, mod - 2, mod), mod));
-}
-
-vector<ll> fact(1e6 + 2, 1);
-
-void factorial(ll mod = 1e9 + 7)
-{
-    ll f = 1;
-    for (int i = 2; i <= 1e6; i++)
+    ll res = 1;
+    x = x % p;
+    if (x == 0)
+        return 0;
+    while (y > 0)
     {
-        f *= i;
-        f %= mod;
-        fact[i] = f;
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
     }
+    return res;
 }
 
-ll nCr(ll n, ll r, ll mod = 1e9 + 7)
-{
-    return product(fact[n], power(product(fact[n - r], fact[r], mod), mod - 2, mod));
-}
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
 bool sortpd(const pair<int, int> &a, const pair<int, int> &b) { return (a.second > b.second); }
+
+// Bits
+string decToBinary(int n)
+{
+    string s = "";
+    int i = 0;
+    while (n > 0)
+    {
+        s = to_string(n % 2) + s;
+        n = n / 2;
+        i++;
+    }
+    return s;
+}
+ll binaryToDecimal(string n)
+{
+    string num = n;
+    ll dec_value = 0;
+    int base = 1;
+    int len = num.length();
+    for (int i = len - 1; i >= 0; i--)
+    {
+        if (num[i] == '1')
+            dec_value += base;
+        base = base * 2;
+    }
+    return dec_value;
+}
 
 // Check
 bool isPrime(ll n)
@@ -177,7 +190,12 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-bool isPowerOfTwo(int n) { return (n & (n - 1)) == 0; }
+bool isPowerOfTwo(int n)
+{
+    if (n == 0)
+        return false;
+    return (ceil(log2(n)) == floor(log2(n)));
+}
 bool isPerfectSquare(ll x)
 {
     if (x >= 0)
@@ -186,6 +204,20 @@ bool isPerfectSquare(ll x)
         return (sr * sr == x);
     }
     return false;
+}
+
+long long binpow(long long a, long long b, long long m)
+{
+    a %= m;
+    long long res = 1;
+    while (b > 0)
+    {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
 }
 
 // Code by Vicky Gupta
@@ -199,31 +231,29 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll calc(ll mid, ll n, ll m, ll a, ll b)
-{
-    ll cost = mid * a;
-    ll buy = max(n - (mid + (mid / m)), 0ll);
-    cost += buy * b;
-    return cost;
-}
-
 // Code
+
 void solve()
 {
-    ll a, b;
-    cin >> a >> b;
     ll n, m;
     cin >> n >> m;
-    ll cost = n * b;
-    ll offerCost = (m * a) ;
-    ll buyOffer = n / (m + 1);
-    ll rem = n % (m + 1);
-    cost = min({
-        (buyOffer * offerCost ) + rem * a,
-        (buyOffer * offerCost ) + rem * b,
-        cost,
-    });
-    cout << cost << "\n";
+    vll arr(n);
+    cin >> arr;
+    if (n > m)
+    {
+        cout << "0\n";
+        return;
+    }
+    ll ans = 1;
+    fl(i, 0, n)
+    {
+        fl(j, i + 1, n)
+        {
+            ans *=abs (arr[i] - arr[j]);
+            ans %= m;
+        }
+    }
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -240,13 +270,13 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
