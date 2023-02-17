@@ -157,7 +157,7 @@ void factorial(ll mod = 1e9 + 7)
 
 ll nCr(ll n, ll r, ll mod = 1e9 + 7)
 {
-    return product(fact[n], power(product(fact[n - r], fact[r], mod), mod - 2, mod));
+    return product(fact[n], power(product(fact[n - r], fact[r], mod), mod - 2, mod), mod);
 }
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
@@ -206,7 +206,9 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    ll ans = 2;
+    ll md=998244353ll;
+    factorial(md);
+    ll ans = 1;
     fl(i, 0, n)
     {
         vll temp;
@@ -215,7 +217,7 @@ void solve()
             temp.push_back(arr[j]);
         }
         sort(vr(temp));
-        if ((temp[0] == temp[1] && temp[0] == temp[2]) || (temp[1] == temp[2]))
+        if ((temp[0] == temp[1] && temp[0] == temp[2]))
         {
             ans *= 3;
         }
@@ -223,9 +225,10 @@ void solve()
         {
             ans *= 2;
         }
-        ans %= 998244353;
+        ans %= md;
         i += 2;
     }
+    ans = product(ans, nCr(n / 3, n / 6, md),md);
     cout << ans << "\n";
 }
 /*
