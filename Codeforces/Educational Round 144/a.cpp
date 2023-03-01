@@ -199,41 +199,43 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll helper(ll strt, ll prevK, vi &arr, vi &brr, vi &crr, vector<vll> &dp)
-{
-    if (strt == arr.size())
-        return 0;
-
-    if (dp[strt][prevK] != -1)
-        return dp[strt][prevK];
-
-    if (prevK == arr[strt])
-    {
-        // now considering the second pc as first and first as second
-        return dp[strt][prevK] = helper(strt + 1, arr[strt - 1], arr, brr, crr, dp) + crr[arr[strt]];
-    }
-
-    if (arr[strt - 1] == arr[strt])
-    {
-        return dp[strt][prevK] = helper(strt + 1, prevK, arr, brr, crr, dp) + crr[arr[strt]];
-    }
-
-    return dp[strt][prevK] = brr[arr[strt]] + min(helper(strt + 1, prevK, arr, brr, crr, dp),
-                                                  helper(strt + 1, arr[strt - 1], arr, brr, crr, dp));
-}
-
 // Code
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vi arr(n), brr(k + 1, 0), crr(k + 1, 0);
-    cin >> arr;
-    fl(i, 1, k + 1) cin >> brr[i];
-    fl(i, 1, k + 1) cin >> crr[i];
-
-    vector<vll> dp(n + 1, vll(k + 1, -1));
-    cout << helper(1, arr[0], arr, brr, crr, dp) + brr[arr[0]] << "\n";
+    string temp = "";
+    fl(i, 1, 1e3)
+    {
+        if (i % 15 == 0)
+        {
+            temp += "FB";
+        }
+        else if (i % 5 == 0)
+        {
+            temp += "B";
+        }
+        else if (i % 3 == 0)
+        {
+            temp += "F";
+        }
+    }
+    // cout << temp << "\n";
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        ll n;
+        cin >> n;
+        string s;
+        cin >> s;
+        if (temp.find(s) != string::npos)
+        {
+            py
+        }
+        else
+        {
+            pn
+        }
+    }
 }
 /*
 When you are coding,remember to:
@@ -250,12 +252,12 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    solve();
+    // }
     // solve();
     // fl(i,0,t) //Kickstart
     // {

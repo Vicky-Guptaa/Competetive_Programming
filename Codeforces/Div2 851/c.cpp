@@ -217,39 +217,20 @@ void solve()
     }
     cout << "Yes\n";
     ll mn = (3 * (n + 1)) / 2;
-    ll mx = mn + n - 1;
-    set<int> oset, nn;
-    fl(i, 0, 2 * n) oset.insert(i + 1);
-    cout << 1 << " " << 2 * n << "\n";
-    cout << 2 << " " << 2 * n - 2 << "\n";
-    cout << 3 << " " << 2 * n - 1 << "\n";
-    oset.erase(1);
-    oset.erase(2);
-    oset.erase(3);
-    oset.erase(2 * n - 1);
-    oset.erase(2 * n);
-    oset.erase(2 * n - 2);
-    nn.insert(1 + 2 * n);
-    nn.insert(2 + 2 * n - 2);
-    nn.insert(3 + 2 * n - 1);
-    ll iter = n;
-    while (!oset.empty())
+    vpll arr;
+    ll iter = 1;
+    rl(i, 2 * n, n)
     {
-        ll cand1 = iter;
-        oset.erase(iter);
-        ll cand2 = *oset.lower_bound(mx - cand1);
-        oset.erase(cand2);
-        cout << cand1 << " " << cand2 << "\n";
-        nn.insert(cand1 + cand2);
-        while (nn.count(mx))
-            mx--;
-        iter--;
-        auto curr = oset.lower_bound(iter);
-        if (!oset.count(*curr))
-        {
-            curr = prev(curr);
-        }
-        iter = *curr;
+        arr.push_back({i, iter});
+        mn++;
+        iter += 2;
+        if (iter > n)
+            iter = 2;
+    }
+
+    fl(i, 0, n)
+    {
+        cout << arr[i] << "\n";
     }
 }
 /*

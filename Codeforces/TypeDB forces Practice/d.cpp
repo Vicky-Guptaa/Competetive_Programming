@@ -157,7 +157,7 @@ void factorial(ll mod = 1e9 + 7)
 
 ll nCr(ll n, ll r, ll mod = 1e9 + 7)
 {
-    return product(fact[n], power(product(fact[n - r], fact[r], mod), mod - 2, mod), mod);
+    return product(fact[n], power(product(fact[n - r], fact[r], mod), mod - 2, mod));
 }
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
@@ -199,41 +199,72 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll helper(ll strt, ll prevK, vi &arr, vi &brr, vi &crr, vector<vll> &dp)
+bool dfs(int src, vll &arr, vector<int> &visit, vector<int> &cycle, int ref)
 {
-    if (strt == arr.size())
-        return 0;
-
-    if (dp[strt][prevK] != -1)
-        return dp[strt][prevK];
-
-    if (prevK == arr[strt])
+    if (src >= arr.size() || src < 0)
     {
-        // now considering the second pc as first and first as second
-        return dp[strt][prevK] = helper(strt + 1, arr[strt - 1], arr, brr, crr, dp) + crr[arr[strt]];
+        return false;
     }
-
-    if (arr[strt - 1] == arr[strt])
+    if (visit[src])
     {
-        return dp[strt][prevK] = helper(strt + 1, prevK, arr, brr, crr, dp) + crr[arr[strt]];
+        if (visit[src] == ref)
+            return true;
+        if (cycle[src])
+            return cycle[src];
     }
+    visit[src] = ref;
 
-    return dp[strt][prevK] = brr[arr[strt]] + min(helper(strt + 1, prevK, arr, brr, crr, dp),
-                                                  helper(strt + 1, arr[strt - 1], arr, brr, crr, dp));
+    if (dfs(arr[src] + src, arr, visit, cycle, ref))
+    {
+        cycle[src] = true;
+        return true;
+    }
+    return false;
 }
 
 // Code
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vi arr(n), brr(k + 1, 0), crr(k + 1, 0);
+    ll n;
+    cin >> n;
+    vll arr(n);
     cin >> arr;
-    fl(i, 1, k + 1) cin >> brr[i];
-    fl(i, 1, k + 1) cin >> crr[i];
-
-    vector<vll> dp(n + 1, vll(k + 1, -1));
-    cout << helper(1, arr[0], arr, brr, crr, dp) + brr[arr[0]] << "\n";
+    ll ans = (n + 1) * n;
+    vector<int> visited(n, false);
+    vector<int> cycle(n, false);
+    fl(i, 0, n)
+    {
+        if (!visited[i])
+            dfs(i, arr, visited, cycle, i + 1);
+    }
+    ll ccnt = accumulate(vr(cycle), 0);
+    ll nccnt = n - ccnt;
+    if (cycle[0])
+    {
+        ll cntNode = visited[0];
+        ll cnt = 0;
+        fl(i, 0, n) cnt += (visited[0] == visited[i]);
+        ans+=cnt
+        cout << ans << '\n';
+        return;
+    }
+    // cout << ans << "\n";
+    ll nodePath = 0, curr = 0;
+    while (curr >= 0 && curr < n)
+    {
+        nodePath++;
+        curr = arr[curr] + curr;
+    }
+    nccnt -= nodePath;
+    ans += nccnt * nodePath;
+    curr = 0;
+    while (curr >= 0 && curr < n)
+    {
+        ans += nodePath - 1;
+        curr = arr[curr] + curr;
+    }
+    ans += ccnt + nccnt * nccnt;
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:

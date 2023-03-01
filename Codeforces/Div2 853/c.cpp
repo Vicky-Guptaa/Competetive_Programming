@@ -204,38 +204,46 @@ void solve()
 {
     ll n, m;
     cin >> n >> m;
-    vll arr(n), cpy;
+    vll arr(n);
     cin >> arr;
     vpll prr(m);
     cin >> prr;
-    cpy = arr;
-    vll narr(m, 0);
-    set<pair<int, int>> oset;
-    set<int> vset;
-    fl(i, 0, n)
-    {
-        oset.insert({i, arr[i]});
-        vset.insert(arr[i]);
-    }
+    map<int, pair<int, int>> inTime;
+    mll freq;
+    fl(i, 0, n) inTime[arr[i]] = {1, 0};
+    ll time = 1;
     fl(i, 0, m)
     {
-        if (i > 0)
-            narr[i] += narr[i - 1];
-        if (oset.count({prr[i].first - 1, prr[i].second}))
-            continue;
-
-        oset.insert({prr[i].first - 1, prr[i].second});
-        narr[i] += 1;
-    }
-    ll ans = (m * (m + 1)) / 2;
-    ans *= n;
-    fl(i, 0, m)
-    {
-        fl(j, i, m)
+        if (inTime[arr[prr[i].first - 1]].first == 1)
         {
-            ans += narr[j];
-            ans -= (i > 0) ? narr[i - 1] : 0;
+            freq[arr[prr[i].first - 1]] += time - inTime[arr[prr[i].first - 1]].second;
+            inTime.erase(arr[prr[i].first - 1]);
         }
+        else
+        {
+            inTime[arr[prr[i].first - 1]].first--;
+        }
+        if (inTime.count(prr[i].second))
+        {
+            inTime[prr[i].second].first++;
+        }
+        else
+        {
+            inTime[prr[i].second] = {1, time};
+        }
+        arr[prr[i].first - 1] = prr[i].second;
+        time++;
+    }
+    for (auto x : inTime)
+    {
+        freq[x.first] += time - x.second.second;
+    }
+    ll ans = 0, noOfSub = m;
+    for (auto x : freq)
+    {
+        // cout << x.first << " " << x.second << "\n";
+        ans += (x.second * (x.second - 1)) / 2;
+        ans += x.second * (noOfSub - x.second + 1);
     }
     cout << ans << "\n";
 }

@@ -199,41 +199,12 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll helper(ll strt, ll prevK, vi &arr, vi &brr, vi &crr, vector<vll> &dp)
-{
-    if (strt == arr.size())
-        return 0;
-
-    if (dp[strt][prevK] != -1)
-        return dp[strt][prevK];
-
-    if (prevK == arr[strt])
-    {
-        // now considering the second pc as first and first as second
-        return dp[strt][prevK] = helper(strt + 1, arr[strt - 1], arr, brr, crr, dp) + crr[arr[strt]];
-    }
-
-    if (arr[strt - 1] == arr[strt])
-    {
-        return dp[strt][prevK] = helper(strt + 1, prevK, arr, brr, crr, dp) + crr[arr[strt]];
-    }
-
-    return dp[strt][prevK] = brr[arr[strt]] + min(helper(strt + 1, prevK, arr, brr, crr, dp),
-                                                  helper(strt + 1, arr[strt - 1], arr, brr, crr, dp));
-}
-
 // Code
 void solve()
 {
-    ll n, k;
-    cin >> n >> k;
-    vi arr(n), brr(k + 1, 0), crr(k + 1, 0);
-    cin >> arr;
-    fl(i, 1, k + 1) cin >> brr[i];
-    fl(i, 1, k + 1) cin >> crr[i];
-
-    vector<vll> dp(n + 1, vll(k + 1, -1));
-    cout << helper(1, arr[0], arr, brr, crr, dp) + brr[arr[0]] << "\n";
+    ll n;
+    cin >> n;
+    
 }
 /*
 When you are coding,remember to:

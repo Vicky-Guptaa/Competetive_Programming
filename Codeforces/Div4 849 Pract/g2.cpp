@@ -211,64 +211,54 @@ void solve()
     cin >> n >> c;
     vll arr(n);
     cin >> arr;
-    vpll c1(n);
-    vll c2(n);
-    priority_queue<pll> pque1;
-    priority_queue<ll, vll, greater<ll>> pque2;
+    vector<vll> c1(n);
 
     fl(i, 0, n)
     {
-        c1[i] = {arr[i] + i + 1, i};
-        c2[i] = arr[i] + n - i;
+        if (arr[i] + i + 1 <= arr[i] + n - i)
+        {
+            c1[i] = {arr[i] + i + 1, i, true};
+        }
+        else
+        {
+            c1[i] = {arr[i] + n - i, i, false};
+        }
     }
     sort(vr(c1));
-    sort(vr(c2));
-    ll ansMax = 0, cc = c;
+    bool isFirst = false;
     ll ans = 0;
-    fl(i, 0, n)
+    vector<int> indx;
+    iter = i;
+    for (int i = 0; i < n; i++)
     {
-        if (c >= c1[i].first)
+        if (c1[i][0] <= c)
         {
-            c -= c1[i].first;
-            pque1.push(c1[i]);
-            ans++;
+            c -= c1[i][0];
+            isFirst |= c1[i][2];
+            if (!c1[i][2])
+                indx.push_back(c1[i][1]);
         }
         else
-        {
-            pque2.push(arr[c1[i].second] + n - c1[i].second);
-        }
-    }
-    ansMax = ans;
-    while (!pque1.empty())
-    {
-        auto curr = pque1.top();
-        pque1.pop();
-        ans--;
-        c += curr.first;
-        pque2.push(arr[curr.second] + n - curr.second);
-        while (c >= pque2.top())
-        {
-            c -= pque2.top();
-            pque2.pop();
-            ans++;
-        }
-        ansMax = max(ansMax, ans);
-    }
-    ll temp = 0;
-    cc -= n;
-    fl(i, 0, n)
-    {
-        if (cc >= c2[i])
-        {
-            cc -= c2[i];
-        }
-        else
-        {
             break;
-        }
-        temp++;
+        iter = i + 1;
+        ans++;
     }
-    cout << max(ansMax, temp) << "\n";
+    if (isFirst || indx.empty())
+    {
+        cout << ans << "\n";
+        return;
+    }
+    sort(vr(indx));
+    c -= indx[0] + 1 - (n - indx[0]);
+    if (c - indx[0] + 1 - (n - indx[0]) < 0)
+    {
+        c += arr[indx[0]] + (n - indx[0]);
+        fl(i, 0, n)
+        {
+
+        }
+    }
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:

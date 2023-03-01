@@ -201,16 +201,31 @@ bool isPerfectSquare(ll x)
 
 // Code
 
-ll helper(vll &arr, vll &brr, ll a0, ll an)
+long long helper(int iter, vll &arr, vpll &xy, bool isMax, vector<vector<ll>> &dp)
 {
-    ll ans = arr[1] * a0;
-    ll n = arr.size();
-    fl(i, 1, n - 2)
+    if (iter == arr.size())
     {
-        ans += arr[i + 1] * brr[i];
+        return 0;
     }
-    ans += brr[n - 2] * an;
-    return ans;
+    if (dp[iter][isMax] != -1)
+        return dp[iter][isMax];
+    if (iter == 1)
+    {
+        return dp[iter][isMax] = min(arr[iter - 1] * xy[iter].first + helper(iter + 1, arr, xy, true, dp), arr[iter - 1] * xy[iter].second + helper(iter + 1, arr, xy, false, dp));
+    }
+    if (iter == (int)arr.size() - 1)
+    {
+        if (isMax)
+        {
+            return dp[iter][isMax] = arr[iter] * xy[iter - 1].second;
+        }
+        else
+        {
+            return dp[iter][isMax] = arr[iter] * xy[iter - 1].first;
+        }
+    }
+    return dp[iter][isMax] = min(helper(iter + 1, arr, xy, isMax, dp) + xy[iter].first * xy[iter - 1].second,
+                                 helper(iter + 1, arr, xy, !isMax, dp) + xy[iter - 1].first * xy[iter].second);
 }
 void solve()
 {
@@ -218,24 +233,22 @@ void solve()
     cin >> n >> m;
     vll arr(n);
     cin >> arr;
-    vll xrr(n, 0), yrr(n, 0);
-    fl(i, 1, n - 1)
+    vector<vll> dp(n + 1, vll(2, -1));
+    vpll xy(n);
+    fl(i, 0, n)
     {
-        if (m >= arr[i] || m == 0)
+        if (m > arr[i])
         {
-            xrr[i] = arr[i];
-            yrr[i] = 0;
+            xy[i].first = arr[i];
+            xy[i].second = 0;
         }
         else
         {
-            xrr[i] = max(m, arr[i] - m);
-            yrr[i] = min(m, arr[i] - m);
+            xy[i].first = max(m, arr[i] - m);
+            xy[i].second = min(m, arr[i] - m);
         }
     }
-    ll res = min(helper(yrr, xrr, arr[0], arr.back()), helper(xrr, yrr, arr[0], arr.back()));
-    cout << res << "\n";
-    cout << xrr << "\n"
-         << yrr << "\n";
+    cout << helper(1, arr, xy, true, dp) << "\n";
 }
 /*
 When you are coding,remember to:
