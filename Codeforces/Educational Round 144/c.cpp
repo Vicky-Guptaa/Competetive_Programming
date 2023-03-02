@@ -199,12 +199,75 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+bool isValid(ll mid, ll mxsize, ll r)
+{
+    while (mid <= r)
+    {
+        mxsize--;
+        mid *= 2;
+    }
+    return mxsize <= 0;
+}
+
+bool isValid2(ll mid, ll mxsize, ll r)
+{
+    bool isTrue = true;
+    while (mid <= r)
+    {
+        mxsize--;
+        mid *= (isTrue ? 3 : 2);
+        if (isTrue)
+        {
+            isTrue = false;
+        }
+    }
+    return mxsize <= 0;
+}
+
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll l, r;
+    cin >> l >> r;
+    ll mxsize = 0, temp = l;
+    while (temp <= r)
+    {
+        mxsize++;
+        temp *= 2;
+    }
+    ll upto = 0, low = l, high = r;
+    while (low <= high)
+    {
+        ll mid = (low + high) / 2;
+        if (isValid(mid, mxsize, r))
+        {
+            upto = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    ll ans = upto - l + 1, mod = 998244353;
+    upto = l - 1, low = l, high = r;
+    while (low <= high)
+    {
+        ll mid = (low + high) / 2;
+        if (isValid2(mid, mxsize, r))
+        {
+            upto = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    ans %= mod;
+    ans += (upto - l + 1) * (mxsize - 1);
+    ans %= mod;
+    cout << mxsize << " " << ans << "\n";
 }
 /*
 When you are coding,remember to:
