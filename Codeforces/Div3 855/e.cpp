@@ -228,26 +228,29 @@ void solve()
     {
         pn return;
     }
+    if (p == q || n >= 2 * k)
+    {
+        py return;
+    }
     bool isFind = false;
-    vll arr;
-
     fl(i, 0, n)
     {
         if (p[i] != q[i])
         {
-            if (!arr.empty() && abs(arr[0] - i) > k)
-            {
-                isFind = true;
-                break;
-            }
+            if (i + k < n || i - k >= 0)
+                continue;
+            isFind = true;
+            break;
         }
     }
-    if (isFind)
+    if (!isFind)
     {
         py
     }
     else
-        py
+    {
+        pn
+    }
 }
 /*
 When you are coding,remember to:
