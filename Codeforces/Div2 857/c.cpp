@@ -205,76 +205,18 @@ void solve()
     ll n, m;
     cin >> n >> m;
     vector<vll> arr(n, vll(m, 0));
-    ll cntr = 1073741824, cntr2 = 1073741242;
-    fl(i, 0, n - (n & 1))
+    fl(i, 0, n)
     {
-        fl(j, 0, m - (m & 1))
-        {
-            fl(k, j, j + 2)
-            {
-                if (k < m)
-                {
-                    arr[i][k] = cntr++;
-                }
-                else
-                {
-                    cntr++;
-                }
-            }
-            fl(k, j, j + 2)
-            {
-                if (i + 1 < n && k < m)
-                {
-                    arr[i + 1][k] = cntr++;
-                }
-                else
-                {
-                    cntr++;
-                }
-            }
-            j++;
-        }
-        i++;
+        arr[i][0] += i + 1;
     }
-    if ((n & 1) && (m & 1))
+    fl(i, 0, n)
     {
-        ll itr = 1;
-        arr[n - 1][m - 2] = cntr2;
-        arr[n - 2][m - 1] = cntr2 - 4;
-        arr[n - 1][m - 1] = (arr[n - 1][m - 2] ^ arr[n - 2][m - 1] ^ arr[n - 2][m - 2]);
-        itr = m - 3;
-        while (itr >= 0)
+        fl(j, 1, m)
         {
-            arr[n - 1][itr] = (arr[n - 2][itr] ^ arr[n - 2][itr + 1] ^ arr[n - 1][itr + 1]);
-            itr--;
-        }
-        itr = n - 3;
-        while (itr >= 0)
-        {
-            arr[itr][m - 1] = (arr[itr + 1][m - 1] ^ arr[itr + 1][m - 2] ^ arr[itr][m - 1]);
-            itr--;
+            arr[i][j] += arr[i][j - 1] + 68719476736;
         }
     }
-    else if (m & 1)
-    {
-        ll itr = 1;
-        arr[0][m - 1] = cntr2;
-        while (itr < n)
-        {
-            arr[itr][m - 1] = (arr[itr - 1][m - 1] ^ arr[itr - 1][m - 2] ^ arr[itr][m - 1]);
-            itr++;
-        }
-    }
-    else if (n & 1)
-    {
-        ll itr = m - 2;
-        arr[n - 1][itr + 1] = cntr2;
-        while (itr >= 0)
-        {
-            arr[n - 1][itr] = (arr[n - 2][itr] ^ arr[n - 2][itr + 1] ^ arr[n - 1][itr + 1]);
-            itr--;
-        }
-    }
+    cout << n * m << "\n";
     for (auto x : arr)
     {
         cout << x << "\n";

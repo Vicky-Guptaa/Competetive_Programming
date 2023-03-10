@@ -206,36 +206,53 @@ void solve()
     cin >> n;
     vpll arr(n);
     cin >> arr;
-    priority_queue<pair<ll, pll>> pque;
+    priority_queue<pll> pque1, pque2;
     set<int> oset;
     fl(i, 0, n)
     {
-        pque.push({arr[i].first, {1, i}});
-        pque.push({arr[i].second, {2, i}});
+        pque1.push({arr[i].first, i});
+        pque2.push({arr[i].second, i});
     }
     ll ans = 1e9;
-    while (!pque.empty())
+    while (pque1.size() + pque2.size() >= n)
     {
-        auto c1 = pque.top();
-        pque.pop();
-        auto c2 = pque.top();
-        pque.pop();
-        if (c1.second.first == c2.second.first || c1.second.second == c2.second.second)
+        auto c1 = pque1.top();
+        pque1.pop();
+        auto c2 = pque2.top();
+        pque2.pop();
+        if (c1.second == c2.second)
         {
-            if (oset.count(c1.second.second))
-                break;
-            oset.insert(c1.second.second);
-            pque.push(c2);
+            if (c1.first > c2.first)
+            {
+                if (!pque2.empty())
+                    ans = min(ans, c1.first - pque2.top().first);
+                oset.insert(c1.second);
+                pque2.push(c2);
+            }
+            else
+            {
+                if (!pque1.empty())
+                    ans = min(ans, c2.first - pque1.top().first);
+                oset.insert(c2.second);
+                pque1.push(c1);
+            }
             continue;
         }
-        if (oset.count(c1.second.second) || oset.count(c2.second.second))
-        {
-            ans = min(ans, abs(c1.first - c2.first));
-            break;
-        }
         ans = min(ans, abs(c1.first - c2.first));
-        pque.push(c2);
-        oset.insert(c1.second.second);
+        if (c1.first > c2.first)
+        {
+            if (oset.count(c1.second))
+                break;
+            oset.insert(c1.second);
+            pque2.push(c2);
+        }
+        if (c1.first < c2.first)
+        {
+            if (oset.count(c2.second))
+                break;
+            oset.insert(c2.second);
+            pque1.push(c1);
+        }
     }
     cout << ans << "\n";
 }
