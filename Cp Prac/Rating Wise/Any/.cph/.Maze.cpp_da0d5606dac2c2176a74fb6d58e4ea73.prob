@@ -1,0 +1,1 @@
+{"name":"Local: Maze","url":"h:\\Competetive_Programming\\Cp Prac\\Rating Wise\\Any\\Maze.cpp","tests":[{"id":1678545697907,"input":"7 7 18\n#.....#\n..#.#..\n.#...#.\n...#...\n.#...#.\n..#.#..\n#.....#","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Cp Prac\\Rating Wise\\Any\\Maze.cpp","group":"local","local":true}
