@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"h:\\Competetive_Programming\\Codeforces\\Nebius_Welcome_Round\\a.cpp","tests":[{"id":1678707650579,"input":"5\n-4 1\n4 4\n0 -6\n-5 -4\n7 -8\n","output":"7\n8\n11\n9\n15\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Codeforces\\Nebius_Welcome_Round\\a.cpp","group":"local","local":true}
