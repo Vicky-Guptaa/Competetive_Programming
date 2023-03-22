@@ -198,120 +198,67 @@ bool isPerfectSquare(ll x)
 //__builtin_popcountll(x); for long long
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
+ll n, m;
+ll xi, yi, xd, yd;
+string diri;
+map<string, pair<int, int>> moveD;
 
+void helper(int x, int y, string dir, int &jmpCnt, bool &reached, int &mvment)
+{
+    if (x == xd && y == yd)
+    {
+        reached = true;
+        return;
+    }
+    if (x == xi && y == yi)
+    {
+        if (mvment > 3)
+            return;
+        else
+            mvment++;
+    }
+    bool isJmp = 0;
+    if (x == 1 && dir[0] == 'U')
+    {
+        isJmp = true;
+        dir[0] = 'D';
+    }
+    else if (x == n && dir[0] == 'D')
+    {
+        isJmp = true;
+        dir[0] = 'U';
+    }
+
+    if (y == 1 && dir[1] == 'L')
+    {
+        isJmp = true;
+        dir[1] = 'R';
+    }
+    else if (y == m && dir[1] == 'R')
+    {
+        isJmp = true;
+        dir[1] = 'L';
+    }
+    jmpCnt += isJmp;
+    pair<int, int> mv = moveD[dir];
+    int _x = x + mv.first, _y = y + mv.second;
+    helper(_x, _y, dir, jmpCnt, reached, mvment);
+}
 // Code
 void solve()
 {
-    ll n, m;
     cin >> n >> m;
-    ll xi, yi, xd, yd;
     cin >> xi >> yi >> xd >> yd;
-    string diri;
     cin >> diri;
-    ll xc = xi, yc = yi;
-    string dirc = diri;
-    ll jmpCnt = 0;
-    while (1)
+    int jmpCnt = 0;
+    bool isReached = false;
+    int nm = 0;
+    helper(xi, yi, diri, jmpCnt, isReached, nm);
+    if (!isReached)
     {
-        if (xd - xc == yd - yc)
-        {
-            cout << jmpCnt << "\n";
-            return;
-        }
-        if (dirc == "DL")
-        {
-            ll my = m - yc, mx = xc;
-            if (my == xc)
-            {
-                yc = m;
-                xc = 0;
-                dirc = "UR";
-            }
-            else if (my > xc)
-            {
-                xc = 0;
-                yc += n;
-                dirc = "DR";
-            }
-            else
-            {
-                yc = m;
-                xc -= m;
-                dirc = "UL";
-            }
-        }
-        else if (dirc == "DR")
-        {
-            ll my = m - yc, mx = n - xc;
-            if (my == xc)
-            {
-                yc = m;
-                xc = n;
-                dirc = "UR";
-            }
-            else if (my > xc)
-            {
-                xc = n;
-                yc += n;
-                dirc = "DR";
-            }
-            else
-            {
-                yc = m;
-                xc += m;
-                dirc = "UL";
-            }
-        }
-        else if (dirc == "UL")
-        {
-            ll my = yc, mx = xc;
-            if (my == xc)
-            {
-                yc = 0;
-                xc = 0;
-                dirc = "UR";
-            }
-            else if (my > xc)
-            {
-                xc = 0;
-                yc -= n;
-                dirc = "DR";
-            }
-            else
-            {
-                yc = 0;
-                xc -= m;
-                dirc = "UL";
-            }
-        }
-        else // UR
-        {
-            ll my = yc, mx = n - xc;
-            if (my == xc)
-            {
-                yc = 0;
-                xc = n;
-                dirc = "UR";
-            }
-            else if (my > xc)
-            {
-                xc = n;
-                yc -= n;
-                dirc = "DR";
-            }
-            else
-            {
-                yc -= m;
-                xc += m;
-                dirc = "UL";
-            }
-        }
-        if (xc == xi && yc == yi && diri == dirc)
-        {
-            pm return;
-        }
-        jmpCnt++;
+        pm return;
     }
+    cout << jmpCnt << "\n";
 }
 /*
 When you are coding,remember to:
@@ -330,6 +277,10 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
+    moveD["DR"] = {1, 1};
+    moveD["UL"] = {-1, -1};
+    moveD["UR"] = {-1, 1};
+    moveD["DL"] = {1, -1};
     fl(i, 0, t)
     {
         solve();
