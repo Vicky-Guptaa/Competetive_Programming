@@ -228,6 +228,7 @@ void solve()
         }
     }
     ll num = (ans - 1) / 2;
+    
     if (minDiff >= abs(((c * (num - 1) + h * num) / (lld)(num * 2 - 1)) - n))
     {
         ans = num * 2 - 1;
