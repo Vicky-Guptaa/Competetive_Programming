@@ -206,38 +206,18 @@ void solve()
     cin >> n;
     vpll arr(n);
     cin >> arr;
-    vector<vector<int>> freq(1e4 + 5);
-    fl(i, 0, n) freq[arr[i].second].push_back(arr[i].first);
-    vector<ll> greatest;
-    for (auto &x : freq)
+    ll uniqueCnt = 1;
+    ll gcd = arr[0].first * arr[0].second, lcm = arr[0].second;
+    for (int i = 1; i < arr.size(); i++)
     {
-        ll gcd = 0;
-        for (auto y : x)
+        gcd = __gcd(arr[i].first * arr[i].second, gcd);
+        lcm = (arr[i].second * lcm) / __gcd(lcm, arr[i].second);
+        if (gcd % lcm != 0)
         {
-            gcd = __gcd(gcd, (ll)y);
+            gcd = arr[i].first * arr[i].second;
+            lcm = arr[i].second;
+            uniqueCnt++;
         }
-        greatest.push_back(gcd);
-    }
-    ll uniqueCnt = 0;
-    vector<bool> visited(1e4 + 5);
-    for (int i = 1; i < freq.size(); i++)
-    {
-        if (freq[i].size() == 0 || visited[i])
-            continue;
-        visited[i] = true;
-        ll lcm = i;
-        for (int j = i + 1; j < freq.size(); j++)
-        {
-            if (visited[j] || freq[i].size() == 0)
-                continue;
-            ll temp = (lcm * j) / __gcd(lcm, (ll)j);
-            if (greatest[i] % j == 0 && greatest[j] % lcm == 0)
-            {
-                lcm = temp;
-                visited[j] = true;
-            }
-        }
-        uniqueCnt++;
     }
     cout << uniqueCnt << "\n";
 }
