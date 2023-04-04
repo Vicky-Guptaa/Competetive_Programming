@@ -204,7 +204,74 @@ void solve()
 {
     ll n;
     cin >> n;
-    
+    ll l = -1, r = -1;
+    while (n--)
+    {
+        int op;
+        cin >> op;
+        if (op == 1)
+        {
+            ll a, b, d;
+            cin >> a >> b >> d;
+            if (l == -1)
+            {
+                if (d == 1)
+                {
+                    l = (a - b) * (d - 1) + 1;
+                }
+                else
+                {
+                    l = max((a - b) * (d - 1) + 1, (a - b) * (d - 2) + a + 1);
+                }
+                r = (a - b) * (d - 1) + a;
+                cout << 1 << " ";
+            }
+            else
+            {
+                ll nl = max((a - b) * (d - 1) + 1, (a - b) * (d - 2) + a + 1);
+                if (d == 1)
+                {
+                    nl = (a - b) * (d - 1) + 1;
+                }
+                ll nr = (a - b) * (d - 1) + a;
+                if (nr < l || r < nl)
+                {
+                    cout << "0 ";
+                }
+                else
+                {
+                    l = max(nl, l);
+                    r = min(nr, r);
+                    cout << 1 << " ";
+                }
+            }
+        }
+        else
+        {
+            ll a, b;
+            cin >> a >> b;
+            if (l == -1)
+            {
+                cout << "-1 ";
+                continue;
+            }
+            else
+            {
+                ll d = max(1ll, (l - b - 1) / (a - b) + 1), e = max(1ll, (r - b - 1) / (a - b) + 1);
+                if (d == e)
+                {
+                    cout << d << " ";
+                    continue;
+                }
+                else
+                {
+                    cout << "-1 ";
+                    continue;
+                }
+            }
+        }
+    }
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
