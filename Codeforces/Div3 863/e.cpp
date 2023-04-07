@@ -199,56 +199,31 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll digCnt(ll n)
-{
-    ll i = 0;
-    while (n)
-    {
-        n /= 10;
-        i++;
-    }
-    return i;
-}
-
-ll calc(ll n)
-{
-    ll cnt = 0;
-    while (n > 0)
-    {
-        ll dig = digCnt(n) - 1;
-        ll div = powl(10, dig);
-        ll val = (n / div);
-        if (val >= 4)
-        {
-            if (val > 4)
-                cnt += div;
-            else
-                cnt += (n - 4 * div);
-            cnt += ((val - 1) * 9) * (div / 10ll);
-        }
-        else
-        {
-            cnt += (val * 9) * (div / 10ll);
-        }
-
-        n %= div;
-    }
-    return cnt;
-}
-
 // Code
 void solve()
 {
     ll n;
     cin >> n;
-    ll ans = n;
+    vector<int> arr;
     while (n)
     {
-        ll val = calc(n);
-        ans += val;
-        n = val;
+        arr.push_back(n % 9);
+        n /= 9;
     }
-    cout << ans << "\n";
+    reverse(vr(arr));
+    ll num = 0;
+    fl(i, 0, arr.size())
+    {
+        if (arr[i] >= 4)
+        {
+            num = num * 10 + arr[i] + 1;
+        }
+        else
+        {
+            num = num * 10 + arr[i];
+        }
+    }
+    cout << num << "\n";
 }
 /*
 When you are coding,remember to:
