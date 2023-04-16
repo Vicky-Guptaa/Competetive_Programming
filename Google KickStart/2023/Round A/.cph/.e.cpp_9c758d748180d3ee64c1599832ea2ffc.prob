@@ -1,0 +1,1 @@
+{"name":"Local: e","url":"h:\\Competetive_Programming\\Google KickStart\\2023\\Round A\\e.cpp","tests":[{"id":1681572713450,"input":"3\nPRSSP\nRRRRRRR\nRSPRPSPRS","output":"Case #1: 2\nCase #2: 4\nCase #3: 0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Google KickStart\\2023\\Round A\\e.cpp","group":"local","local":true}
