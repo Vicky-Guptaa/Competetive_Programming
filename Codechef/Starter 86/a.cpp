@@ -17,28 +17,32 @@ bool isEqual(vector<int> &arr)
 vector<int> Prime_Sieve(ll n = 1e6 + 1)
 {
     vector<int> prime(n + 1, 1);
+    vector<int> pp;
     for (ll i = 2; i <= n; i++)
     {
         if (prime[i] != 1)
+        {
             continue;
+        }
+        pp.push_back(i);
         for (ll j = i * i; j <= n; j += i)
         {
             prime[j] = i;
         }
     }
-    return prime;
+    return pp;
 }
 
-void Prime_Factor_Sieve(ll n, vector<int> &Sieve, vector<int> &freq)
-{
-    while (Sieve[n] != 1)
-    {
-        freq[Sieve[n]]++;
-        n /= Sieve[n];
-    }
-    if (n != 1)
-        freq[n]++;
-}
+// void Prime_Factor_Sieve(ll n, vector<int> &Sieve, vector<int> &freq)
+// {
+//     while (Sieve[n] != 1)
+//     {
+//         freq[Sieve[n]]++;
+//         n /= Sieve[n];
+//     }
+//     if (n != 1)
+//         freq[n]++;
+// }
 
 int main()
 {
@@ -46,12 +50,12 @@ int main()
     int t;
     cin >> t;
     vector<int> prime = Prime_Sieve();
+    // cout << prime.size() << "\n";
     while (t--)
     {
         ll n, m;
         cin >> n >> m;
         vector<int> arr(n);
-        vector<int> freq(1e6 + 1, 0);
         for (auto &x : arr)
         {
             cin >> x;
@@ -70,22 +74,29 @@ int main()
             cout << gcd << "\n";
             continue;
         }
-        for (auto &x : arr)
+        bool found = false;
+        for (auto &x : prime)
         {
-            Prime_Factor_Sieve(x, prime, freq);
-        }
-        bool isFound = false;
-        for (int i = 2; i <= m; i++)
-        {
-            if (!freq[i] && prime[i] == 1)
+            if (x > m)
+                break;
+            bool isFound = true;
+            for (auto &y : arr)
             {
-                isFound = true;
-                cout << "1\n";
-                cout << i << "\n";
+                if (y % x == 0)
+                {
+                    isFound = false;
+                    break;
+                }
+            }
+            if (isFound)
+            {
+                cout << "1\n"
+                     << x << "\n";
+                found = true;
                 break;
             }
         }
-        if (isFound)
+        if (found)
             continue;
         cout << "2\n";
         cout << 2 << "\n"
