@@ -199,55 +199,35 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll helper(int iter, string &s, vi &ocnt, vll &dp)
-{
-    if (iter == s.size() || ocnt[iter] == 0)
-        return 0;
-
-    if (s[iter] == '1')
-    {
-        return dp[iter] = helper(iter + 1, s, ocnt, dp);
-    }
-    if (dp[iter] != -1)
-        return dp[iter];
-    ll mn = min(ocnt[iter], (int)s.size() - iter - ocnt[iter]);
-    mn *= (1e12 + 1ll);
-    ll zc = 0;
-    while (iter < s.size() && s[iter] == '0')
-    {
-        zc++;
-        iter++;
-    }
-    if (ocnt[iter - zc] == zc && zc == 1)
-    {
-        return dp[iter] = 1e12;
-    }
-    if (zc == 1 && iter < s.size())
-    {
-        swap(s[iter - zc], s[iter - zc + 1]);
-        ocnt[iter - zc + 1]--;
-        mn = min(mn, (ll)(1e12) + helper(iter, s, ocnt, dp));
-        ocnt[iter - zc + 1]++;
-        swap(s[iter - zc], s[iter - zc + 1]);
-    }
-    return dp[iter] = min(mn, zc * (ll)(1e12 + 1ll) + helper(iter, s, ocnt, dp));
-}
-
 void solve()
 {
     string s;
     cin >> s;
-    ll n = s.size(), oc = 0;
-    vi ocnt(n, 0);
+    ll n = s.size();
+    ll soc = 0, poc = 0, szc = 0;
+    fl(i, 0, n) soc += s[i] == '1';
+    szc += n - soc;
+    ll cost = 1e18, fix = 1e12;
     fl(i, 0, n)
     {
-        oc += s[i] - '0';
-        ocnt[i] = oc;
+        soc -= s[i] == '1';
+        szc -= s[i] == '0';
+        if (s[i] == '0')
+        {
+            cost = min({cost, poc * (fix + 1) + szc * (fix + 1), poc * (fix + 1) + soc * (fix + 1)});
+        }
+        else
+        {
+            cost = min({cost, poc * (fix + 1) + szc * (fix + 1)});
+            if (i + 1 < n && s[i + 1] == '0')
+            {
+                cost = min({cost, poc * (fix + 1) + szc * (fix + 1) - 1});
+            }
+        }
+        poc += s[i] == '1';
     }
-    vector<ll> dp(n + 1, -1);
-    reverse(vr(s));
-    reverse(vr(ocnt));
-    cout << helper(0, s, ocnt, dp) << "\n";
+    cost = (cost == 1e18) ? 0 : cost;
+    cout << cost << "\n";
 }
 /*
 When you are coding,remember to:
