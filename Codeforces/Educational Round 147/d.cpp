@@ -202,8 +202,9 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n, k;
+    ll n, k, t;
     cin >> n >> k;
+    t = k;
     vpll arr(n);
     fl(i, 0, n)
     {
@@ -213,61 +214,33 @@ void solve()
     {
         cin >> arr[i].second;
     }
-    priority_queue<vll, vector<vll>, greater<vll>> pque;
-    pque.push({arr[0].first, 0, k, 0});
-    while (!pque.empty())
+    ll left = 0, oper = 0, mnCost = 1e18;
+    fl(i, 0, n)
     {
-        auto curr = pque.top();
-        pque.pop();
-        if (curr[2] == 0)
+        if (arr[i].second - arr[i].first + 1 >= k)
         {
-            ll res = curr[0] - curr[3];
-            while (!pque.empty())
-            {
-                if (pque.top()[2] == 0)
-                {
-                    res = min(res, pque.top()[0] - pque.top()[3]);
-                }
-                pque.pop();
-            }
-            cout << res << "\n";
-            return;
+            mnCost = min(mnCost, (arr[i].first + k - 1ll) + oper * 2ll + 2ll);
+            break;
         }
-        if (curr[1] == arr.size())
+        else if ((arr[i].second - arr[i].first + 1ll) + left >= k)
         {
-            continue;
+            //(k - (arr[i].second - arr[i].first + 1ll)) * 2ll how many one to take to complete
+            mnCost = min(mnCost, oper * 2ll + arr[i].second + 2ll + (k - (arr[i].second - arr[i].first + 1ll)) * 2ll);
         }
-        if (curr[1] + 1 != arr.size())
-        {
-            pque.push({curr[0] + (arr[curr[1] + 1].first - arr[curr[1]].first), curr[1] + 1, curr[2], 0});
 
-            if ((arr[curr[1]].second - arr[curr[1]].first + 1) <= curr[2])
-                pque.push({curr[0] + (arr[curr[1] + 1].first - arr[curr[1]].second) +
-                               (arr[curr[1]].second - arr[curr[1]].first) + 2,
-                           curr[1] + 1,
-                           curr[2] - (arr[curr[1]].second - arr[curr[1]].first + 1),
-                           (arr[curr[1] + 1].first - arr[curr[1]].second)});
-
-            else
-                pque.push({curr[0] + (arr[curr[1] + 1].first - arr[curr[1]].second) +
-                               (curr[2] - 1) + 2,
-                           curr[1] + 1,
-                           0, (arr[curr[1] + 1].first - arr[curr[1]].second)});
-        }
+        if (arr[i].second == arr[i].first)
+            left++;
         else
         {
-            if ((arr[curr[1]].second - arr[curr[1]].first + 1) <= curr[2])
-                pque.push({curr[0] + (arr[curr[1]].second - arr[curr[1]].first) + 2,
-                           curr[1] + 1,
-                           curr[2] - (arr[curr[1]].second - arr[curr[1]].first + 1), 0});
-
-            else
-                pque.push({curr[0] + (curr[2] - 1) + 2,
-                           curr[1] + 1,
-                           0, 0});
+            k -= (arr[i].second - arr[i].first + 1ll);
+            oper++;
         }
     }
-    cout << "-1\n";
+    if (mnCost == 1e18)
+    {
+        pm return;
+    }
+    cout << mnCost << '\n';
 }
 /*
 When you are coding,remember to:

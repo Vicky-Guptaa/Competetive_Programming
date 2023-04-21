@@ -199,6 +199,17 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+int bitCount(int x)
+{
+    int c=0;
+    while (x)
+    {
+        c++;
+        x /= 2;
+    }
+    return c;
+}
+
 // Code
 void solve()
 {
@@ -206,63 +217,27 @@ void solve()
     string s;
     cin >> s;
     n = s.size();
-    queue<string> que;
-    que.push(s);
-    int oper = 0;
-    while (!que.empty())
+    int mxOper = 1e9;
+    fl(i, 0, 26)
     {
-        int size = que.size();
-        while (size--)
+        int curr = 0;
+        int oper = 0;
+        fl(j, 0, n)
         {
-            string str = que.front();
-            que.pop();
-            bool equal = true;
-            fl(i, 1, str.size())
+            if (s[j] == i + 'a')
             {
-                if (str[i] != str[i - 1])
-                {
-                    equal = false;
-                    break;
-                }
+                oper = max(oper, bitCount(curr));
+                curr = 0;
             }
-            if (equal)
+            else
             {
-                cout << oper << "\n";
-                return;
+                curr++;
             }
-            string t, q;
-            bool isTake = false;
-            fl(i, 1, str.size())
-            {
-                if (str[i] == str[i - 1])
-                {
-                    if (!isTake)
-                    {
-                        t += str[i - 1];
-                        isTake = true;
-                        continue;
-                    }
-                    isTake = false;
-                    continue;
-                }
-                isTake = true;
-                t += str[i];
-                i++;
-            }
-            fl(i, 1, str.size())
-            {
-                if (str[i] == str[i - 1])
-                {
-                    continue;
-                }
-                q += str[i - 1];
-                i++;
-            }
-            que.push(t);
-            que.push(q);
         }
-        oper++;
+        oper = max(oper, bitCount(curr));
+        mxOper = min(mxOper, oper);
     }
+    cout << mxOper << "\n";
 }
 /*
 When you are coding,remember to:
