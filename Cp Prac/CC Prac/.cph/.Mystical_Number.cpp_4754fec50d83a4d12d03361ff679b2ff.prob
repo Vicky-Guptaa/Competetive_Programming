@@ -1,0 +1,1 @@
+{"name":"Local: Mystical_Number","url":"h:\\Competetive_Programming\\Cp Prac\\CC Prac\\Mystical_Number.cpp","tests":[{"id":1682137882987,"input":"1\n5\n1 2 3 4 5\n2\n1 5 4\n5 5 2","output":"3\n2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Cp Prac\\CC Prac\\Mystical_Number.cpp","group":"local","local":true}
