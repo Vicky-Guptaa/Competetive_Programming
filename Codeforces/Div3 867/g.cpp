@@ -191,6 +191,21 @@ bool isPerfectSquare(ll x)
 // Code by Vicky Gupta
 // Language C++
 
+vector<int> Prime_Sieve(ll n)
+{
+    vector<int> prime(n + 1, 1);
+    for (ll i = 2; i <= n; i++)
+    {
+        if (prime[i] != 1)
+            continue;
+        for (ll j = i * i; j <= n; j += i)
+        {
+            prime[j] = i;
+        }
+    }
+    return prime;
+}
+
 // accumulate(first, last, sum);
 // max_element(first, last);
 // min_element(first, last);
@@ -200,62 +215,43 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
-int solve2(int n, string &s)
-{
-    // ll n;
-    // cin >> n;
-    // string s;
-    // cin >> s;
-    // n = s.size();
-    if (n & 1)
-    {
-        // pm
-        return -1;
-    }
-    vector<int> pfreq(27, 0), cfreq(27, 0);
-    fl(i, 0, (n / 2))
-    {
-        if (s[i] == s[n - 1 - i])
-        {
-            pfreq[s[i] - 'a']++;
-        }
-        else
-        {
-            cfreq[s[i] - 'a']++;
-            cfreq[s[n - 1 - i] - 'a']++;
-        }
-    }
-    ll mx = *max_element(vr(pfreq));
-    mx *= 2;
-    fl(i, 0, 26)
-    {
-        if (pfreq[i] * 2 + cfreq[i] > n / 2)
-        {
-            // pm
-            return -1;
-        }
-    }
-    ll cntr = accumulate(vr(pfreq), 0ll);
-    ll left = mx - cntr;
-    if (left <= 0)
-    {
-        return (cntr + 1) / 2;
-    }
-    else
-    {
-        return left + (cntr - mx / 2);
-    }
-}
-
+int freq[1000001];
 void solve()
 {
     ll n;
     cin >> n;
-    string s;
-    cin >> s;
-    cout << solve2(n, s) << "\n";
+    vi arr(n);
+    cin >> arr;
+    for (auto &x : arr)
+        freq[x]++;
+    ll mx = *max_element(vr(arr));
+    ll ans = 0;
+    ll prev = -1;
+    sort(vr(arr));
+    for (auto &ele : arr)
+    {
+        if (prev == ele)
+            continue;
+        prev = ele;
+        ll q = freq[ele];
+        if (q >= 3)
+        {
+            ans += (q * (q - 1) * (q - 2));
+        }
+        for (ll i = 2; (i * i * ele) <= mx; i++)
+        {
+            if (!freq[i * ele] || !freq[i * i * ele])
+                continue;
+            ll a1, a2;
+            a1 = freq[i * ele];
+            a2 = freq[i * ele * i];
+            ans += (a1 * a2 * q);
+        }
+    }
+    for (auto &x : arr)
+        freq[x]--;
+    cout << ans << '\n';
 }
-
 /*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
