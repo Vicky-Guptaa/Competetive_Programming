@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"h:\\Competetive_Programming\\Codechef\\Startr 87\\a.cpp","tests":[{"id":1682519687727,"input":"5\n2 2\n4 4\n3 6\n8 32\n200000000 20000000000000000","output":"YES\nNO\nNO\nYES\nYES"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Codechef\\Startr 87\\a.cpp","group":"local","local":true}
