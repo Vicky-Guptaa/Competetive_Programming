@@ -204,7 +204,30 @@ void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n);
+    cin >> arr;
+    if (n == 1)
+    {
+        if (arr[0] & 1)
+        {
+            cout << "CHEF\n";
+        }
+        else
+        {
+            cout << "CHEFINA\n";
+        }
+        return;
+    }
+    ll mn = *min_element(vr(arr));
+    ll sum = accumulate(vr(arr), 0ll);
+    if ((sum & 1) || (!((sum - n * mn) & 1) && (mn & 1)))
+    {
+        cout << "CHEF\n";
+    }
+    else
+    {
+        cout << "CHEFINA\n";
+    }
 }
 /*
 When you are coding,remember to:
