@@ -229,18 +229,15 @@ void solve()
         arr.push_back(x.second);
     }
     sort(vr(arr));
+    // cout << inorder << "\n";
     if (arr.size() == 3)
     {
         cout << arr[1] / arr[0] << " " << arr[2] / arr[1] << "\n";
         return;
     }
-    fl(i, 1, (int)arr.size() - 1)
+    else
     {
-        if (arr[i] % arr[0] == 0 && arr.back() % arr[i] == 0)
-        {
-            cout << arr[i] / arr[0] << " " << arr.back() / arr[i] << "\n";
-            return;
-        }
+        cout << arr[0] - 1 << " " << arr[1] / (arr[0] - 1) << "\n";
     }
 }
 /*
