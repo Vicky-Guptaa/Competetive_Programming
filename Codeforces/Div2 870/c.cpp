@@ -198,9 +198,35 @@ bool isPerfectSquare(ll x)
 //__builtin_popcountll(x); for long long
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
+vector<int> Prime_Sieve(ll n)
+{
+    vector<int> prime(n + 1, 1);
+    for (ll i = 2; i <= n; i++)
+    {
+        if (prime[i] != 1)
+            continue;
+        for (ll j = i * i; j <= n; j += i)
+        {
+            prime[j] = i;
+        }
+    }
+    return prime;
+}
 
+bool Prime_Factor_Sieve(ll n, vector<int> &Sieve, ll m)
+{
+    while (Sieve[n] != 1)
+    {
+        if (Sieve[n] <= m)
+            return true;
+        n /= Sieve[n];
+    }
+    if (n != 1 && n <= m)
+        return true;
+    return false;
+}
 // Code
-void solve()
+void solve(vi &isPrime)
 {
     ll n, m;
     cin >> n >> m;
@@ -214,10 +240,19 @@ void solve()
         {
             pn return;
         }
-        py return;
+        if (Prime_Factor_Sieve(n, isPrime, m))
+        {
+            pn
+        }
+        else
+        {
+            py
+        }
+        return;
     }
     pn
 }
+
 /*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
@@ -235,9 +270,10 @@ int main()
     You Can Do_It
         ll t;
     cin >> t;
+    vector<int> isPrime = Prime_Sieve(1e6);
     fl(i, 0, t)
     {
-        solve();
+        solve(isPrime);
     }
     // solve();
     // fl(i,0,t) //Kickstart

@@ -206,22 +206,20 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    map<int, int> freq;
-    for (auto x : arr)
-        freq[x]++;
-    ll all = n;
     ll res = -1;
-    for (auto x : freq)
+    fl(i, 0, n + 1)
     {
-        if (all - x.second >= x.first)
+        ll lie = 0;
+        fl(j, 0, n)
         {
-            res = all - x.second;
+            if (arr[j] > i)
+                lie++;
         }
-        else
+        if (lie == i)
         {
+            res = i;
             break;
         }
-        all -= x.second;
     }
     cout << res << "\n";
 }
