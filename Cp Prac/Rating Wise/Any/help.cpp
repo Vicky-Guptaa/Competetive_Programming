@@ -1,34 +1,55 @@
-void createMapping(int in[], map<int, int> &nodeToIndex, int n)
+#include <iostream>
+#include <math.h>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+typedef long long ll;
+int minimumSum(string s)
 {
-    for (int i = 0; i < n; i++)
+    int n = s.size();
+    vector<int> indx;
+    for (int i = 0; i < (n + 1) / 2; i++)
     {
-        nodeToIndex[in[i]] = i;
+        if (s[i] != '?' || s[n - 1 - i] != '?')
+        {
+            if (s[i] != '?' && s[n - 1 - i] != '?' && (s[i] != s[n - 1 - i]))
+                return -1;
+            if (s[i] == '?')
+                s[i] = s[n - 1 - i];
+            if (s[n - 1 - i] == '?')
+                s[n - 1 - i] = s[i];
+        }
     }
-}
+    char start;
 
-Node *solve(int in[], int pre[], int &index, int inorderStart, int inorderEnd, int n, map<int, int> &nodeToIndex)
-{
-    if (index >= n || inorderStart > inorderEnd)
+    for (int i = 0; i < (n) / 2; i++)
     {
-        return NULL;
+        if (s[i] != '?')
+        {
+            start = s[i];
+            break;
+        }
     }
-
-    int element = pre[index++];
-    Node *root = new Node(element);
-    int position = nodeToIndex[element];
-
-    root->left = solve(in, pre, index, inorderStart, position - 1, n, nodeToIndex);
-    root->right = solve(in, pre, index, position + 1, inorderEnd, n, nodeToIndex);
-
-    return root;
+    int score = 0;
+    for (int i = 0; i < (n) / 2; i++)
+    {
+        if (s[i] != '?')
+        {
+            start = s[i];
+            score += (i > 0) ? abs(s[i] - s[i - 1]) : 0;
+            continue;
+        }
+        s[i] = start;
+        s[n - 1 - i] = start;
+        score += (i > 0) ? abs(s[i] - s[i - 1]) : 0;
+    }
+    cout << s << "\n";
+    return score * 2;
 }
-Node *buildTree(int in[], int pre[], int n)
+int main()
 {
-    map<int, int> nodeToIndex;
-    createMapping(in, nodeToIndex, n);
-    int preOrderIndex = 0;
-
-    Node *root = solve(in, pre, preOrderIndex, 0, n - 1, n, nodeToIndex);
-    return root;
-        
+    string s = "????k??n??????";
+    cout << minimumSum(s) << "\n";
+    return 0;
 }
