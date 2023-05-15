@@ -206,17 +206,15 @@ void solve()
     cin >> n;
     vll arr(n);
     cin >> arr;
-    mll mindx;
-    fl(i, 0, n) mindx[arr[i]] = i;
-    ll lcm = n;
+    ll gcd = 0;
     fl(i, 0, n)
     {
         if (arr[i] == i + 1)
             continue;
         ll gap = abs(i - arr[i] + 1);
-        lcm = min(lcm, gap);
+        gcd = __gcd(gcd, gap);
     }
-    cout << lcm << "\n";
+    cout << gcd << "\n";
 }
 /*
 When you are coding,remember to:

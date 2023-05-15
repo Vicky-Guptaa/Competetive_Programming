@@ -204,7 +204,29 @@ void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n), brr(n);
+    cin >> arr >> brr;
+    vll val(n);
+    sort(vr(arr));
+    sort(vr(brr));
+    fl(i, 0, n)
+    {
+        int indx = lower_bound(vr(brr), arr[i]) - brr.begin();
+        if (indx == 0)
+        {
+            cout << "0\n";
+            return;
+        }
+        val[i] = indx;
+    }
+    ll res = 1, prev = 0;
+    fl(i, 0, n)
+    {
+        res *= (val[i] - i);
+        res %= mod;
+        prev = val[i];
+    }
+    cout << res << "\n";
 }
 /*
 When you are coding,remember to:
