@@ -237,35 +237,6 @@ void storeBig(int i, vll &arr, vll &ans)
     }
 }
 
-void storeBig2(int i, vll &arr, vll &ans, ll indx)
-{
-    ll n = arr.size();
-    fl(j, indx, n)
-    {
-        if (arr[i] > ans[j - indx])
-        {
-            storeHelper(i, arr, ans);
-            return;
-        }
-        else if (arr[i] != ans[j - indx])
-            return;
-    }
-    rl(i, indx - 1, indx - i - 1)
-    {
-        if(arr[i]>arr[n-indx+j])
-    }
-    fl(j, 0, n - i)
-    {
-        if (arr[j] > ans[j + i])
-        {
-            storeHelper(i, arr, ans);
-            return;
-        }
-        else if (arr[j] != ans[i + j])
-            return;
-    }
-}
-
 // Code
 void solve()
 {
@@ -289,11 +260,13 @@ void solve()
     }
     else
     {
-        vll ans(n, 0);
-        fl(i, 1, indx)
+        vll ans(indx, 0), temp;
+        fl(i, 0, indx) temp.push_back(arr[i]);
+        fl(i, 1, indx + 1)
         {
-            storeBig2(i, arr, ans, indx);
+            storeBig(i, temp, ans);
         }
+        fl(i, indx, n) cout << arr[i] << " ";
         cout << ans << "\n";
     }
 }
