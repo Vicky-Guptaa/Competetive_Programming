@@ -202,44 +202,33 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vector<pair<string, int>> list(n);
-    cin >> list;
-    map<string, ll> score;
-    ll mxScore = -1e12;
-    fl(i, 0, n)
+    ll n, m;
+    cin >> n >> m;
+    vll arr(n);
+    cin >> arr;
+    vector<ll> temp(n);
+    fl(i, 0, m)
     {
-        score[list[i].first] += list[i].second;
+        ll l, r;
+        cin >> l >> r;
+        l--;
+        temp[l]++;
+        if (r == n)
+            continue;
+        temp[r]--;
     }
-    for (auto &x : score)
-        mxScore = max(mxScore, x.second);
-
-    string res = "END";
-    set<string> winner;
-    for (auto x : score)
-    {
-        if (mxScore == x.second)
-        {
-            winner.insert(x.first);
-        }
-    }
-    score.clear();
-    fl(i, 0, n)
-    {
-        score[list[i].first] += list[i].second;
-        if (winner.count(list[i].first) && mxScore <= score[list[i].first])
-        {
-            cout << list[i].first << "\n";
-            return;
-        }
-    }
+    fl(i, 1, n) temp[i] += temp[i - 1];
+    sort(vr(temp));
+    sort(vr(arr));
+    ll ans = 0;
+    fl(i, 0, n) ans += temp[i] * arr[i];
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
       - pay attention to some special cases(n=0,1).
-      - Don't code before think completelyLittle Girl and Maximum Sum.
+      - Don't code before think completely.
       - ...
 */
 // Main
