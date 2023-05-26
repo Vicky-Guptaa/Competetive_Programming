@@ -204,7 +204,57 @@ void solve()
 {
     ll n;
     cin >> n;
-    
+    ll mx = 0, mn = 0;
+    ll res = 0;
+    map<int, int> l;
+    fl(i, 0, n)
+    {
+        ll a, b;
+        cin >> a >> b;
+        l[a]++;
+        res += a * b;
+        mx = max(mx, a);
+        mn = max(mn, b);
+    }
+    cout<<mx<<" "<<mn<<"\n";
+    vpll ans;
+    if (l.rbegin()->second != 1)
+    {
+        ll upto = max(mx, res / mx);
+        fl(i, 1, upto + 1)
+        {
+            if ((res) % (mx * i) != 0)
+                continue;
+            if (mn <= (res) / (mx * i))
+            {
+                ans.push_back({mx * i, (res) / (mx * i)});
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    else
+    {
+        ll upto = max(mn, res / mn);
+        fl(i, 1, upto + 1)
+        {
+            if ((res) % (mn * i) != 0)
+                continue;
+            if (mx <= (res) / (mn * i))
+            {
+                ans.push_back({(res) / (mn * i), mn * i});
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    cout << ans.size() << endl;
+    for (auto x : ans)
+        cout << x << "\n";
 }
 /*
 When you are coding,remember to:

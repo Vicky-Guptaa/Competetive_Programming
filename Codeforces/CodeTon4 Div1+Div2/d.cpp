@@ -257,7 +257,7 @@ void solve()
             }
             else
             {
-                ll d = max(1ll, (l - b - 1) / (a - b) + 1), e = max(1ll, (r - b - 1) / (a - b) + 1);
+                ll d = max(1ll, (ll)ceill((l - a) / (lld)(a - b)) + 1ll), e = max(1ll, (ll)ceill((r - a) / (lld)(a - b)) + 1ll);
                 if (d == e)
                 {
                     cout << d << " ";

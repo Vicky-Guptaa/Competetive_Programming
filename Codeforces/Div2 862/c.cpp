@@ -210,36 +210,25 @@ void solve()
     {
         ll a, b, c;
         cin >> a >> b >> c;
-        lld def = 4 * a * c;
-        if (def <= 0)
-        {
-            if (sqrtl((ll)-def) * sqrtl((ll)-def) == (ll)-def)
-            {
-                pn continue;
-            }
-        }
-        def = sqrtl(def);
-        ll lmn = (ll)floor(b - def);
-        ll lmx = (ll)floor(b + def);
-        ll indx = lower_bound(vr(arr), lmn) - arr.begin();
-        if (indx < arr.size() && lmn == arr[indx])
-        {
-            indx++;
-        }
-        if (indx == arr.size())
-        {
-            pn return;
-        }
-        if (arr[indx] <= lmx)
+        ll def = 4 * a * c;
+        ll indx = lower_bound(vr(arr), b) - arr.begin();
+
+        if (indx < n && (b - arr[indx]) * (b - arr[indx]) < def)
         {
             py
                     cout
                 << arr[indx] << "\n";
+            continue;
         }
-        else
+
+        if (indx > 0 && (b - arr[indx - 1]) * (b - arr[indx - 1]) < def)
         {
-            pn continue;
+            py
+                    cout
+                << arr[indx - 1] << "\n";
+            continue;
         }
+        pn
     }
     // cout << lmn << " " << lmx << "\n";
 }

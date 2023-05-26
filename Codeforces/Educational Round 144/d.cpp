@@ -204,7 +204,7 @@ struct node
     ll val;
     ll cnt;
     // can add more if required or remove
-    node(ll v = 0, ll c = 0)
+    node(ll v = 0, ll c = INT_MAX)
     {
         val = v;
         cnt = c;
@@ -233,7 +233,7 @@ we have to make 4*n size array for n size given array
     // here you can change the combine logic according to questions
     node Combine(node &left, node &right)
     {
-        return node(left.val + right.val, 0);
+        return node(left.val + right.val, min({left.cnt, left.val, right.val + left.val, left.val + right.cnt}));
     }
 
     void constructSegTree(int index, int startIndx, int endIndx)
@@ -241,7 +241,7 @@ we have to make 4*n size array for n size given array
         if (startIndx == endIndx)
         {
             // Leaf Logic
-            segArr[index] = node(narr[startIndx], 0);
+            segArr[index] = node(narr[startIndx], narr[startIndx]);
             return;
         }
         int midIndx = startIndx + (endIndx - startIndx) / 2;
@@ -254,7 +254,7 @@ we have to make 4*n size array for n size given array
     {
         // no overlap
         if (startIndx > rquery || lquery > endIndx)
-            return node(0, 0);
+            return node(0, INT_MAX);
 
         // complete overlap
         if (startIndx >= lquery && endIndx <= rquery)
@@ -277,7 +277,7 @@ we have to make 4*n size array for n size given array
         {
             // Leaf Condition
             narr[startIndx] += val;
-            segArr[index] = node(narr[startIndx], 0);
+            segArr[index] = node(narr[startIndx], narr[startIndx]);
             return;
         }
 
@@ -305,13 +305,14 @@ void solve()
 {
     ll n, k, x;
     cin >> n >> k >> x;
-    vll arr(n);
-    cin >> arr;
+    vll arr(n + 1, 0);
+
+    fl(i, 1, n + 1) cin >> arr[i];
 
     if (x < 0)
     {
         x = -x;
-        fl(i, 0, n)
+        fl(i, 1, n + 1)
         {
             arr[i] -= x;
         }
@@ -319,42 +320,36 @@ void solve()
     }
     else
     {
-        fl(i, 0, n)
+        fl(i, 1, n + 1)
         {
             arr[i] -= x;
         }
     }
-    segTree tree(arr);
-    fl(i, 0, k)
+    cout << arr << "\n";
+    fl(i, 1, k + 1)
     {
-        tree.updateQuery(i, 2 * x);
+        arr[i] += 2 * x;
     }
-    ll ans = 0, sum = 0, prev = 0;
-    set<ll> oset = {0};
-    fl(i, 0, n)
+    segTree tree(arr);
+    ll ans = 0;
+    fl(i, 1, n + 1)
     {
-        if (i >= k)
+        if (i >= k + 1)
         {
-            oset.erase(arr[i - k]);
-            if (i - k >= prev)
-                sum -= arr[i - k];
-            arr[i - k] -= 2 * x;
-            oset.insert(arr[i - k]);
-            arr[i] += 2 * x;
+            tree.updateQuery(i - k, -(2 * x));
+            tree.updateQuery(i, 2 * x);
         }
-        sum += arr[i];
-        if (sum < 0)
-        {
-            prev = i;
-            sum = 0;
-        }
-        ll maxSubSum = sum - *oset.begin();
-        oset.insert(sum);
-        ans = max(ans, maxSubSum);
+        auto res = tree.getQuery(0, i);
+        // cout << res.val << " " << res.cnt << "\n";
+        ll sum = res.val - res.cnt;
+        ans = max(ans, sum);
     }
     cout << ans << "\n";
 }
 /*
+5 2 1
+0 9 -10 -2 14 17
+35 33
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
       - pay attention to some special cases(n=0,1).

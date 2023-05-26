@@ -16,11 +16,11 @@ void solve()
 {
     ll n, s, l;
     cin >> n >> l >> s;
-    ll low = 1, high = 1e9 + 5, ans = 0;
+    ll low = 1, high = n - l + 1, ans = 0;
     while (low <= high)
     {
         ll mid = (low + high) / 2;
-        ll sum = sumRnge(mid, mid + l);
+        ll sum = sumRnge(mid, mid + l - 1);
         if (sum >= s)
         {
             ans = mid;
@@ -36,7 +36,12 @@ void solve()
         cout << "YES\n";
         return;
     }
-    ll val = sumRnge(ans, ans + l) - s;
+    if (ans <= 1)
+    {
+        cout << "NO\n";
+         return;
+    }
+    ll val = sumRnge(ans - 1, ans + l - 1) - s;
     if (val >= ans && ans + l >= val)
     {
         cout << "YES\n";
