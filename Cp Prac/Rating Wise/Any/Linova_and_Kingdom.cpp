@@ -1,9 +1,9 @@
-- // Vicky_Gupta
+// Vicky_Gupta
 #include <iostream>
 #include <bits/stdc++.h>
-    // #include <sys/resource.h>
+// #include <sys/resource.h>
 
-    using namespace std;
+using namespace std;
 // using namespace chrono;
 
 /* _______________Policy Based DS______________*/
@@ -109,72 +109,59 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll gcd(ll a, ll b)
+ll sum(ll a, ll b, ll mod = 1e9 + 7)
 {
-    if (b == 0)
-        return a;
-    return gcd(b, a % b);
-} //__gcd
-ll lcm(ll a, ll b) { return (a / gcd(a, b) * b); }
-ll moduloMultiplication(ll a, ll b, ll mod)
-{
-    ll res = 0;
-    a %= mod;
-    while (b)
-    {
-        if (b & 1)
-            res = (res + a) % mod;
-        b >>= 1;
-    }
-    return res;
-}
-ll powermod(ll x, ll y, ll p)
-{
-    ll res = 1;
-    x = x % p;
-    if (x == 0)
-        return 0;
-    while (y > 0)
-    {
-        if (y & 1)
-            res = (res * x) % p;
-        y = y >> 1;
-        x = (x * x) % p;
-    }
-    return res;
+    return (a + b) % mod;
 }
 
+ll diff(ll a, ll b, ll mod = 1e9 + 7)
+{
+    return ((a - b) % mod + mod) % mod;
+}
+
+ll product(ll a, ll b, ll mod = 1e9 + 7)
+{
+    return (((ll)a % mod) * ((ll)b % mod)) % mod;
+}
+
+ll power(ll a, ll b, ll mod = 1e9 + 7)
+{
+    ll result = 1;
+    while (b != 0)
+    {
+        if (b & 1)
+            result = product(result, a, mod);
+        a = product(a, a, mod);
+        b /= 2;
+    }
+    return result;
+}
+
+ll division(ll a, ll b, ll mod = 1e9 + 7)
+{
+    return (product(a, power(b, mod - 2, mod), mod));
+}
+
+vector<ll> fact(1e6 + 2, 1);
+
+void factorial(ll mod = 1e9 + 7)
+{
+    ll f = 1;
+    for (int i = 2; i <= 1e6; i++)
+    {
+        f *= i;
+        f %= mod;
+        fact[i] = f;
+    }
+}
+
+ll nCr(ll n, ll r, ll mod = 1e9 + 7)
+{
+    return product(fact[n], power(product(fact[n - r], fact[r], mod), mod - 2, mod), mod);
+}
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
 bool sortpd(const pair<int, int> &a, const pair<int, int> &b) { return (a.second > b.second); }
-
-// Bits
-string decToBinary(int n)
-{
-    string s = "";
-    int i = 0;
-    while (n > 0)
-    {
-        s = to_string(n % 2) + s;
-        n = n / 2;
-        i++;
-    }
-    return s;
-}
-ll binaryToDecimal(string n)
-{
-    string num = n;
-    ll dec_value = 0;
-    int base = 1;
-    int len = num.length();
-    for (int i = len - 1; i >= 0; i--)
-    {
-        if (num[i] == '1')
-            dec_value += base;
-        base = base * 2;
-    }
-    return dec_value;
-}
 
 // Check
 bool isPrime(ll n)
@@ -190,12 +177,7 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-bool isPowerOfTwo(int n)
-{
-    if (n == 0)
-        return false;
-    return (ceil(log2(n)) == floor(log2(n)));
-}
+bool isPowerOfTwo(int n) { return (n & (n - 1)) == 0; }
 bool isPerfectSquare(ll x)
 {
     if (x >= 0)
@@ -204,20 +186,6 @@ bool isPerfectSquare(ll x)
         return (sr * sr == x);
     }
     return false;
-}
-
-long long binpow(long long a, long long b, long long m)
-{
-    a %= m;
-    long long res = 1;
-    while (b > 0)
-    {
-        if (b & 1)
-            res = res * a % m;
-        a = a * a % m;
-        b >>= 1;
-    }
-    return res;
 }
 
 // Code by Vicky Gupta
@@ -231,25 +199,54 @@ long long binpow(long long a, long long b, long long m)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+int helper(int src, int par, vi list[], vector<int> &childCount)
+{
+    int cnt = 0;
+    for (auto child : list[src])
+    {
+        if (child != par)
+        {
+            cnt += helper(child, src, list, childCount);
+        }
+    }
+    return childCount[src] = cnt + 1;
+}
+void dfs(int src, int par, int lvl, vi list[], vector<int> &res, vi &childCount)
+{
+    res.push_back(lvl - (childCount[src] - 1));
+    for (auto child : list[src])
+    {
+        if (child != par)
+        {
+            dfs(child, src, lvl + 1, list, res, childCount);
+        }
+    }
+}
 // Code
-
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n);
-    cin >> arr;
-    ll mn = *min_element(vr(arr));
-    ll _gcd = 0;
-    fl(i, 0, n)
+    ll n, k;
+    cin >> n >> k;
+    vector<int> list[n + 1];
+    fl(i, 0, n - 1)
     {
-        _gcd = gcd(_gcd, abs(arr[i] - mn));
+        ll u, v;
+        cin >> u >> v;
+        list[u].push_back(v);
+        list[v].push_back(u);
     }
-    if (_gcd == 0)
+    vector<int> childCount(n + 1, 0);
+    helper(1, -1, list, childCount);
+    // cout << childCount << "\n";
+    vector<int> res;
+    dfs(1, -1, 0, list, res, childCount);
+    sort(vr(res), greater<int>());
+    ll ans = 0;
+    fl(i, 0, k)
     {
-        pm return;
+        ans += res[i];
     }
-    cout << _gcd << "\n";
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -266,13 +263,13 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
