@@ -199,6 +199,35 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+ll result(vll arr, vll brr, vll crr)
+{
+    ll ans = LONG_LONG_MAX;
+    fl(i, 0, crr.size())
+    {
+        ll it1 = lower_bound(vr(arr), crr[i]) - arr.begin();
+        ll it2 = upper_bound(vr(brr), crr[i]) - brr.begin();
+        ll it3 = i;
+        if (it1 == arr.size())
+            it1--;
+        if (it2 > 0 || it2 >= brr.size())
+            it2--;
+        ans = min(ans, (arr[it1] - brr[it2]) * (arr[it1] - brr[it2]) +
+                           (brr[it2] - crr[it3]) * (brr[it2] - crr[it3]) +
+                           (crr[it3] - arr[it1]) * (crr[it3] - arr[it1]));
+
+        it1 = upper_bound(vr(arr), crr[i]) - arr.begin();
+        it2 = lower_bound(vr(brr), crr[i]) - brr.begin();
+        if (it2 == brr.size())
+            it2--;
+        if (it1 > 0 || it1 >= arr.size())
+            it1--;
+        ans = min(ans, (arr[it1] - brr[it2]) * (arr[it1] - brr[it2]) +
+                           (brr[it2] - crr[it3]) * (brr[it2] - crr[it3]) +
+                           (crr[it3] - arr[it1]) * (crr[it3] - arr[it1]));
+    }
+    return ans;
+}
+
 // Code
 void solve()
 {
@@ -206,128 +235,16 @@ void solve()
     cin >> na >> nb >> nc;
     vll arr(na), brr(nb), crr(nc);
     cin >> arr >> brr >> crr;
-    ll it1 = 0, it2 = 0, it3 = 0;
     sort(vr(arr));
     sort(vr(brr));
     sort(vr(crr));
-    ll ans = (arr[it1] - brr[it2]) * (arr[it1] - brr[it2]) +
-             (brr[it2] - crr[it3]) * (brr[it2] - crr[it3]) +
-             (crr[it3] - arr[it1]) * (crr[it3] - arr[it1]);
-    while (it1 != na - 1 || it2 != nb - 1 || it3 != nc - 1)
-    {
-        ans = min(ans, (arr[it1] - brr[it2]) * (arr[it1] - brr[it2]) +
-                           (brr[it2] - crr[it3]) * (brr[it2] - crr[it3]) +
-                           (crr[it3] - arr[it1]) * (crr[it3] - arr[it1]));
-        if (arr[it1] <= brr[it2] && arr[it1] <= crr[it3])
-        {
-            if (it1 != na - 1)
-            {
-                it1++;
-            }
-            else if (brr[it2] <= crr[it3])
-            {
-                if (it2 != nb - 1)
-                    it2++;
-                else
-                {
-                    if (it3 != nc - 1)
-                    {
-                        it3++;
-                    }
-                    else
-                        break;
-                }
-            }
-            else
-            {
-                if (it3 != nc - 1)
-                    it3++;
-                else
-                {
-                    if (it2 != nb - 1)
-                    {
-                        it2++;
-                    }
-                    else
-                        break;
-                }
-            }
-        }
-        else if (brr[it2] <= arr[it1] && brr[it2] <= crr[it3])
-        {
-            if (it2 != nb - 1)
-            {
-                it2++;
-            }
-            else if (arr[it1] <= crr[it3])
-            {
-                if (it1 != na - 1)
-                    it1++;
-                else
-                {
-                    if (it3 != nc - 1)
-                    {
-                        it3++;
-                    }
-                    else
-                        break;
-                }
-            }
-            else
-            {
-                if (it3 != nc - 1)
-                    it3++;
-                else
-                {
-                    if (it1 != na - 1)
-                    {
-                        it1++;
-                    }
-                    else
-                        break;
-                }
-            }
-        }
-        else
-        {
-            if (it3 != nc - 1)
-            {
-                it3++;
-            }
-            else if (brr[it2] <= arr[it1])
-            {
-                if (it2 != nb - 1)
-                    it2++;
-                else
-                {
-                    if (it1 != na - 1)
-                    {
-                        it1++;
-                    }
-                    else
-                        break;
-                }
-            }
-            else
-            {
-                if (it1 != na - 1)
-                    it1++;
-                else
-                {
-                    if (it2 != nb - 1)
-                    {
-                        it2++;
-                    }
-                    else
-                        break;
-                }
-            }
-        }
-    }
-    ans = min(ans, (arr[it1] - brr[it2]) * (arr[it1] - brr[it2]) +
-                       (brr[it2] - crr[it3]) * (brr[it2] - crr[it3]) +
-                       (crr[it3] - arr[it1]) * (crr[it3] - arr[it1]));
-    cout << ans << '\n';
+    ll ans = min({
+        result(arr, brr, crr),
+        result(brr, crr, arr),
+        result(crr, arr, brr),
+    });
+
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -335,6 +252,59 @@ When you are coding,remember to:
       - pay attention to some special cases(n=0,1).
       - Don't code before think completely.
       - ...
+      10
+1 2 2
+1
+20 1000000000
+872178610 1
+2 1 2
+1000000000 999999984
+115759529
+1000000000 999999995
+1 1 2
+1
+1
+1 1000000000
+2 2 2
+1000000000 1000000000
+427083434 1000000000
+1 5
+1 2 2
+999999998
+269434300 1000000000
+396243925 1
+2 1 2
+537896325 1000000000
+1
+175621284 1000000000
+2 2 1
+576678644 741670278
+33518934 372961791
+1
+2 2 1
+8 1000000000
+58891309 1000000000
+1
+2 1 1
+1 1000000000
+1000000000
+374002221
+2 2 1
+1000000000 1000000000
+1 765357386
+1
+
+
+722
+1563762383970504302
+0
+1510633636923630422
+729042793783786958
+451418495746830746
+513159310288549158
+6936371491423514
+783746438625865682
+1640829081078791222
 */
 // Main
 int main()
