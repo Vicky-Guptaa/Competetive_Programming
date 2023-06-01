@@ -200,39 +200,38 @@ bool isPerfectSquare(ll x)
 //__builtin_clzll(x); for long long
 
 // Code
+
+ll check(ll mid, vll &arr)
+{
+    ll sum = 0;
+    fl(i, 0, arr.size()) sum += min(mid, arr[i]);
+    return sum;
+}
+
 void solve()
 {
+
     ll n, k;
     cin >> n >> k;
     vll arr(n);
     cin >> arr;
-    if (n < k)
+    ll low = 0, high = 1e16, ans = 0;
+    while (low <= high)
     {
-        cout << "0\n";
-        return;
-    }
-    sort(vr(arr), greater<ll>());
-    priority_queue<ll, vll, greater<ll>> pque;
-    ll score = 0;
-    fl(i, 0, k)
-    {
-        pque.push(arr[i]);
-    }
-    // score += (indx[0] - preSum);
-    // preSum = arr[0];
-    fl(i, k, n)
-    {
-        if (pque.size() == k)
+        ll mid = low + (high - low) / 2;
+        if (check(mid, arr) >= mid * k)
         {
-            score += (pque.top() - score);
-            pque.pop();
+            low = mid + 1;
+            ans = mid;
         }
-        pque.push(arr[i] + score);
+        else
+        {
+            high = mid - 1;
+        }
     }
-    if (pque.size() == k)
-        score += (pque.top() - score);
-    cout << score << "\n";
+    cout << ans << '\n';
 }
+
 /*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.
