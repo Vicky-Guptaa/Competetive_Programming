@@ -1,0 +1,1 @@
+(brr[i - 1] - (prev - dec))
