@@ -206,39 +206,44 @@ void solve()
     cin >> n >> k;
     vll arr(n);
     cin >> arr;
-    mll freq;
-    mll vmp;
+    sort(vr(arr));
+    ll sum = 0, indx = n;
+    fl(i, 1, n)
+    {
+        if (sum + (arr[i] - arr[i - 1]) * (i) >= k)
+        {
+            indx = i;
+            break;
+        }
+        sum += (arr[i] - arr[i - 1]) * (i);
+    }
+    ll h = (sum + accumulate(arr.begin(), arr.begin() + indx, 0ll)) / indx;
+    fl(i, 0, indx)
+        arr[i] = h;
+    k = k - sum;
+
+    ll nh = k / indx;
+    ll left = k % indx;
+    rl(i, indx - 1, 0)
+    {
+        arr[i] += nh;
+        if (left > 0)
+        {
+            arr[i]++;
+            left--;
+        }
+    }
+
+    ll total = accumulate(arr.begin(), arr.end(), 0ll);
+    ll ans = 0;
     fl(i, 0, n)
     {
-        freq[arr[i]]++;
-        vmp[arr[i]] = arr[i];
+        total -= arr[i];
+        total = ((total % mod) + mod) % mod;
+        ans += total * arr[i];
+        ans = ((ans % mod) + mod) % mod;
     }
-    while (k > 0)
-    {
-        if (freq.size() == 1)
-        {
-            ll val = freq.begin()->first;
-            freq[val] = val + k;
-            freq.erase(val);
-            k = 0;
-        }
-        else
-        {
-            ll v1 = freq.begin()->first;
-            ll c1 = freq.begin()->second;
-            freq.erase(v1);
-            if (k > c1)
-            {
-                vmp[vmp] =
-            }
-            else
-            {
-                freq.begin()->second += k;
-                freq[v1] = c1 - k;
-                k = 0;
-            }
-        }
-    }
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
