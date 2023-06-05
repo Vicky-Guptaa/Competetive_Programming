@@ -199,12 +199,184 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+struct node
+{
+    ll val;
+    ll cnt;
+    // can add more if required or remove
+    node(ll v = 0, ll c = 0)
+    {
+        val = v;
+        cnt = c;
+    }
+};
+
+class segTree
+{
+public:
+    vector<node> segArr;
+    vector<ll> narr;
+
+    segTree(vector<ll> arr)
+    {
+        narr = arr;
+        int arrSize = arr.size();
+        narr = arr;
+        /*
+ we are constructing tree in form of array linearly therefore
+we have to make 4*n size array for n size given array
+*/
+        segArr.resize(4 * arrSize);
+        constructSegTree(0, 0, arrSize - 1);
+    }
+
+    // here you can change the combine logic according to questions
+    node Combine(node &left, node &right)
+    {
+        return node(left.val + right.val, 0);
+    }
+
+    void constructSegTree(int index, int startIndx, int endIndx)
+    {
+        if (startIndx == endIndx)
+        {
+            // Leaf Logic
+            segArr[index] = node(narr[startIndx], 0);
+            return;
+        }
+        int midIndx = startIndx + (endIndx - startIndx) / 2;
+
+        constructSegTree(2 * index + 1, startIndx, midIndx);
+        constructSegTree(2 * index + 2, midIndx + 1, endIndx);
+        segArr[index] = Combine(segArr[2 * index + 1], segArr[2 * index + 2]);
+    }
+    node getQuery(int index, int startIndx, int endIndx, int lquery, int rquery)
+    {
+        // no overlap
+        if (startIndx > rquery || lquery > endIndx)
+            return node(0, 0);
+
+        // complete overlap
+        if (startIndx >= lquery && endIndx <= rquery)
+            return segArr[index];
+
+        // partial overlap
+        int midIndx = startIndx + (endIndx - startIndx) / 2;
+        node left = getQuery(index * 2 + 1, startIndx, midIndx, lquery, rquery);
+        node right = getQuery(index * 2 + 2, midIndx + 1, endIndx, lquery, rquery);
+
+        return Combine(left, right);
+    }
+
+    void updateQuery(int index, int startIndx, int endIndx, int position, int val)
+    {
+        if (position < startIndx || position > endIndx)
+            return;
+
+        if (startIndx == endIndx)
+        {
+            // Leaf Condition
+            segArr[index] = node(val, 0);
+            narr[startIndx] = val;
+            return;
+        }
+
+        int midIndx = startIndx + (endIndx - startIndx) / 2;
+        updateQuery(2 * index + 1, startIndx, midIndx, position, val);
+        updateQuery(2 * index + 2, midIndx + 1, endIndx, position, val);
+        segArr[index] = Combine(segArr[2 * index + 1], segArr[2 * index + 2]);
+    }
+
+    // Use To Get The result of the queries
+    void updateQuery(int postion, int value)
+    {
+        updateQuery(0, 0, (int)narr.size() - 1, postion, value);
+    }
+
+    node getQuery(int lquery, int rquery)
+    {
+        return getQuery(0, 0, (int)narr.size() - 1, lquery, rquery);
+    }
+};
+// use 0 based indexing while calling the update and query func
+
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll n, m;
+    cin >> n >> m;
+    string s;
+    cin >> s;
+    if (n & 1)
+    {
+        while (m--)
+        {
+            ll num;
+            cin >> num;
+            pn
+        }
+        return;
+    }
+    set<int> lset, rset;
+    fl(i, 1, n)
+    {
+        if (s[i] == s[i - 1] && s[i] == '(')
+            lset.insert(i);
+        if (s[i] == s[i - 1] && s[i] == ')')
+            rset.insert(i);
+    }
+
+    while (m--)
+    {
+        ll num;
+        cin >> num;
+        num--;
+
+        if (lset.count(num))
+            lset.erase(num);
+        if (lset.count(num + 1))
+            lset.erase(num + 1);
+        if (rset.count(num))
+            rset.erase(num);
+        if (rset.count(num + 1))
+            rset.erase(num + 1);
+
+        if (s[num] == '(')
+            s[num] = ')';
+        else
+            s[num] = '(';
+
+        if (num > 0 && s[num] == s[num - 1] && s[num] == '(')
+            lset.insert(num);
+        if (num < n - 1 && s[num] == s[num + 1] && s[num] == '(')
+            lset.insert(num + 1);
+
+        if (num > 0 && s[num] == s[num - 1] && s[num] == ')')
+            rset.insert(num);
+        if (num < n - 1 && s[num] == s[num + 1] && s[num] == ')')
+            rset.insert(num + 1);
+
+        if (s.front() == ')' || s.back() == '(')
+        {
+            pn continue;
+        }
+        if (s.front() == '(' && lset.size() == rset.size() && lset.size() == 0)
+        {
+            py continue;
+        }
+        if (s.front() == '(' && (lset.size() == 0 || rset.size() == 0))
+        {
+            pn continue;
+        }
+        if (*lset.begin() < *rset.begin() && *lset.rbegin() < *rset.rbegin())
+        {
+            py continue;
+        }
+        else
+        {
+            pn continue;
+        }
+    }
 }
 /*
 When you are coding,remember to:
@@ -221,13 +393,13 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";

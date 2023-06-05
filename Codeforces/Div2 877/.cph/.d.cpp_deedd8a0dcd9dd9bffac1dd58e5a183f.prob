@@ -1,0 +1,1 @@
+{"name":"Local: d","url":"h:\\Competetive_Programming\\Codeforces\\Div2 877\\d.cpp","tests":[{"id":1685939406675,"input":"10 9\n(())()()))\n9\n7\n2\n6\n3\n6\n7\n4\n8","output":"YES\nYES\nNO\nNO\nYES\nNO\nYES\nNO\nNO"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"h:\\Competetive_Programming\\Codeforces\\Div2 877\\d.cpp","group":"local","local":true}
