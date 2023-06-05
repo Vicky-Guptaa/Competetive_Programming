@@ -204,32 +204,40 @@ void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n);
-    cin >> arr;
-    ll sum = 0;
-    fl(i, 0, n)
+    set<int> oset;
+    fl(i, 0, (1 << n))
     {
-        sum += (i & 1) ? 0 : arr[i];
+        oset.insert(i + 1);
     }
-    ll mxSum = sum, kpre = 0;
-    fl(i, 1, n)
+    while (oset.size() != 1)
     {
-        kpre += arr[i] - arr[i - 1];
-        if (kpre < 0)
-            kpre = 0;
-        mxSum = max(mxSum, sum + kpre);
-        i++;
+        ll n1 = *oset.begin();
+        oset.erase(n1);
+
+        ll n2 = *oset.rbegin();
+        oset.erase(n2);
+
+        cout << "? " << n1 << " " << n2 << endl;
+
+        ll ans;
+        cin >> ans;
+
+        if (ans == 0)
+        {
+            continue;
+        }
+        else if (ans == 1)
+        {
+            oset.erase(*oset.begin());
+            oset.insert(n1);
+        }
+        else
+        {
+            oset.erase(*oset.rbegin());
+            oset.insert(n2);
+        }
     }
-    kpre = 0;
-    fl(i, 1, n - 1)
-    {
-        kpre += arr[i] - arr[i + 1];
-        if (kpre < 0)
-            kpre = 0;
-        mxSum = max(mxSum, sum + kpre);
-        i++;
-    }
-    cout << mxSum << "\n";
+    cout << *oset.begin() << endl;
 }
 /*
 When you are coding,remember to:
