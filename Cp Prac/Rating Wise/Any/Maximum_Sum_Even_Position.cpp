@@ -204,46 +204,9 @@ void solve()
 {
     ll n;
     cin >> n;
-    vll arr(n), brr(n);
-    cin >> arr >> brr;
-    map<ll, vector<ll>> ele;
-    fl(i, 0, n)
-    {
-        if (arr[i] * arr[i] <= 2 * n)
-            ele[arr[i]].push_back(brr[i]);
-    }
-    ll res = 0;
-    for (ll j = 1; j * j <= 2 * n; j++)
-    {
-        ll cnt[n + 1] = {0};
-        fl(i, 0, n)
-        {
-            if (j == arr[i])
-            {
-                cnt[brr[i]]++;
-            }
-        }
-        fl(i, 0, n)
-        {
-            if (j < arr[i] && arr[i] * j - brr[i] >= 0 && arr[i] * j - brr[i] <= n)
-            {
-                res += cnt[arr[i] * j - brr[i]];
-            }
-        }
-    }
-
-    for (auto x : ele)
-    {
-        ll f = x.first;
-        vll temp = x.second;
-        map<int, int> tt;
-        for (auto x : temp)
-        {
-            res += tt[f * f - x];
-            tt[x]++;
-        }
-    }
-    cout << res << "\n";
+    vll arr(n);
+    cin >> arr;
+    
 }
 /*
 When you are coding,remember to:

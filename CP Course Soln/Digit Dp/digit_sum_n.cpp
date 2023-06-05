@@ -8,7 +8,9 @@ typedef long long ll;
 ll digit_sum(int strt, string &s, bool ristrict, ll sum, vector<vector<vector<ll>>> &dp)
 {
     if (strt == s.size())
+    {
         return sum;
+    }
     if (dp[strt][sum][ristrict] != -1)
         return dp[strt][sum][ristrict];
     int end = (ristrict) ? s[strt] - '0' : 10;

@@ -109,59 +109,72 @@ void printvec(vector<T> v)
 }
 
 // Mathematical functions
-ll sum(ll a, ll b, ll mod = 1e9 + 7)
+ll gcd(ll a, ll b)
 {
-    return (a + b) % mod;
-}
-
-ll diff(ll a, ll b, ll mod = 1e9 + 7)
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+} //__gcd
+ll lcm(ll a, ll b) { return (a / gcd(a, b) * b); }
+ll moduloMultiplication(ll a, ll b, ll mod)
 {
-    return ((a - b) % mod + mod) % mod;
-}
-
-ll product(ll a, ll b, ll mod = 1e9 + 7)
-{
-    return (((ll)a % mod) * ((ll)b % mod)) % mod;
-}
-
-ll power(ll a, ll b, ll mod = 1e9 + 7)
-{
-    ll result = 1;
-    while (b != 0)
+    ll res = 0;
+    a %= mod;
+    while (b)
     {
         if (b & 1)
-            result = product(result, a, mod);
-        a = product(a, a, mod);
-        b /= 2;
+            res = (res + a) % mod;
+        b >>= 1;
     }
-    return result;
+    return res;
 }
-
-ll division(ll a, ll b, ll mod = 1e9 + 7)
+ll powermod(ll x, ll y, ll p)
 {
-    return (product(a, power(b, mod - 2, mod), mod));
-}
-
-vector<ll> fact(1e6 + 2, 1);
-
-void factorial(ll mod = 1e9 + 7)
-{
-    ll f = 1;
-    for (int i = 2; i <= 1e6; i++)
+    ll res = 1;
+    x = x % p;
+    if (x == 0)
+        return 0;
+    while (y > 0)
     {
-        f *= i;
-        f %= mod;
-        fact[i] = f;
+        if (y & 1)
+            res = (res * x) % p;
+        y = y >> 1;
+        x = (x * x) % p;
     }
+    return res;
 }
 
-ll nCr(ll n, ll r, ll mod = 1e9 + 7)
-{
-    return product(fact[n], power(product(fact[n - r], fact[r], mod), mod - 2, mod), mod);
-}
 // Sorting
 bool sortpa(const pair<int, int> &a, const pair<int, int> &b) { return (a.second < b.second); }
 bool sortpd(const pair<int, int> &a, const pair<int, int> &b) { return (a.second > b.second); }
+
+// Bits
+string decToBinary(int n)
+{
+    string s = "";
+    int i = 0;
+    while (n > 0)
+    {
+        s = to_string(n % 2) + s;
+        n = n / 2;
+        i++;
+    }
+    return s;
+}
+ll binaryToDecimal(string n)
+{
+    string num = n;
+    ll dec_value = 0;
+    int base = 1;
+    int len = num.length();
+    for (int i = len - 1; i >= 0; i--)
+    {
+        if (num[i] == '1')
+            dec_value += base;
+        base = base * 2;
+    }
+    return dec_value;
+}
 
 // Check
 bool isPrime(ll n)
@@ -177,7 +190,12 @@ bool isPrime(ll n)
             return false;
     return true;
 }
-bool isPowerOfTwo(int n) { return (n & (n - 1)) == 0; }
+bool isPowerOfTwo(int n)
+{
+    if (n == 0)
+        return false;
+    return (ceil(log2(n)) == floor(log2(n)));
+}
 bool isPerfectSquare(ll x)
 {
     if (x >= 0)
@@ -199,51 +217,65 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+/*
+You have given N numbers B1, B2, …, BN denoting Base Set. A number is called a good iff it is divisible by at least one number in the Base Set.
+Your task is to find Kth smallest positive good number.
+*/
+
 // Code
+
+bool Check(ll mid, vll &arr, ll k)
+{
+    ll n = arr.size();
+    ll rnge = (1ll << n);
+
+    ll result = 0;
+
+    fl(i, 1, rnge)
+    {
+        ll num = i, prod = 1, inc = 0, oneCnt = 0;
+        while (num)
+        {
+            if (num & 1)
+            {
+                oneCnt++;
+                prod *= arr[inc];
+            }
+            num /= 2;
+            inc++;
+        }
+        ll add = (mid / prod);
+        if ((oneCnt & 1) == 0)
+            add = -add;
+        result += add;
+    }
+    return result >= k;
+}
+
 void solve()
 {
-    ll n;
-    cin >> n;
-    vll arr(n), brr(n);
-    cin >> arr >> brr;
-    map<ll, vector<ll>> ele;
-    fl(i, 0, n)
-    {
-        if (arr[i] * arr[i] <= 2 * n)
-            ele[arr[i]].push_back(brr[i]);
-    }
-    ll res = 0;
-    for (ll j = 1; j * j <= 2 * n; j++)
-    {
-        ll cnt[n + 1] = {0};
-        fl(i, 0, n)
-        {
-            if (j == arr[i])
-            {
-                cnt[brr[i]]++;
-            }
-        }
-        fl(i, 0, n)
-        {
-            if (j < arr[i] && arr[i] * j - brr[i] >= 0 && arr[i] * j - brr[i] <= n)
-            {
-                res += cnt[arr[i] * j - brr[i]];
-            }
-        }
-    }
+    ll n, k;
+    cin >> n >> k;
+    vll arr(n);
+    cin >> arr;
 
-    for (auto x : ele)
+    ll low = 0, high = 1e18, ans = 0;
+    while (low <= high)
     {
-        ll f = x.first;
-        vll temp = x.second;
-        map<int, int> tt;
-        for (auto x : temp)
+        ll mid = low + (high - low) / 2;
+
+        // Check varifies the kth position of the mid
+        if (Check(mid, arr, k))
         {
-            res += tt[f * f - x];
-            tt[x]++;
+            ans = mid;
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
         }
     }
-    cout << res << "\n";
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
@@ -255,13 +287,13 @@ When you are coding,remember to:
 // Main
 int main()
 {
-    // #ifndef ONLINE_JUDGE
-    //     freopen("Input.txt", "r", stdin);
-    //     freopen("Output.txt", "w", stdout);
-    // #endif
+    //#ifndef ONLINE_JUDGE
+    //    freopen("Input.txt", "r", stdin);
+    //    freopen("Output.txt", "w", stdout);
+    //#endif
     You Can Do_It
-        ll t;
-    cin >> t;
+        ll t=1;
+    // cin >> t;
     fl(i, 0, t)
     {
         solve();
