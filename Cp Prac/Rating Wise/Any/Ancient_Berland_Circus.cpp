@@ -1,4 +1,3 @@
-
 // Vicky_Gupta
 #include <iostream>
 #include <bits/stdc++.h>
@@ -199,81 +198,25 @@ bool isPerfectSquare(ll x)
 //__builtin_popcountll(x); for long long
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
+using pld = pair<lld, lld>;
+lld calc(pld a, pld b, pld c)
+{
+    lld dist1 = sqrtl((a.ff - b.ff) * (a.ff - b.ff) + (a.ss - b.ss) * (a.ss - b.ss));
+    lld dist2 = sqrtl((a.ff - c.ff) * (a.ff - c.ff) + (a.ss - c.ss) * (a.ss - c.ss));
+    printf("%.6Lf %.6Lf\n", dist1, dist2);
+    return dist1 * dist2;
+}
 
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    vi arr[n + 1];
-    fl(i, 0, (1 << n))
-    {
-        arr[0].push_back(i + 1);
-    }
-    ll iter = 0;
-    while (iter < n + 1)
-    {
-        if (arr[iter].size() == 1)
-        {
-            cout << "! " << arr[iter][0] << "\n";
-        }
-        else if (arr[iter].size() == 2)
-        {
-            cout << "? " << arr[iter][0] << " " << arr[iter][1] << endl;
-            ll num;
-            cin >> num;
-            if (num == 1)
-            {
-                cout << "! " << arr[iter][0] << endl;
-            }
-            else
-            {
-                cout << "! " << arr[iter][1] << endl;
-            }
-            return;
-        }
-        else
-        {
-            for (int i = 3; i < arr[iter].size(); i += 4)
-            {
-                ll i1 = i - 3, i2 = i - 1;
-                cout << "? " << arr[iter][i1] << " " << arr[iter][i2] << endl;
-                ll num;
-                cin >> num;
-                if (num == 1)
-                {
-                    cout << "? " << arr[iter][i1] << " " << arr[iter][i2 + 1] << endl;
-                    ll q;
-                    cin >> q;
-                    if (q == 1)
-                        arr[iter + 1].push_back(arr[iter][i1]);
-                    else
-                        arr[iter + 1].push_back(arr[iter][i2 + 1]);
-                }
-                else if (num == 2)
-                {
-                    cout << "? " << arr[iter][i1 + 1] << " " << arr[iter][i2] << endl;
-                    ll q;
-                    cin >> q;
-                    if (q == 1)
-                        arr[iter + 1].push_back(arr[iter][i1 + 1]);
-                    else
-                        arr[iter + 1].push_back(arr[iter][i2]);
-                }
-                else
-                {
-                    cout << "? " << arr[iter][i1 + 1] << " " << arr[iter][i2 + 1] << endl;
-                    ll q;
-                    cin >> q;
-                    if (q == 1)
-                        arr[iter + 1].push_back(arr[iter][i1 + 1]);
-                    else
-                        arr[iter + 1].push_back(arr[iter][i2 + 1]);
-                }
-            }
-        }
-        iter++;
-    }
+    vector<pair<lld, lld>> cor(3);
+    cin >> cor;
+    lld minArea = 1e9;
+    minArea = min(minArea, calc(cor[0], cor[1], cor[2]));
+    minArea = min(minArea, calc(cor[1], cor[2], cor[0]));
+    minArea = min(minArea, calc(cor[2], cor[0], cor[1]));
+    printf("%.6Lf\n", minArea);
 }
 /*
 When you are coding,remember to:
@@ -290,13 +233,13 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-        ll t;
-    cin >> t;
-    fl(i, 0, t)
-    {
-        solve();
-    }
-    // solve();
+    //     ll t;
+    // cin >> t;
+    // fl(i, 0, t)
+    // {
+    //     solve();
+    // }
+    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
