@@ -199,37 +199,12 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-bool helper(int i, int val, bool isL, string &s, vector<vector<vi>> &dp)
-{
-    if (i == s.size())
-    {
-        return val == 0;
-    }
-    if (val < 0 || val > s.size())
-        return false;
-    if (dp[i][val][isL] != -1)
-        return dp[i][val][isL];
-
-    int as = (isL) ? 1 : -1;
-    int op = (isL) ? -1 : 1;
-    if (s[i] == s[i - 1])
-    {
-        return dp[i][val][isL] = helper(i + 1, val + as, isL, s, dp);
-    }
-    else
-    {
-        return dp[i][val][isL] = helper(i + 1, val + as, isL, s, dp) | helper(i + 1, val + op, !isL, s, dp);
-    }
-}
-
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    string s;
-    cin >> s;
-    vector<vector<vector<int>>> arr(n, vector<vi>(n + 1, vector<int>(2, -1)));
+    ll n, k;
+    cin >> n >> k;
+    
 }
 /*
 When you are coding,remember to:
