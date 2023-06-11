@@ -198,25 +198,55 @@ bool isPerfectSquare(ll x)
 //__builtin_popcountll(x); for long long
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
-using pld = pair<lld, lld>;
-lld calc(pld a, pld b, pld c)
+
+ll helper(int it1, int it2, int it3, vi &arr, vi &brr, vi &crr, vector<vector<vll>> &dp)
 {
-    lld dist1 = sqrtl((a.ff - b.ff) * (a.ff - b.ff) + (a.ss - b.ss) * (a.ss - b.ss));
-    lld dist2 = sqrtl((a.ff - c.ff) * (a.ff - c.ff) + (a.ss - c.ss) * (a.ss - c.ss));
-    printf("%.6Lf %.6Lf\n", dist1, dist2);
-    return dist1 * dist2;
+    int a = arr.size(), b = brr.size(), c = crr.size();
+    if ((it1 == a && it2 == b) || (it3 == c && it2 == b) || (it1 == a && it3 == c))
+        return 0;
+
+    if (dp[it1][it2][it3] != -1)
+        return dp[it1][it2][it3];
+
+    if (it1 == a)
+    {
+        return dp[it1][it2][it3] = helper(it1, it2 + 1, it3 + 1, arr, brr, crr, dp) + brr[it2] * crr[it3];
+    }
+    else if (it2 == b)
+    {
+        return dp[it1][it2][it3] = helper(it1 + 1, it2, it3 + 1, arr, brr, crr, dp) + arr[it1] * crr[it3];
+    }
+
+    else if (it3 == c)
+    {
+        return dp[it1][it2][it3] = helper(it1 + 1, it2 + 1, it3, arr, brr, crr, dp) + brr[it2] * arr[it1];
+    }
+
+    else
+    {
+        return dp[it1][it2][it3] = max({
+                   helper(it1, it2 + 1, it3 + 1, arr, brr, crr, dp) + brr[it2] * crr[it3],
+                   helper(it1 + 1, it2, it3 + 1, arr, brr, crr, dp) + arr[it1] * crr[it3],
+                   helper(it1 + 1, it2 + 1, it3, arr, brr, crr, dp) + brr[it2] * arr[it1],
+                   helper(it1 + 1, it2, it3, arr, brr, crr, dp),
+                   helper(it1, it2 + 1, it3, arr, brr, crr, dp),
+                   helper(it1, it2, it3 + 1, arr, brr, crr, dp),
+               });
+    };
 }
 
 // Code
 void solve()
 {
-    vector<pair<lld, lld>> cor(3);
-    cin >> cor;
-    lld minArea = 1e9;
-    minArea = min(minArea, calc(cor[0], cor[1], cor[2]));
-    minArea = min(minArea, calc(cor[1], cor[2], cor[0]));
-    minArea = min(minArea, calc(cor[2], cor[0], cor[1]));
-    printf("%.6Lf\n", minArea);
+    ll a, b, c;
+    cin >> a >> b >> c;
+    vi arr(a), brr(b), crr(c);
+    cin >> arr >> brr >> crr;
+    sort(vr(arr));
+    sort(vr(brr));
+    sort(vr(crr));
+    vector<vector<vector<ll>>> dp(a + 1, vector<vll>(b + 1, vll(c + 1, -1)));
+    cout << helper(0, 0, 0, arr, brr, crr, dp) << "\n";
 }
 /*
 When you are coding,remember to:
