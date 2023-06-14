@@ -199,56 +199,80 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-bool dfs(int src, int par, int pos, int neg, vll list[], vll &arr, vll &brr)
+vector<int> longest_P_S(string str, int n)
 {
-    if (neg + pos != brr[src-1])
-    {
-        ll diff = pos - brr[src-1];
-        if (diff & 1 || diff / 2 > pos)
-            return false;
-        pos -= diff / 2;
-        neg += diff / 2;
-    }
-    if (pos + abs(neg) < arr[src-1])
-        return false;
-    if (neg >= arr[src-1])
-    {
-        neg -= arr[src-1];
-    }
-    else
-    {
-        arr[src-1] -= neg;
-        neg = 0;
-        pos -= arr[src-1];
-    }
+    vector<int> lps(n, 0);
+    lps[0] = 0;
+    int i = 0, j = 1;
 
-    for (auto child : list[src])
+    while (j < n)
     {
-        if (child == par)
-            continue;
-        if (!dfs(child, par, pos, neg, list, arr, brr))
-            return false;
+        if (str[i] == str[j])
+        {
+            lps[j] = i + 1;
+            i++;
+            j++;
+        }
+        else
+        {
+            if (i != 0)
+            {
+                i = lps[i - 1];
+            }
+            else
+            {
+                lps[j] = 0;
+                j++;
+            }
+        }
     }
-    return true;
+    return lps;
+}
+
+ll find_longest_P_S(string str)
+{
+    string temp = str;
+    reverse(vr(temp));
+    vi ans = longest_P_S(str + "?" + temp, 2 * str.size() + 1);
+    return ans.back();
 }
 
 // Code
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
-    vll arr(n), brr(n);
-    cin >> arr >> brr;
-    vll list[n + 1];
-    fl(i, 0, n - 1)
+    ll n;
+    string s;
+    cin >> s;
+    n = s.size();
+    int left = 0, right = n - 1;
+    while (left < right && s[left] == s[right])
     {
-        ll u, v;
-        cin >> u >> v;
-        list[u].pb(v);
-        list[u].pb(v);
+        left++;
+        right--;
     }
-    if (dfs(1, -1, m, 0, list, arr, brr))
-        py else pn
+    if (left >= right)
+    {
+        cout << s << "\n";
+        return;
+    }
+    string ns = s.substr(left, right - left + 1);
+    ll nl = ns.size();
+    ll lkmp = find_longest_P_S(ns);
+    reverse(vr(ns));
+    ll rkmp = find_longest_P_S(ns);
+    string res = s.substr(0, left);
+    if (lkmp > rkmp)
+    {
+        reverse(vr(ns));
+        res += ns.substr(0, lkmp);
+    }
+    else
+    {
+        res += ns.substr(0, rkmp);
+    }
+    res += s.substr(right + 1, s.size() - right);
+    cout
+        << res << "\n";
 }
 /*
 When you are coding,remember to:
