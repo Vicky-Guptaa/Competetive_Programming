@@ -199,13 +199,6 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 // Code
-ll count_bits(ll n)
-{
-    if (n <= 1)
-        return n;
-    ll k = floor(log2l(n));
-    return sum(sum(product(k, power(2, k - 1)), (diff(n, power(2, k) + 1))), count_bits(diff(n, power(2, k))));
-}
 
 void solve()
 {
@@ -215,21 +208,29 @@ void solve()
     string s;
     cin >> s;
     ll ans = 0;
-    map<char, int> freql, freqr;
-    fl(i, 1, n) freqr[s[i]]++;
-    freql[s[0]]++;
-    fl(i, 1, n - 1)
+    ll tstr = 0, t4 = 0;
+    fl(i, 0, n)
     {
-        freqr[s[i]]--;
+        if (s[i] == '*')
+            tstr++;
+        else if (s[i] == '4')
+            t4++;
+    }
+    ll cstr = 0, c4 = 0;
+    fl(i, 0, n)
+    {
+        // freq[]
         if (s[i] == '4')
         {
-            freql[s[i]]++;
+            c4++;
             continue;
         }
-        // freq[]
-        ans = sum(ans, product(sum(product(freql['4'], power(2, freql['*'])), count_bits(power(2, freql['*']) - 1)),
-                               sum(product(freqr['4'], power(2, freqr['*'])), count_bits(power(2, freqr['*']) - 1))));
-        freql[s[i]]++;
+        bool isStar = ('*' == s[i]);
+        ll left = sum(product(c4, power(2, cstr)), product(cstr, power(2, cstr - 1)));
+        ll right = sum(product(t4 - c4, power(2, tstr - cstr - isStar)), product(tstr - cstr - isStar, power(2, tstr - cstr - isStar - 1)));
+        ans = sum(ans, product(left, right));
+        if (s[i] == '*')
+            cstr++;
     }
     cout << ans << "\n";
 }
