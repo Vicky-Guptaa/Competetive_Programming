@@ -199,17 +199,18 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-int helper(int s, int e, string &str, vector<vi> &dp)
+void helper(int src, int par, ll sum, vll &preSum, vi &ans, vector<pair<int, ppi>> list[])
 {
-    if (s > e)
-        return 0;
-    if (s == e)
-        return 1;
-
-    int substr = 0;
-    fl(i, s, e)
+    int indx = upper_bound(vr(preSum), sum) - preSum.begin();
+    ans[src] = indx - 1;
+    for (auto child : list[src])
     {
-        
+        if (child.first != par)
+        {
+            preSum.push_back(preSum.back() + child.second.second);
+            helper(child.first, src, sum + child.second.first, preSum, ans, list);
+            preSum.pop_back();
+        }
     }
 }
 
@@ -217,18 +218,23 @@ int helper(int s, int e, string &str, vector<vi> &dp)
 void solve()
 {
     ll n;
-    string s;
-    cin >> s;
-    n = s.size();
-    vector<vector<int>> dp(n + 1, vi(n + 1, -1));
-    ll q;
-    cin >> q;
-    while (q--)
+    cin >> n;
+    vector<pair<int, ppi>> list[n + 1];
+    fl(i, 2, n + 1)
     {
-        ll l, r;
-        cin >> l >> r;
-        cout << helper(l, r, s, dp) << "\n";
+        int v, a, b;
+        cin >> v >> a >> b;
+        list[v].pb({i, {a, b}});
+        list[i].pb({v, {a, b}});
     }
+    vll preSum = {0};
+    vi ans(n + 1);
+    helper(1, -1, 0, preSum, ans, list);
+    fl(i, 2, n + 1)
+    {
+        cout << ans[i] << " ";
+    }
+    cout << "\n";
 }
 /*
 When you are coding,remember to:
@@ -245,18 +251,18 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-        //     ll t;
-        // cin >> t;
-        // fl(i, 0, t)
-        // {
-        //     solve();
-        // }
-        // solve();
-        // fl(i,0,t) //Kickstart
-        // {
-        //     cout<<"Case #"<<i+1<<": ";
-        //     solve();
-        //     cout<<'\n';
-        // }
-        return 0;
+        ll t;
+    cin >> t;
+    fl(i, 0, t)
+    {
+        solve();
+    }
+    // solve();
+    // fl(i,0,t) //Kickstart
+    // {
+    //     cout<<"Case #"<<i+1<<": ";
+    //     solve();
+    //     cout<<'\n';
+    // }
+    return 0;
 }
