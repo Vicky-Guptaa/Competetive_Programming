@@ -1,29 +1,69 @@
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <math.h>
+#include <vector>
+#include <algorithm>
+#include <set>
 using namespace std;
 
 typedef long long ll;
-int maxScore(vector<int> &cardPoints, int k)
+struct node
 {
-    int sum = accumulate(cardPoints.begin(), cardPoints.end(), 0);
-    int n = cardPoints.size();
-    int wsize = n - k;
-    int maxScore = 0, wsum = 0;
-    for (int i = 0; i < n; i++)
+    ll val;
+    ll cnt;
+    // can add more if required or remove
+    node(ll v = 0, ll c = 0)
     {
-        wsum += cardPoints[i];
-        if (i > wsize)
-            wsum -= cardPoints[i - wsize];
-        if (i + 1 >= wsize)
+        val = v;
+        cnt = c;
+    }
+};
+
+struct fenwick
+{
+    // considering 1 based indexing
+    vector<int> fenArr;
+    int n;
+    void init(int n)
+    {
+        this->n = n + 1;
+        fenArr.resize(this->n, 0);
+    }
+
+    // Building the fenwick tree
+    void add(int x, int y)
+    {
+        x++; // 1 based indexing
+        while (x < n)
         {
-            maxScore = max(maxScore, sum - wsum);
+            fenArr[x] += y;
+
+            // adding the last set bit of x to x
+            x += (x & (-x)); // gives the last set bit
         }
     }
-    return maxScore;
-}
+
+    int sum(int x)
+    {
+        x++; // 1 based indxing
+        int ans = 0;
+        while (x > 0)
+        {
+            ans += fenArr[x];
+            x -= (x & (-x));
+        }
+        return ans;
+    }
+
+    int sum(int l, int r)
+    {
+        return sum(r) - sum(l - 1);
+    }
+};
+// here it is zero based indexing but internally in fenwick tree it is 1 based indexing
+
 int main()
 {
-    vector<int> arr = {9, 7, 7, 9, 7, 7, 9};
-    cout << maxScore(arr, 7) << "\n";
+    vector<vector<int>> mat = {{1, 1}, {1, 0}, {1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, 0}, {1, 0}, {0, 1}, {1, 1}};
+    goodSubsetofBinaryMatrix(mat);
     return 0;
 }
