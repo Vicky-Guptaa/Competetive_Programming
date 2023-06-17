@@ -203,44 +203,45 @@ bool mycomp(pll &a, pll &b)
     return (a.ff < b.ff) || (a.ff == b.ff && a.ss > b.ss);
 }
 
-int findLower(vpll &a, ll val)
+int lowerBound(vpll &arr, int val)
 {
-    int n = a.size();
-    int l = 0, h = n - 1, ans = 0;
+    int l = 0, h = arr.size() - 1ll, ans = arr.size();
     while (l <= h)
     {
-        ll mid = (l + h) / 2;
-        if (a[mid].first >= val)
+        int mid = (l + h) / 2;
+        if (val <= arr[mid].ff)
         {
-            h = mid - 1;
             ans = mid;
+            h = mid - 1;
         }
         else
         {
             l = mid + 1;
         }
     }
-    return val;
+    return ans;
 }
 
-int findUpper(vpll &a, ll val)
+int helper(int strt, vpll &arr, vector<int> &dp)
 {
-    int n = a.size();
-    int l = 0, h = n - 1, ans = n;
-    while (l <= h)
+    if (arr.size() <= strt)
     {
-        ll mid = (l + h) / 2;
-        if (a[mid].first <= val)
-        {
-            l = mid + 1;
-            ans = mid;
-        }
-        else
-        {
-            h = mid - 1;
-        }
+        return 0;
     }
-    return val;
+    if (dp[strt] != -1)
+        return dp[strt];
+    // skip the interval
+    int mn = 1 + helper(strt + 1, arr, dp);
+    fl(i, strt + 1, arr.size())
+    {
+        if (arr[strt].ss < arr[i].ff)
+        {
+            break;
+        }
+        int indx = lowerBound(arr, max(arr[i].ss + 1ll, 1ll + arr[strt].ss));
+        mn = min(mn, helper(indx, arr, dp) + indx - strt - 2 * (strt != indx - 1));
+    }
+    return dp[strt] = mn;
 }
 
 // Code
@@ -251,56 +252,8 @@ void solve()
     vpll arr(n);
     cin >> arr;
     sort(vr(arr), mycomp);
-    vi brr(n, 0);
-    fl(i, 0, n)
-    {
-        int iter = 0;
-        fl(j, 0, n)
-        {
-            if (
-                (arr[i].ff >= arr[j].ff && arr[i].ff <= arr[j].ss) ||
-                (arr[i].ss >= arr[j].ff && arr[i].ss <= arr[j].ss) ||
-                (arr[i].ff <= arr[j].ff && arr[i].ss >= arr[j].ss))
-                iter++;
-        }
-        brr[i] = iter;
-        // cout << arr[i] << "\n";
-    }
-    priority_queue<pair<int, int>> pque;
-    fl(i, 0, n) pque.push({brr[i], i});
-    ll ans = 1e9;
-    fl(i, 0, n)
-    {
-        int indx = pque.top().second;
-        pque.pop();
-        fl(j, 0, n)
-        {
-            if (
-                (arr[indx].ff >= arr[j].ff && arr[indx].ff <= arr[j].ss) ||
-                (arr[indx].ss >= arr[j].ff && arr[indx].ss <= arr[j].ss) ||
-                (arr[indx].ff <= arr[j].ff && arr[indx].ss >= arr[j].ss))
-                brr[j]--;
-        }
-        brr[indx] = -1;
-        ll pcntr = 0;
-        bool isValid = true;
-        fl(i, 0, n)
-        {
-            if (brr[i] <= -1)
-                continue;
-            if (brr[i] > 2)
-            {
-                isValid = false;
-                break;
-            }
-            if (brr[i] <= 1)
-                continue;
-            pcntr++;
-        }
-        if (isValid)
-            ans = min(ans, n - pcntr);
-    }
-    cout << ans << "\n";
+    vector<int> dp(n + 1, -1);
+    cout << helper(0, arr, dp) << "\n";
 }
 /*
 When you are coding,remember to:
