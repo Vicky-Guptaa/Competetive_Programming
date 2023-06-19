@@ -204,18 +204,94 @@ void solve()
 {
     ll n, m;
     cin >> n >> m;
-    vpll arr(n);
+    vpll arr(n), brr(n);
     cin >> arr;
+    brr = arr;
     sort(vr(arr));
-    ll indx = -1, diff = 0;
+    vll mn_pre(n, 1e12), mx_suff(n, 1e12);
+    ll mn = 1e12, mx = -1e12;
     fl(i, 0, n)
     {
-        if (arr[i].ss - arr[i].ff > diff)
+        if (arr[i].ss < mn)
         {
-            diff = max(diff, arr[i].ss - arr[i].ff);
+            mn_pre[i] = i;
+            mn = arr[i].ss;
+        }
+        else
+        {
+            mn_pre[i] = mn_pre[i - 1];
         }
     }
-    cout << diff << "\n";
+
+    rl(i, n - 1, 0)
+    {
+        if (arr[i].ff > mx)
+        {
+            mx_suff[i] = i;
+            mx = arr[i].ff;
+        }
+        else
+        {
+            mx_suff[i] = mx_suff[i + 1];
+        }
+    }
+
+    vll small_pre(n, 1e12), small_suff(n, 1e12);
+    mn = 1e12;
+    fl(i, 0, n)
+    {
+        if (arr[i].ss - arr[i].ff < mn)
+        {
+            small_pre[i] = i;
+            mn = arr[i].ss - arr[i].ff + 1;
+        }
+        else
+        {
+            small_pre[i] = small_pre[i - 1];
+        }
+    }
+    mx = 1e12;
+    rl(i, n - 1, 0)
+    {
+        if (arr[i].ss - arr[i].ff < mx)
+        {
+            small_suff[i] = i;
+            mx = arr[i].ss - arr[i].ff + 1;
+        }
+        else
+        {
+            small_suff[i] = small_suff[i + 1];
+        }
+    }
+    ll ans = 0;
+    fl(i, 0, n)
+    {
+        if (i > 0)
+        {
+            if (arr[i].ff > arr[mn_pre[i]].ss)
+            {
+                ans = max(ans, 2 * (arr[i].ss - arr[i].ff + 1));
+            }
+            else
+            {
+                ans = max(ans, 2 * ((arr[i].ss - arr[i].ff + 1) - (min(arr[i].ss, arr[mn_pre[i]].ss) - max(arr[i].ff, arr[mn_pre[i]].ff) + 1)));
+                ans = max(ans, 2 * ((arr[i].ss - arr[i].ff + 1) - (min(arr[i].ss, arr[small_pre[i]].ss) - max(arr[i].ff, arr[small_pre[i]].ff) + 1)));
+            }
+        }
+        if (i < n - 1)
+        {
+            if (arr[i].ss < arr[mx_suff[i]].ff)
+            {
+                ans = max(ans, 2 * (arr[i].ss - arr[i].ff + 1));
+            }
+            else
+            {
+                ans = max(ans, 2 * ((arr[i].ss - arr[i].ff + 1) - (min(arr[i].ss, arr[mx_suff[i]].ss) - max(arr[i].ff, arr[mx_suff[i]].ff) + 1)));
+                ans = max(ans, 2 * ((arr[i].ss - arr[i].ff + 1) - (min(arr[i].ss, arr[small_suff[i]].ss) - max(arr[i].ff, arr[small_suff[i]].ff) + 1)));
+            }
+        }
+    }
+    cout << ans << "\n";
 }
 /*
 When you are coding,remember to:
