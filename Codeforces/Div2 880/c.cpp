@@ -199,6 +199,17 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+int decSize(ll n)
+{
+    int cnt = 0;
+    while (n > 0)
+    {
+        n /= 10;
+        cnt++;
+    }
+    return cnt;
+}
+
 // Code
 void solve()
 {
@@ -208,45 +219,49 @@ void solve()
     {
         pm return;
     }
-    ll enda = powl(10, a) - 1, endb = powl(10, b) - 1, endc = powl(10, c) - 1;
-    ll sb = endb;
+    // ending a,b and c
+    ll ea = powl(10, a) - 1, eb = powl(10, b) - 1, ec = powl(10, c) - 1;
 
-    ll sa = powl(10, c - 1);
-    if (enda * endb <= k)
+    // starting a,b and c
+    ll sa = powl(10, a - 1), sb = powl(10, b - 1), sc = powl(10, c - 1);
+
+    ll aa = 0, ab = 0;
+
+    fl(i, sa, ea + 1)
     {
-        pm return;
-    }
-    while (k > 0)
-    {
-        if (sa + endb <= endc)
+        // curr start of b
+        ll strtb = max(sb, sc - i);
+
+        // curr end of b
+        ll endb = min(eb, ec - i);
+
+        // if curr start of b is greater than actual end of b skip it
+        if (strtb > eb)
         {
-            if (k >= endb)
-            {
-                k -= endb;
-                sa++;
-            }
-            else
-            {
-                endb = k;
-                k = 0;
-            }
+            continue;
+        }
+
+        if (k > endb - strtb + 1)
+        {
+            k -= (endb - strtb + 1);
         }
         else
         {
-            ll oper = endc - sa;
-            if (oper <= k)
-            {
-                k -= oper;
-                sa++;
-            }
-            else
-            {
-                endb = k;
-                k = 0;
-            }
+            // answer a and b for the kth position
+            aa = i;
+            ab = strtb + k - 1;
+            k = 0;
+            break;
         }
     }
-    cout << sa << " " << endb << "\n";
+    
+    // position not reached
+    if (k)
+    {
+        pm return;
+    }
+    // answer
+    cout << aa << " + " << ab << " = " << aa + ab << "\n";
 }
 /*
 When you are coding,remember to:
