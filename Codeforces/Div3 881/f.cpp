@@ -204,11 +204,15 @@ void solve()
 {
     ll n, node = 2;
     cin >> n;
-    vll psum(n + 1, 0);
+    n += 4;
+    vll psum(n + 1, 0), mxpsum(n + 1, 0), mnpsum(n + 1, 0), mxcurr(n + 1, 0), mncurr(n + 1, 0);
     psum[1] = 1;
-    vll list[n + 1];
-    ll t = n;
-    map<int, set<int>> res;
+    mxpsum[1] = 1;
+    mnpsum[1] = 0;
+    mxcurr[1] = 1;
+    mncurr[1] = 0;
+    vll list[n];
+    ll t = n - 4;
     while (t--)
     {
         char ch;
@@ -220,14 +224,28 @@ void solve()
             list[v].push_back(node);
             list[node].push_back(v);
             psum[node] += psum[v] + c;
+            mxpsum[node] = max({mxpsum[v], psum[node]});
+            mnpsum[node] = min({mnpsum[v], psum[node]});
+            mxcurr[node] = max({mxcurr[v], psum[node] - mnpsum[node]});
+            mncurr[node] = min({mncurr[v], psum[node] - mxpsum[node]});
             node++;
         }
         else
         {
             ll u, v, k;
             cin >> u >> v >> k;
+            if (mncurr[v] <= k && mxcurr[v] >= k)
+            {
+                py
+            }
+            else
+            {
+                pn
+            }
         }
     }
+    // cout << mxpsum << "\n"
+    //      << mnpsum << "\n\n";
 }
 /*
 When you are coding,remember to:
