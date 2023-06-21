@@ -199,33 +199,38 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-int helper(int strt, int val, vi &arr, vi &brr, vector<vi> &dp)
+ll helper(int src, int par, int isF, vector<int> list[], vpll &rng, vector<vector<ll>> &dp)
 {
-    if (strt == arr.size())
+    ll cost1 = 0, cost2 = 0;
+    ll first = 0, second = 0;
+    if (dp[src][isF] != -1)
+        return dp[src][isF];
+    ll init = (isF) ? rng[src - 1].first : rng[src - 1].second;
+    for (auto child : list[src])
     {
-        return val;
+        if (par == child)
+            continue;
+        cost1 += max(helper(child, src, 1, list, rng, dp) + abs(init - rng[child - 1].first), helper(child, src, 0, list, rng, dp) + abs(init - rng[child - 1].second));
     }
-    if (dp[val][strt] != -1)
-        return dp[val][strt];
-
-    int mn = 1024;
-    fl(i, 0, brr.size())
-    {
-        mn = min(mn, helper(strt + 1, val | (arr[strt] & brr[i]), arr, brr, dp));
-    }
-    return dp[val][strt] = mn;
+    return dp[src][isF] = max(cost1, cost2);
 }
-
 // Code
 void solve()
 {
-    ll n, m;
-    cin >> n >> m;
-    vi arr(n), brr(m);
-    cin >> arr >> brr;
-    ll mx = max(*max_element(vr(arr)), *max_element(vr(brr)));
-    vector<vector<int>> dp(515, vector<int>(n + 1, -1));
-    cout << helper(0, 0, arr, brr, dp) << "\n";
+    ll n;
+    cin >> n;
+    vpll arr(n);
+    cin >> arr;
+    vi list[n + 1];
+    fl(i, 0, n - 1)
+    {
+        ll u, v;
+        cin >> u >> v;
+        list[u].pb(v);
+        list[v].pb(u);
+    }
+    vector<vector<ll>> dp(n + 1, vector<ll>(2, -1));
+    cout << max(helper(1, -1, 0, list, arr, dp), helper(1, -1, 1, list, arr, dp)) << "\n";
 }
 /*
 When you are coding,remember to:
@@ -242,13 +247,13 @@ int main()
     //     freopen("Output.txt", "w", stdout);
     // #endif
     You Can Do_It
-    //     ll t;
-    // cin >> t;
-    // fl(i, 0, t)
-    // {
+        ll t;
+    cin >> t;
+    fl(i, 0, t)
+    {
+        solve();
+    }
     // solve();
-    // }
-    solve();
     // fl(i,0,t) //Kickstart
     // {
     //     cout<<"Case #"<<i+1<<": ";
