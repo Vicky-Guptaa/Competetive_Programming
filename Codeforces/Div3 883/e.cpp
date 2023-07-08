@@ -210,7 +210,7 @@ void solve()
     fl(i, 0, n) freq[arr[i]]++;
     ll end = freq.rbegin()->first;
     set<int> oset;
-    fl(i, 2, 1e3 + 5)
+    fl(i, 2, ceil(cbrtl(arr[0])) + 1)
     {
         ll val = 1 + i, curr = i * i;
         while (val + curr <= end)

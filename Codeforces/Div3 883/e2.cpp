@@ -48,8 +48,8 @@ typedef map<ll, ll> mll;
 #define ss second
 #define pb push_back
 #define mp make_pair
-#define fl(i, s, n) for (int i = s; i < n; i++)
-#define rl(i, n, s) for (int i = n; i >= s; i--)
+#define fl(i, s, n) for (ll i = s; i < n; i++)
+#define rl(i, n, s) for (ll i = n; i >= s; i--)
 #define py cout << "YES\n";
 #define pm cout << "-1\n";
 #define pn cout << "NO\n";
@@ -199,17 +199,6 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-ll calc(ll first, ll end)
-{
-    ll h = 1 + first * first, t = first * first * first;
-    while (t + h <= end)
-    {
-        h += t;
-        t *= first;
-    }
-    return end - h;
-}
-
 // Code
 void solve()
 {
@@ -219,32 +208,56 @@ void solve()
     cin >> arr;
     fl(i, 0, n)
     {
-        ll h = ceil((arr[i])), l = 2;
-        while (l <= h)
+        ll num = arr[i];
+        bool isFound = false;
+        for (int i = 3; i <= 62; i++)
         {
-            ll mid = (l + h) / 2;
-            if (mid + 1 + mid * mid + mid * mid * mid > arr[i])
+            ll low = 2, high = 1e9;
+            while (low <= high)
             {
-                h = mid - 1;
-            }
-            else
-            {
-                ll diff1 = calc(mid, arr[i]);
-                ll diff2 = calc(mid - 1, arr[i]);
-                if (diff2 > diff1)
+                ll mid = (low + high) / 2;
+                __int128 val = 1 + mid, prod = mid * mid;
+                if (val + prod > num)
                 {
-                    h = mid - 1;
+                    high = mid - 1;
+                    continue;
+                }
+                val = 0, prod = 1;
+                for (int j = 1; j <= i; j++)
+                {
+                    val += prod;
+                    prod *= mid;
+                    if (val > num)
+                    {
+                        val = num + 1;
+                        break;
+                    }
+                }
+                if (val == num)
+                {
+                    isFound = true;
+                    break;
+                }
+                else if (val < num)
+                {
+                    low = mid + 1;
                 }
                 else
                 {
-                    l = mid + 1;
+                    high = mid - 1;
                 }
             }
-            if ((l > 3 && calc(l, arr[i]) == 0)||(h>3&&calc(h, arr[i]))
-            {
-                py
-            }
-                
+            if (isFound)
+                break;
+        }
+        if (isFound)
+        {
+            py
+        }
+        else
+        {
+            pn
+        }
     }
 }
 /*
