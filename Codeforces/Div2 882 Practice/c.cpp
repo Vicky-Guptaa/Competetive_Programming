@@ -199,20 +199,6 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
-void helper(int indx, int xorv, int state, vi &arr, vector<vector<vi>> &dp, vi &pre, vi &suff, ll &val)
-{
-    if (indx == arr.size())
-        return;
-    if (state == 0)
-    {
-        helper(indx + 1, xorv, state, arr, dp, pre, suff, val);
-        helper(indx + 1, xorv ^ pre[indx], state, arr, dp, pre, suff, val);
-    }
-    else
-    {
-    }
-}
-
 // Code
 void solve()
 {
@@ -220,20 +206,23 @@ void solve()
     cin >> n;
     vi arr(n);
     cin >> arr;
-    vi preXor(n, 0), suffXor(n, 0);
-    preXor[0] = arr[0];
-    fl(i, 1, n)
+    map<int, int> freq;
+    rl(i, 255, 0)
     {
-        preXor[i] ^= preXor[i - 1];
+        ll tar = i;
+        ll xr = 0;
+        fl(j, 0, n)
+        {
+            xr = (xr ^ arr[j]);
+            if (freq.count(xr ^ tar) || xr == tar)
+            {
+                cout << tar << "\n";
+                return;
+            }
+            freq[xr] = 1;
+        }
+        freq.clear();
     }
-    suffXor.back() = arr.back();
-    rl(i, n - 2, 0)
-    {
-        preXor[i] ^= preXor[i + 1];
-    }
-    vector<vector<vector<int>>> dp(n, vector<vector<int>>(256, vector<int>(2, -1)));
-    ll val = 0;
-    helper(0, preXor.back(), 0, arr, dp, preXor, suffXor, val);
 }
 /*
 When you are coding,remember to:
