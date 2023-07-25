@@ -204,12 +204,32 @@ void solve()
 {
     ll n, k;
     cin >> n >> k;
-    if (k >= 28)
+    if (k >= 30)
     {
         cout << "0\n";
         return;
     }
-    
+    ll count = 0;
+    fl(i, 1, n+1)
+    {
+        ll first = n;
+        ll second = i;
+        bool isValid = true;
+        fl(i, 0, k - 2)
+        {
+            ll third = first - second;
+            first = second;
+            second = third;
+            if (first < 0 || second < 0 || first < second)
+            {
+                isValid = false;
+                break;
+            }
+        }
+        if (isValid)
+            count++;
+    }
+    cout << count << '\n';
 }
 /*
 When you are coding,remember to:
