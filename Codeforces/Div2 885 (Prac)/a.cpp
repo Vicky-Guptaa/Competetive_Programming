@@ -202,11 +202,20 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll n, m, k;
+    cin >> n >> m >> k;
+    vpll arr(k + 1);
+    cin >> arr;
+    bool isEven = (arr[0].ff + arr[0].ss) & 1;
+    fl(i, 1, k + 1)
+    {
+        if (isEven == ((arr[i].ff + arr[i].ss) & 1))
+        {
+            pn return;
+        }
+    }
+    py
 }
-    
 /*
 When you are coding,remember to:
       - clear the arrays if a problem has many tasks.

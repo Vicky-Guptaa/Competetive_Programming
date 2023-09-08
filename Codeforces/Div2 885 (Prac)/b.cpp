@@ -202,9 +202,39 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n;
-    cin >> n;
-    
+    ll n, k;
+    cin >> n >> k;
+    vll arr(n);
+    cin >> arr;
+    map<int, vi> mindx;
+    fl(i, 0, n)
+    {
+        if (!mindx.count(arr[i]))
+            mindx[arr[i]].push_back(-1);
+        mindx[arr[i]].push_back(i);
+    }
+
+    int jump = 1e9;
+    for (auto &indx : mindx)
+    {
+        indx.second.push_back(n);
+        int first = 0, second = 0;
+        for (int i = 1; i < indx.second.size(); i++)
+        {
+            int diff = indx.second[i] - indx.second[i - 1] - 1;
+            if (first < diff)
+            {
+                second = first;
+                first = diff;
+            }
+            else if (second < diff)
+            {
+                second = diff;
+            }
+        }
+        jump = min(jump, max(first / 2, second));
+    }
+    cout << jump << "\n";
 }
 /*
 When you are coding,remember to:

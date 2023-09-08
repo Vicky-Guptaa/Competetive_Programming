@@ -202,13 +202,34 @@ bool isPerfectSquare(ll x)
 // Code
 void solve()
 {
-    ll n, m, k;
-    cin >> n >> m >> k;
-    int x, y;
-    cin >> x >> y;
-    vpll arr(k);
-    cin>>arr;
-    
+    ll n;
+    cin >> n;
+    vi arr(n), brr(n);
+    cin >> arr >> brr;
+    int cntr = 100;
+    while (cntr--)
+    {
+        bool isTrue = true;
+        fl(i, 0, n)
+        {
+            if (arr[i] != 0)
+            {
+                isTrue = false;
+                break;
+            }
+        }
+        if (isTrue)
+        {
+            py return;
+        }
+        fl(i, 0, n)
+        {
+            int c = abs(arr[i] - brr[i]);
+            arr[i] = brr[i];
+            brr[i] = c;
+        }
+    }
+    pn
 }
 /*
 When you are coding,remember to:
