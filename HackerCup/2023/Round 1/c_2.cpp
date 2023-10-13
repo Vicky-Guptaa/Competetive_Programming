@@ -246,10 +246,10 @@ When you are coding,remember to:
 // Main
 int main()
 {
-// #ifndef ONLINE_JUDGE
-//     freopen("Input.txt", "r", stdin);
-//     freopen("Output.txt", "w", stdout);
-// #endif
+#ifndef ONLINE_JUDGE
+    freopen("Input.txt", "r", stdin);
+    freopen("Output.txt", "w", stdout);
+#endif
     You Can Do_It
         ll t;
     cin >> t;
