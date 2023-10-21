@@ -199,12 +199,89 @@ bool isPerfectSquare(ll x)
 //__builtin_clz(x); for int
 //__builtin_clzll(x); for long long
 
+int helper(int x, int y, int rem, vll &arr, vll &brr)
+{
+    if (x - rem + 1 < 0 || y - rem + 1 < 0)
+        return 1e9;
+    if (x + rem >= arr.size() || y + rem >= arr.size())
+        return 1e9;
+
+    while (rem--)
+    {
+        if (arr[x] != brr[y] || arr[y] != brr[x])
+            return 1e9;
+        if (arr[x] >= arr[y] || brr[x] <= brr[y])
+            return 1e9;
+        x--;
+        y++;
+    }
+    int n = arr.size() / 3;
+    return y - n;
+}
+
+int evenSolver(vll &arr, vll &brr)
+{
+    int n = arr.size();
+    vector<int> target;
+    for (int i = 1; i + 1 < n; i++)
+    {
+        if (arr[i] == brr[i + 1] && brr[i] == arr[i + 1])
+            target.push_back(i);
+    }
+    n = arr.size() / 3;
+    fl(i, 0, target.size())
+    {
+        int res = helper(target[i], target[i] + 1, n / 2, arr, brr);
+        if (res == 1e9)
+            continue;
+        return res;
+    }
+    return -1;
+}
+
+int oddSolver(vll &arr, vll &brr)
+{
+    int n = arr.size();
+    vector<int> target;
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] == brr[i])
+            target.push_back(i);
+    }
+    n = arr.size() / 3;
+    fl(i, 0, target.size())
+    {
+        int res = helper(target[i] - 1, target[i] + 1, (n ) / 2, arr, brr);
+        if (res == 1e9)
+            continue;
+        return res;
+    }
+    return -1;
+}
+
 // Code
 void solve()
 {
     ll n;
     cin >> n;
-    
+    vll arr(n);
+    vll brr(n);
+    cin >> arr;
+    cin >> brr;
+    fl(i, 0, n) arr.push_back(brr[i]);
+    fl(i, 0, n) arr.push_back(arr[i]);
+
+    fl(i, 0, n) brr.push_back(arr[i]);
+    fl(i, 0, n) brr.push_back(brr[i]);
+
+    if (n & 1)
+    {
+        cout << oddSolver(arr, brr) << "\n";
+    }
+    else
+    {
+        cout << evenSolver(arr, brr) << "\n";
+    }
 }
 /*
 When you are coding,remember to:
