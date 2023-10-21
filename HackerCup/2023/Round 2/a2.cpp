@@ -202,26 +202,36 @@ bool isPerfectSquare(ll x)
 vector<int> moveX = {0, 0, -1, 1};
 vector<int> moveY = {-1, 1, 0, 0};
 
-void helper(int x, int y, vector<string> &arr, vector<vector<int>> &visit, set<pair<int, int>> &oset, int &cntr)
+void helper(int i, int j, vector<string> &arr, vector<vector<int>> &visit, set<pair<int, int>> &oset, int &cntr)
 {
-    cntr++;
+    queue<pair<int, int>> que;
+    que.push({i, j});
     int n = arr.size(), m = arr[0].size();
-    visit[x][y] = true;
-    for (int i = 0; i < 4; i++)
+    visit[i][j] = true;
+    while (!que.empty())
     {
-        int _x = x + moveX[i], _y = moveY[i] + y;
-        if (_x < 0 || _y < 0 || _x >= n || _y >= m || arr[_x][_y] == 'B')
-            continue;
-
-        if (visit[_x][_y])
-            continue;
-
-        if (arr[_x][_y] == '.')
+        int size = que.size();
+        while (size--)
         {
-            oset.insert({_x, _y});
-            continue;
+            int x = que.front().first;
+            int y = que.front().second;
+            que.pop();
+            cntr++;
+            for (int i = 0; i < 4; i++)
+            {
+                int _x = x + moveX[i], _y = moveY[i] + y;
+                if (_x < 0 || _y < 0 || _x >= n || _y >= m || visit[_x][_y] || arr[_x][_y] == 'B')
+                    continue;
+
+                if (arr[_x][_y] == '.')
+                {
+                    oset.insert({_x, _y});
+                    continue;
+                }
+                visit[_x][_y] = true;
+                que.push({_x, _y});
+            }
         }
-        helper(_x, _y, arr, visit, oset, cntr);
     }
 }
 
